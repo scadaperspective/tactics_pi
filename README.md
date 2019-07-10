@@ -1,16 +1,17 @@
-This is a snapshot of Thomas R's TACTICS Plugin for OpenCPN
+This is a snapshot of Thomas R's TACTICS Plugin for OpenCPN. V 1.008....
 
 I am using this to figure out the API and Plugin interactions with each other and the base application.
-It may be broken If your looking for a stable version look at another repo.
+It may be broken mostly will be :)
+
+If your looking for a stable version look at another repo.
+
+I've fixed some of the deprecited (_T) in the code 
 
 
 ==============================
-a performance enhancement of dashboard_pi
+
 
 For detailed description / manual see tactics_pi.odt and tactics_pi.pdf
-
-In short (taken from the manual):
-
 
 License
 =======
