@@ -146,7 +146,7 @@ enum {
 	ID_DBP_M_COG, ID_DBP_I_PITCH, ID_DBP_I_HEEL, ID_DBP_D_AWA_TWA, ID_DBP_I_LEEWAY, ID_DBP_I_CURRDIR,
 	ID_DBP_I_CURRSPD, ID_DBP_D_BRG, ID_DBP_I_POLSPD, ID_DBP_I_POLVMG, ID_DBP_I_POLTVMG,
 	ID_DBP_I_POLTVMGANGLE, ID_DBP_I_POLCMG, ID_DBP_I_POLTCMG, ID_DBP_I_POLTCMGANGLE, ID_DBP_D_POLPERF, ID_DBP_D_AVGWIND, ID_DBP_D_POLCOMP,
-	ID_DBP_LAST_ENTRY //this has a reference in one of the routines; defining a "LAST_ENTRY" and setting the reference to it, is one codeline less to change (and find) when adding new instruments :-)
+	ID_DBP_I_SAT, ID_DBP_D_GPS, ID_DBP_LAST_ENTRY //this has a reference in one of the routines; defining a "LAST_ENTRY" and setting the reference to it, is one codeline less to change (and find) when adding new instruments :-)
 };
 
 /********************************************************************************************************/
@@ -249,10 +249,10 @@ wxString getInstrumentCaption(unsigned int id)
 		//    return _("Rudder Angle");
 		//case ID_DBP_D_RSA:
 		//    return _("Rudder Angle");
-		//case ID_DBP_I_SAT:
-		//    return _("GPS in View");
-		//case ID_DBP_D_GPS:
-		//    return _("GPS Status");
+	case ID_DBP_I_SAT:
+		return _("GPS in View");
+	case ID_DBP_D_GPS:
+		return _("GPS Status");
 		//case ID_DBP_I_PTR:
 		//    return _("Cursor");
 	case ID_DBP_I_CLK:
@@ -339,7 +339,7 @@ void getListItemForInstrument(wxListItem &item, unsigned int id)
 	case ID_DBP_I_AWA:
 	case ID_DBP_I_VMG:
 		//case ID_DBP_I_RSA:
-		//case ID_DBP_I_SAT:
+	case ID_DBP_I_SAT:
 		//case ID_DBP_I_PTR:
 	case ID_DBP_I_CLK:
 	case ID_DBP_I_SUN:
@@ -373,7 +373,7 @@ void getListItemForInstrument(wxListItem &item, unsigned int id)
 	case ID_DBP_D_MDA:
 	case ID_DBP_D_VMG:
 		//case ID_DBP_D_RSA:
-		//case ID_DBP_D_GPS:
+	case ID_DBP_D_GPS:
 	case ID_DBP_D_HDT:
 		//case ID_DBP_D_MON:
 	case ID_DBP_D_WDH:
@@ -704,7 +704,7 @@ void tactics_pi::Notify()
         SendSatInfoToAllInstruments( 0, 3, sats );
 
         mSatsInView = 0;
-        //SendSentenceToAllInstruments( OCPN_DBP_STC_SAT, 0, wxT("") );
+        SendSentenceToAllInstruments( OCPN_DBP_STC_SAT, 0, wxT("") );
 		
     }
     mBRG_Watchdog--;
@@ -4542,14 +4542,14 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			//instrument = new TacticsInstrument_RudderAngle( this, wxID_ANY,
 			//        getInstrumentCaption( id ) );
 			//  break;
-			//case ID_DBP_I_SAT:
-			//instrument = new TacticsInstrument_Single( this, wxID_ANY,
-			//        getInstrumentCaption( id ), OCPN_DBP_STC_SAT, wxT("%5.0f") );
-			//break;
-			//case ID_DBP_D_GPS:
-			//instrument = new TacticsInstrument_GPS( this, wxID_ANY,
-			//        getInstrumentCaption( id ) );
-			//  break;
+		case ID_DBP_I_SAT:
+			instrument = new TacticsInstrument_Single( this, wxID_ANY,
+			          getInstrumentCaption( id ), OCPN_DBP_STC_SAT, wxT("%5.0f") );
+			break;
+		case ID_DBP_D_GPS:
+			instrument = new TacticsInstrument_GPS( this, wxID_ANY,
+			          getInstrumentCaption( id ) );
+		    break;
 			//case ID_DBP_I_PTR:
 			// instrument = new TacticsInstrument_Position( this, wxID_ANY,
 			//       getInstrumentCaption( id ), OCPN_DBP_STC_PLA, OCPN_DBP_STC_PLO );
@@ -4701,12 +4701,12 @@ void TacticsWindow::SendSentenceToAllInstruments(int st, double value, wxString 
 
 void TacticsWindow::SendSatInfoToAllInstruments(int cnt, int seq, SAT_INFO sats[4])
 {
-	/*for( size_t i = 0; i < m_ArrayOfInstrument.GetCount(); i++ ) {
+	for( size_t i = 0; i < m_ArrayOfInstrument.GetCount(); i++ ) {
 	if( ( m_ArrayOfInstrument.Item( i )->m_cap_flag & OCPN_DBP_STC_GPS )
 	&& m_ArrayOfInstrument.Item( i )->m_pInstrument->IsKindOf(
 	CLASSINFO(TacticsInstrument_GPS)))
 	((TacticsInstrument_GPS*)m_ArrayOfInstrument.Item(i)->m_pInstrument)->SetSatInfo(cnt, seq, sats);
-	}*/
+	}
 }
 
 
