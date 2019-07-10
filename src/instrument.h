@@ -43,7 +43,7 @@
 #include <wx/dcbuffer.h>
 #include <wx/dcgraph.h>         // supplemental, for Mac
 
-const wxString DEGREE_SIGN = wxString::Format(_T("%c"), 0x00B0); // This is the degree sign in UTF8. It should be correctly handled on both Win & Unix
+const wxString DEGREE_SIGN = wxString::Format(wxT("%c"), 0x00B0); // This is the degree sign in UTF8. It should be correctly handled on both Win & Unix
 #define DefaultWidth 150
 
 extern wxFont *g_pFontTitle;
@@ -77,26 +77,26 @@ enum
     OCPN_DBP_STC_DPT = 1 << 13,
     OCPN_DBP_STC_TMP = 1 << 14,
     OCPN_DBP_STC_VMG = 1 << 15,
-    //OCPN_DBP_STC_RSA = 1 << 16,
-    //OCPN_DBP_STC_SAT = 1 << 17,
-    //OCPN_DBP_STC_GPS = 1 << 18,
+    OCPN_DBP_STC_RSA = 1 << 16,
+    OCPN_DBP_STC_SAT = 1 << 17,
+    OCPN_DBP_STC_GPS = 1 << 18,
 	OCPN_DBP_STC_LEEWAY = 1 << 16,
 	OCPN_DBP_STC_CURRDIR = 1 << 17,
 	OCPN_DBP_STC_CURRSPD = 1 << 18,
 	OCPN_DBP_STC_DTW = 1 << 19,
 	OCPN_DBP_STC_RMBLON = 1 << 20, //free not needed
-	//OCPN_DBP_STC_PLA = 1 << 19, // Cursor latitude
-    //OCPN_DBP_STC_PLO = 1 << 20, // Cursor longitude
+	OCPN_DBP_STC_PLA = 1 << 19, // Cursor latitude
+    OCPN_DBP_STC_PLO = 1 << 20, // Cursor longitude
     OCPN_DBP_STC_CLK = 1 << 21, //Clock
     OCPN_DBP_STC_POLPERF = 1 << 22, // Polar Performance
-    //OCPN_DBP_STC_MON = 1 << 22,
+    OCPN_DBP_STC_MON = 1 << 22,
     OCPN_DBP_STC_ATMP = 1 << 23, //AirTemp
     OCPN_DBP_STC_TWD = 1 << 24,
-//    OCPN_DBP_STC_TWS2 = 1 << 25,
+    OCPN_DBP_STC_TWS2 = 1 << 25,
     OCPN_DBP_STC_RMBLAT = 1 << 25,//free not needed
     OCPN_DBP_STC_BC = 1 << 26,
-    //OCPN_DBP_STC_VLW1 = 1 << 26, // Trip Log
-    //OCPN_DBP_STC_VLW2 = 1 << 27,  // Sum Log
+    OCPN_DBP_STC_VLW1 = 1 << 26, // Trip Log
+    OCPN_DBP_STC_VLW2 = 1 << 27,  // Sum Log
     OCPN_DBP_STC_TWAMARK = 1 << 27,  // TWA to a Waypoint
     OCPN_DBP_STC_MDA = 1 << 28,  // Barometic pressure
     OCPN_DBP_STC_MCOG = 1 << 29,  // Magnetic Course over Ground

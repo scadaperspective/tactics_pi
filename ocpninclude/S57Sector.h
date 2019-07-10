@@ -1,12 +1,11 @@
-/******************************************************************************
- * $Id: speedometer.cpp, v1.0 2010/08/05 SethDart Exp $
+/***************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  Tactics Plugin
- * Author:   Jean-Eudes Onfray
+ * Purpose:  S57 Chart Object
+ * Author:   David Register
  *
  ***************************************************************************
- *   Copyright (C) 2010 - 2019 by David S. Register                        *
+ *   Copyright (C) 2010 by David S. Register                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -22,32 +21,20 @@
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
- ***************************************************************************
- */
+ **************************************************************************/
 
-#include "speedometer.h"
+#ifndef __S57SECTOR_H__
+#define __S57SECTOR_H__
 
-// For compilers that support precompilation, includes "wx/wx.h".
-#include <wx/wxprec.h>
+#include <wx/wx.h>
 
-#ifdef __BORLANDC__
-    #pragma hdrstop
+typedef struct {
+    wxPoint2DDouble pos;
+    double sector1, sector2;
+    double range;
+    wxColor color;
+    bool iswhite;
+    bool isleading;
+} s57Sector_t;
+
 #endif
-
-// for all others, include the necessary headers (this file is usually all you
-// need because it includes almost all "standard" wxWidgets headers)
-#ifndef WX_PRECOMP
-    #include <wx/wx.h>
-#endif
-
-// Not much to do here most of the default dial values are fine.
-// Note the default AngleStart = 225 and AngleRange = 270 set here.
-
-TacticsInstrument_Speedometer::TacticsInstrument_Speedometer( wxWindow *parent, wxWindowID id, wxString title, int cap_flag,
-                        int s_value, int e_value) : TacticsInstrument_Dial( parent, id, title, cap_flag, 225, 270, s_value, e_value)
-{
-      // We want the main value displayed inside the dial as well
-      // as the default arrow
-      SetOptionMainValue(wxT("%.2f"), DIAL_POSITION_INSIDE);
-}
-

@@ -140,13 +140,16 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 enum {
 	ID_DBP_I_POS, ID_DBP_I_SOG, ID_DBP_D_SOG, ID_DBP_I_COG, ID_DBP_D_COG, ID_DBP_I_STW,
 	ID_DBP_I_HDT, ID_DBP_D_AW, ID_DBP_D_AWA, ID_DBP_I_AWS, ID_DBP_D_AWS, ID_DBP_D_TW,
-	ID_DBP_I_DPT, ID_DBP_D_DPT, ID_DBP_I_TMP, ID_DBP_I_VMG, ID_DBP_D_VMG,
-	ID_DBP_I_CLK, ID_DBP_I_SUN, ID_DBP_I_ATMP, ID_DBP_I_AWA, ID_DBP_I_TWA, ID_DBP_I_TWD, ID_DBP_I_TWS,
-	ID_DBP_D_TWD, ID_DBP_I_HDM, ID_DBP_D_HDT, ID_DBP_D_WDH, ID_DBP_I_TWAMARK, ID_DBP_D_MDA, ID_DBP_I_MDA, ID_DBP_D_BPH, ID_DBP_I_FOS,
-	ID_DBP_M_COG, ID_DBP_I_PITCH, ID_DBP_I_HEEL, ID_DBP_D_AWA_TWA, ID_DBP_I_LEEWAY, ID_DBP_I_CURRDIR,
-	ID_DBP_I_CURRSPD, ID_DBP_D_BRG, ID_DBP_I_POLSPD, ID_DBP_I_POLVMG, ID_DBP_I_POLTVMG,
-	ID_DBP_I_POLTVMGANGLE, ID_DBP_I_POLCMG, ID_DBP_I_POLTCMG, ID_DBP_I_POLTCMGANGLE, ID_DBP_D_POLPERF, ID_DBP_D_AVGWIND, ID_DBP_D_POLCOMP,
-	ID_DBP_I_SAT, ID_DBP_D_GPS, ID_DBP_LAST_ENTRY //this has a reference in one of the routines; defining a "LAST_ENTRY" and setting the reference to it, is one codeline less to change (and find) when adding new instruments :-)
+	ID_DBP_I_DPT, ID_DBP_D_DPT, ID_DBP_I_TMP, ID_DBP_I_VMG, ID_DBP_D_VMG, ID_DBP_I_RSA,
+	ID_DBP_D_RSA, ID_DBP_I_SAT, ID_DBP_D_GPS, ID_DBP_I_PTR, ID_DBP_I_GPSUTC, ID_DBP_I_SUN,
+	ID_DBP_D_MON, ID_DBP_I_ATMP, ID_DBP_I_AWA, ID_DBP_I_TWA, ID_DBP_I_TWD, ID_DBP_I_TWS,
+	ID_DBP_D_TWD, ID_DBP_I_HDM, ID_DBP_D_HDT, ID_DBP_D_WDH, ID_DBP_I_VLW1, ID_DBP_I_VLW2,
+	ID_DBP_D_MDA, ID_DBP_I_MDA,ID_DBP_D_BPH, ID_DBP_I_FOS, ID_DBP_M_COG, ID_DBP_I_PITCH,
+	ID_DBP_I_HEEL, ID_DBP_D_AWA_TWA, ID_DBP_I_GPSLCL, ID_DBP_I_CPULCL, ID_DBP_I_SUNLCL,
+	ID_DBP_I_CLK, ID_DBP_I_TWAMARK, ID_DBP_I_LEEWAY, ID_DBP_I_CURRDIR, ID_DBP_I_CURRSPD,
+	ID_DBP_D_BRG, ID_DBP_I_POLSPD, ID_DBP_I_POLVMG, ID_DBP_I_POLTVMG, ID_DBP_I_POLTVMGANGLE,
+	ID_DBP_I_POLCMG, ID_DBP_I_POLTCMG, ID_DBP_I_POLTCMGANGLE, ID_DBP_D_POLPERF, ID_DBP_D_AVGWIND, ID_DBP_D_POLCOMP,
+	ID_DBP_LAST_ENTRY //this has a reference in one of the routines; defining a "LAST_ENTRY" and setting the reference to it, is one codeline less to change (and find) when adding new instruments :-)
 };
 
 /********************************************************************************************************/
@@ -338,13 +341,13 @@ void getListItemForInstrument(wxListItem &item, unsigned int id)
 	case ID_DBP_I_TWS:
 	case ID_DBP_I_AWA:
 	case ID_DBP_I_VMG:
-		//case ID_DBP_I_RSA:
+	case ID_DBP_I_RSA:
 	case ID_DBP_I_SAT:
-		//case ID_DBP_I_PTR:
+	case ID_DBP_I_PTR:
 	case ID_DBP_I_CLK:
 	case ID_DBP_I_SUN:
-		//       case ID_DBP_I_VLW1:
-		//case ID_DBP_I_VLW2:
+	case ID_DBP_I_VLW1:
+    case ID_DBP_I_VLW2:
 	case ID_DBP_I_TWAMARK:
 	case ID_DBP_I_FOS:
 	case ID_DBP_I_PITCH:
@@ -372,13 +375,13 @@ void getListItemForInstrument(wxListItem &item, unsigned int id)
 	case ID_DBP_D_DPT:
 	case ID_DBP_D_MDA:
 	case ID_DBP_D_VMG:
-		//case ID_DBP_D_RSA:
+    case ID_DBP_D_RSA:
 	case ID_DBP_D_GPS:
 	case ID_DBP_D_HDT:
-		//case ID_DBP_D_MON:
+    case ID_DBP_D_MON:
 	case ID_DBP_D_WDH:
 	case ID_DBP_D_BPH:
-		//case ID_DBP_D_CURRDIR:
+//    case ID_DBP_D_CURRDIR:
 	case ID_DBP_D_BRG:
 	case ID_DBP_D_POLPERF:
 	case ID_DBP_D_AVGWIND:
@@ -2986,7 +2989,7 @@ bool tactics_pi::LoadConfig(void)
 				// This is the default instrument list
 				ar.Add(ID_DBP_I_POS);
 				ar.Add(ID_DBP_D_COG);
-				//ar.Add( ID_DBP_D_GPS );
+				ar.Add( ID_DBP_D_GPS );
 			}
 
 			m_ArrayOfTacticsWindow.Add(
@@ -4542,14 +4545,14 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			//instrument = new TacticsInstrument_RudderAngle( this, wxID_ANY,
 			//        getInstrumentCaption( id ) );
 			//  break;
-			//case ID_DBP_I_SAT:
-			//instrument = new TacticsInstrument_Single( this, wxID_ANY,
-			//        getInstrumentCaption( id ), OCPN_DBP_STC_SAT, wxT("%5.0f") );
-			//break;
-			//case ID_DBP_D_GPS:
-			//instrument = new TacticsInstrument_GPS( this, wxID_ANY,
-			//        getInstrumentCaption( id ) );
-			//  break;
+		case ID_DBP_I_SAT:
+			instrument = new TacticsInstrument_Single( this, wxID_ANY,
+			        getInstrumentCaption( id ), OCPN_DBP_STC_SAT, wxT("%5.0f") );
+			break;
+		case ID_DBP_D_GPS:
+			instrument = new TacticsInstrument_GPS( this, wxID_ANY,
+			        getInstrumentCaption( id ) );
+			break;
 			//case ID_DBP_I_PTR:
 			// instrument = new TacticsInstrument_Position( this, wxID_ANY,
 			//       getInstrumentCaption( id ), OCPN_DBP_STC_PLA, OCPN_DBP_STC_PLO );
@@ -4701,12 +4704,12 @@ void TacticsWindow::SendSentenceToAllInstruments(int st, double value, wxString 
 
 void TacticsWindow::SendSatInfoToAllInstruments(int cnt, int seq, SAT_INFO sats[4])
 {
-	/*for( size_t i = 0; i < m_ArrayOfInstrument.GetCount(); i++ ) {
+	for( size_t i = 0; i < m_ArrayOfInstrument.GetCount(); i++ ) {
 	if( ( m_ArrayOfInstrument.Item( i )->m_cap_flag & OCPN_DBP_STC_GPS )
 	&& m_ArrayOfInstrument.Item( i )->m_pInstrument->IsKindOf(
 	CLASSINFO(TacticsInstrument_GPS)))
 	((TacticsInstrument_GPS*)m_ArrayOfInstrument.Item(i)->m_pInstrument)->SetSatInfo(cnt, seq, sats);
-	}*/
+	}
 }
 
 

@@ -37,8 +37,8 @@ extern int g_iDashDistanceUnit;
 TacticsInstrument_FromOwnship::TacticsInstrument_FromOwnship(wxWindow *pparent, wxWindowID id, wxString title, int cap_flag1, int cap_flag2 ,int cap_flag3,int cap_flag4)
     :TacticsInstrument(pparent, id, title, cap_flag1 | cap_flag2 | cap_flag3 | cap_flag4)
 {
-    m_data1 =_T("---");
-    m_data2 =_T("---");
+    m_data1 =wxT("---");
+    m_data2 =wxT("---");
     m_cap_flag1 = cap_flag1;
     m_cap_flag2 = cap_flag2;
     m_cap_flag3 = cap_flag3;
@@ -52,8 +52,8 @@ void TacticsInstrument_FromOwnship::Draw(wxGCDC* dc)
     wxColour cl;
 
     dc->SetFont(*g_pFontData);
-    //dc.SetTextForeground(pFontMgr->GetFontColor(_T("Tactics Data")));
-    GetGlobalColor(_T("DASHF"), &cl);
+    //dc.SetTextForeground(pFontMgr->GetFontColor(wxT("Tactics Data")));
+    GetGlobalColor(wxT("DASHF"), &cl);
     dc->SetTextForeground(cl);
 
     dc->DrawText(m_data1, 10, m_TitleHeight);
@@ -84,8 +84,8 @@ void TacticsInstrument_FromOwnship::SetData(int st, double data, wxString unit)
     {
         double brg,dist;
         DistanceBearingMercator_Plugin(c_lat, c_lon, s_lat, s_lon, &brg, &dist);
-        m_data1.Printf(_T("%03d ") + DEGREE_SIGN,(int)brg);
-        m_data2.Printf(_T("%3.2f %s"), toUsrDistance_Plugin(dist, g_iDashDistanceUnit), getUsrDistanceUnit_Plugin(g_iDashDistanceUnit).c_str());
+        m_data1.Printf(wxT("%03d ") + DEGREE_SIGN,(int)brg);
+        m_data2.Printf(wxT("%3.2f %s"), toUsrDistance_Plugin(dist, g_iDashDistanceUnit), getUsrDistanceUnit_Plugin(g_iDashDistanceUnit).c_str());
     }
 	  	
     Refresh(false);
@@ -96,7 +96,7 @@ wxSize TacticsInstrument_FromOwnship::GetSize( int orient, wxSize hint )
       wxClientDC dc(this);
       int w;
       dc.GetTextExtent(m_title, &w, &m_TitleHeight, 0, 0, g_pFontTitle);
-      dc.GetTextExtent(_T("000.00 NMi"), &w, &m_DataHeight, 0, 0, g_pFontData);
+      dc.GetTextExtent(wxT("000.00 NMi"), &w, &m_DataHeight, 0, 0, g_pFontData);
 
       if( orient == wxHORIZONTAL ) {
           return wxSize( w+10, wxMax(hint.y, m_TitleHeight+m_DataHeight*2) );

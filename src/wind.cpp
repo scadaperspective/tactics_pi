@@ -6,7 +6,7 @@
  * Author:   Jean-Eudes Onfray
  *
  ***************************************************************************
- *   Copyright (C) 2010 by David S. Register   *
+ *   Copyright (C) 2010 2019 by David S. Register                          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -21,7 +21,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
  ***************************************************************************
  */
 
@@ -49,7 +49,7 @@ TacticsInstrument_Wind::TacticsInstrument_Wind( wxWindow *parent, wxWindowID id,
 {
       SetOptionMarker(10, DIAL_MARKER_REDGREENBAR, 3);
       // Labels are set static because we've no logic to display them this way
-      wxString labels[] = {_T(""), _T("30"), _T("60"), _T("90"), _T("120"), _T("150"), _T(""), _T("150"), _T("120"), _T("90"), _T("60"), _T("30")};
+      wxString labels[] = {_T(""), wxT("30"), wxT("60"), wxT("90"), wxT("120"), wxT("150"), wxT(""), wxT("150"), wxT("120"), wxT("90"), wxT("60"), wxT("30")};
       SetOptionLabel(30, DIAL_LABEL_HORIZONTAL, wxArrayString(12, labels));
 }
 
@@ -79,7 +79,7 @@ TacticsInstrument_TrueWindAngle::TacticsInstrument_TrueWindAngle( wxWindow *pare
 {
       SetOptionMarker(10, DIAL_MARKER_REDGREENBAR, 3);
       // Labels are set static because we've no logic to display them this way
-      wxString labels[] = {_T(""), _T("30"), _T("60"), _T("90"), _T("120"), _T("150"), _T(""), _T("150"), _T("120"), _T("90"), _T("60"), _T("30")};
+      wxString labels[] = {_T(""), wxT("30"), wxT("60"), wxT("90"), wxT("120"), wxT("150"), wxT(""), wxT("150"), wxT("120"), wxT("90"), wxT("60"), wxT("30")};
       SetOptionLabel(30, DIAL_LABEL_HORIZONTAL, wxArrayString(12, labels));
 }
 
@@ -97,10 +97,10 @@ TacticsInstrument_Dial(parent, id, title, cap_flag, 0, 360, 0, 360)
 {
 	SetOptionMarker(10, DIAL_MARKER_REDGREENBAR, 3);
 	// Labels are set static because we've no logic to display them this way
-	wxString labels[] = { _T(""), _T("30"), _T("60"), _T("90"), _T("120"), _T("150"), _T(""), _T("150"), _T("120"), _T("90"), _T("60"), _T("30") };
+	wxString labels[] = { wxT(""), wxT("30"), wxT("60"), wxT("90"), wxT("120"), wxT("150"), wxT(""), wxT("150"), wxT("120"), wxT("90"), wxT("60"), wxT("30") };
 	SetOptionLabel(30, DIAL_LABEL_HORIZONTAL, wxArrayString(12, labels));
     m_TWD = NAN;
-    m_TWDUnit = _T("");
+    m_TWDUnit = wxT("");
     m_MainValueApp = NAN;
     m_ExtraValueApp = NAN;
     m_MainValueTrue = NAN;
@@ -170,7 +170,7 @@ void TacticsInstrument_AppTrueWindAngle::Draw(wxGCDC* bdc)
 	DrawData(bdc, m_MainValueTrue, m_MainValueTrueUnit, m_MainValueFormat, m_MainValueOption2);
 	DrawData(bdc, m_ExtraValueApp, m_ExtraValueAppUnit, m_ExtraValueFormat, m_ExtraValueOption1);
 	DrawData(bdc, m_ExtraValueTrue, m_ExtraValueTrueUnit, m_ExtraValueFormat, m_ExtraValueOption2);
-    DrawData(bdc, m_TWD, m_MainValueTrueUnit, _T("TWD:%.0f"), DIAL_POSITION_INSIDE);
+    DrawData(bdc, m_TWD, m_MainValueTrueUnit, wxT("TWD:%.0f"), DIAL_POSITION_INSIDE);
     DrawForeground(bdc);
 }
 void TacticsInstrument_AppTrueWindAngle::DrawForeground(wxGCDC* dc)
@@ -204,9 +204,9 @@ void TacticsInstrument_AppTrueWindAngle::DrawForeground(wxGCDC* dc)
       brush2.SetColour(cl);
       dc->SetBrush(brush2);
 
-      /* this is fix for a +/-180° round instrument, when m_MainValue is supplied as <0..180><L | R>
+      /* this is fix for a +/-180ï¿½ round instrument, when m_MainValue is supplied as <0..180><L | R>
       * for example TWA & AWA */
-      if (m_MainValueTrueUnit == _T("\u00B0L"))
+      if (m_MainValueTrueUnit == wxT("\u00B0L"))
         data = 360 - m_MainValueTrue;
       else
         data = m_MainValueTrue;
@@ -238,9 +238,9 @@ void TacticsInstrument_AppTrueWindAngle::DrawForeground(wxGCDC* dc)
       brush.SetColour(cl);
       dc->SetBrush(brush);
 
-      /* this is fix for a +/-180° round instrument, when m_MainValue is supplied as <0..180><L | R>
+      /* this is fix for a +/-180ï¿½ round instrument, when m_MainValue is supplied as <0..180><L | R>
       * for example TWA & AWA */
-      if (m_MainValueAppUnit == _T("\u00B0L"))
+      if (m_MainValueAppUnit == wxT("\u00B0L"))
         data = 360 - m_MainValueApp;
       else
         data = m_MainValueApp;
@@ -279,23 +279,23 @@ void TacticsInstrument_AppTrueWindAngle::DrawData(wxGCDC* dc, double value,
 	wxString text;
 	if (!wxIsNaN(value))
 	{
-		if (unit == _T("\u00B0"))
+		if (unit == wxT("\u00B0"))
 			text = wxString::Format(format, value) + DEGREE_SIGN;
-		else if (unit == _T("\u00B0L")) // No special display for now, might be XX°< (as in text-only instrument)
+		else if (unit == wxT("\u00B0L")) // No special display for now, might be XXï¿½< (as in text-only instrument)
 			text = wxString::Format(format, value) + DEGREE_SIGN;
-		else if (unit == _T("\u00B0R")) // No special display for now, might be >XX°
+		else if (unit == wxT("\u00B0R")) // No special display for now, might be >XXï¿½
 			text = wxString::Format(format, value) + DEGREE_SIGN;
-		else if (unit == _T("\u00B0T"))
-			text = wxString::Format(format, value) + DEGREE_SIGN + _T("T");
-		else if (unit == _T("\u00B0M"))
-			text = wxString::Format(format, value) + DEGREE_SIGN + _T("M");
-		else if (unit == _T("N")) // Knots
-			text = wxString::Format(format, value) + _T(" Kts");
+		else if (unit == wxT("\u00B0T"))
+			text = wxString::Format(format, value) + DEGREE_SIGN + wxT("T");
+		else if (unit == wxT("\u00B0M"))
+			text = wxString::Format(format, value) + DEGREE_SIGN + wxT("M");
+		else if (unit == wxT("N")) // Knots
+			text = wxString::Format(format, value) + wxT(" Kts");
 		else
-			text = wxString::Format(format, value) + _T(" ") + unit;
+			text = wxString::Format(format, value) + wxT(" ") + unit;
 	}
 	else
-		text = _T("---");
+		text = wxT("---");
 
 	int width, height;
 	dc->GetMultiLineTextExtent(text, &width, &height, NULL, g_pFontLabel);
@@ -330,7 +330,7 @@ void TacticsInstrument_AppTrueWindAngle::DrawData(wxGCDC* dc, double value,
 		GetGlobalColor(_T("DASHN"), &c3);
 		TextPoint.x = 0;
 		TextPoint.y = m_TitleHeight;
-		text = _T("A:") + text;
+		text = wxT("A:") + text;
 		break;
 	case DIAL_POSITION_TOPRIGHT:
 		GetGlobalColor(_T("DASHN"), &c3);
@@ -339,7 +339,7 @@ void TacticsInstrument_AppTrueWindAngle::DrawData(wxGCDC* dc, double value,
 		break;
 	case DIAL_POSITION_BOTTOMLEFT:
 		GetGlobalColor(_T("BLUE3"), &c3);
-		text = _T("T:") + text;
+		text = wxT("T:") + text;
 		TextPoint.x = 0;
 		TextPoint.y = size.y - height;
 		break;
@@ -351,7 +351,7 @@ void TacticsInstrument_AppTrueWindAngle::DrawData(wxGCDC* dc, double value,
 	}
 	wxColour c2;
 	GetGlobalColor(_T("DASHB"), &c2);
-	wxStringTokenizer tkz(text, _T("\n"));
+	wxStringTokenizer tkz(text, wxT("\n"));
 	wxString token;
 
 	token = tkz.GetNextToken();

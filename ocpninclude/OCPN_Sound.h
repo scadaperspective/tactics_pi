@@ -1,12 +1,9 @@
 /******************************************************************************
- * $Id: speedometer.cpp, v1.0 2010/08/05 SethDart Exp $
  *
  * Project:  OpenCPN
- * Purpose:  Tactics Plugin
- * Author:   Jean-Eudes Onfray
  *
  ***************************************************************************
- *   Copyright (C) 2010 - 2019 by David S. Register                        *
+ *   Copyright (C) 2013 by David S. Register                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -25,29 +22,43 @@
  ***************************************************************************
  */
 
-#include "speedometer.h"
+#ifndef __OCPN_SOUND_H__
+#define __OCPN_SOUND_H__
 
-// For compilers that support precompilation, includes "wx/wx.h".
-#include <wx/wxprec.h>
+#include <wx/sound.h>
 
-#ifdef __BORLANDC__
-    #pragma hdrstop
+#ifdef OCPN_USE_PORTAUDIO
+    #include "OCPNSoundData.h"
+    #include "portaudio.h"
 #endif
 
-// for all others, include the necessary headers (this file is usually all you
-// need because it includes almost all "standard" wxWidgets headers)
-#ifndef WX_PRECOMP
-    #include <wx/wx.h>
-#endif
-
-// Not much to do here most of the default dial values are fine.
-// Note the default AngleStart = 225 and AngleRange = 270 set here.
-
-TacticsInstrument_Speedometer::TacticsInstrument_Speedometer( wxWindow *parent, wxWindowID id, wxString title, int cap_flag,
-                        int s_value, int e_value) : TacticsInstrument_Dial( parent, id, title, cap_flag, 225, 270, s_value, e_value)
+class OCPN_Sound: public wxSound
 {
-      // We want the main value displayed inside the dial as well
-      // as the default arrow
-      SetOptionMainValue(wxT("%.2f"), DIAL_POSITION_INSIDE);
-}
+public:
+    OCPN_Sound();
+    ~OCPN_Sound();
 
+    static int DeviceCount();
+
+    bool IsOk() const;
+    bool Create(const wxString& fileName, int deviceIndex=-1, bool isResource = false);
+    bool Play(unsigned flags = wxSOUND_ASYNC) const;
+    bool IsPlaying() const;
+    void Stop();
+    void UnLoad(void);
+
+private:
+    bool m_OK;
+    wxString m_soundfile;
+
+#ifdef OCPN_USE_PORTAUDIO
+    bool LoadWAV(const wxUint8 *data, size_t length, bool copyData);
+    void FreeMem(void);
+
+    OCPNSoundData *m_osdata;
+    PaStream *m_stream;
+#endif
+
+};
+
+#endif

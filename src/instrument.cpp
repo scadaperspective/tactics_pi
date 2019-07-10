@@ -98,13 +98,13 @@ void TacticsInstrument::OnPaint( wxPaintEvent& WXUNUSED(event) )
 {
     wxBufferedPaintDC pdc( this );
     if( !pdc.IsOk() ) {
-        wxLogMessage( _T("TacticsInstrument::OnPaint() fatal: wxBufferedPaintDC.IsOk() false.") );
+        wxLogMessage( wxT("TacticsInstrument::OnPaint() fatal: wxBufferedPaintDC.IsOk() false.") );
         return;
     }
 
     wxSize size = GetClientSize();
     if( size.x == 0 || size.y == 0 ) {
-        wxLogMessage( _T("TacticsInstrument::OnPaint() fatal: Zero size DC.") );
+        wxLogMessage( wxT("TacticsInstrument::OnPaint() fatal: Zero size DC.") );
         return;
     }
 
@@ -120,7 +120,7 @@ void TacticsInstrument::OnPaint( wxPaintEvent& WXUNUSED(event) )
 #endif
 
     wxColour cl;
-    GetGlobalColor( _T("DASHB"), &cl );
+    GetGlobalColor( wxT("DASHB"), &cl );
     dc.SetBackground( cl );
     dc.Clear();
 
@@ -140,14 +140,14 @@ void TacticsInstrument::OnPaint( wxPaintEvent& WXUNUSED(event) )
         {
             wxPen pen;
             pen.SetStyle( wxPENSTYLE_SOLID );
-            GetGlobalColor( _T("DASHL"), &cl );
+            GetGlobalColor( wxT("DASHL"), &cl );
             pen.SetColour( cl );
             dc.SetPen( pen );
             dc.SetBrush( cl );
             dc.DrawRoundedRectangle( 0, 0, size.x, m_TitleHeight, 3 );
 
             dc.SetFont( *g_pFontTitle );
-            GetGlobalColor( _T("DASHF"), &cl );
+            GetGlobalColor( wxT("DASHF"), &cl );
             dc.SetTextForeground( cl );
             dc.DrawText( m_title, 5, 0 );
 
@@ -163,20 +163,20 @@ void TacticsInstrument::OnPaint( wxPaintEvent& WXUNUSED(event) )
             //wxBitmap tbm( size.x, m_TitleHeight, -1 );
             //wxMemoryDC tdc( tbm );
             wxColour cl;
-            GetGlobalColor( _T("DASHB"), &cl );
+            GetGlobalColor( wxT("DASHB"), &cl );
             pdc.SetBrush(cl);
             pdc.DrawRectangle(0, 0, size.x, m_TitleHeight);
 
             wxPen pen;
             pen.SetStyle( wxSOLID );
-            GetGlobalColor( _T("DASHL"), &cl );
+            GetGlobalColor( wxT("DASHL"), &cl );
             pen.SetColour( cl );
             pdc.SetPen( pen );
             pdc.SetBrush( cl );
             pdc.DrawRoundedRectangle( 0, 0, size.x, m_TitleHeight, 3 );
 
             pdc.SetFont( *g_pFontTitle );
-            GetGlobalColor( _T("DASHF"), &cl );
+            GetGlobalColor( wxT("DASHF"), &cl );
             pdc.SetTextForeground( cl );
             pdc.DrawText( m_title, 5, 0 );
 //            tdc.SelectObject( wxNullBitmap );
@@ -196,7 +196,7 @@ TacticsInstrument_Single::TacticsInstrument_Single(wxWindow *pparent, wxWindowID
       :TacticsInstrument(pparent, id, title, cap_flag)
 {
       m_format = format;
-      m_data = _T("---");
+      m_data = wxT("---");
 }
 
 wxSize TacticsInstrument_Single::GetSize( int orient, wxSize hint )
@@ -204,7 +204,7 @@ wxSize TacticsInstrument_Single::GetSize( int orient, wxSize hint )
       wxClientDC dc(this);
       int w;
       dc.GetTextExtent(m_title, &w, &m_TitleHeight, 0, 0, g_pFontTitle);
-      dc.GetTextExtent(_T("000"), &w, &m_DataHeight, 0, 0, g_pFontData);
+      dc.GetTextExtent(wxT("000"), &w, &m_DataHeight, 0, 0, g_pFontData);
 
       if( orient == wxHORIZONTAL ) {
           return wxSize( DefaultWidth, wxMax(hint.y, m_TitleHeight+m_DataHeight) );
@@ -220,12 +220,12 @@ void TacticsInstrument_Single::Draw(wxGCDC* dc)
       wxBitmap tbm( dc->GetSize().x, m_DataHeight, -1 );
       wxMemoryDC tdc( tbm );
       wxColour c2;
-      GetGlobalColor( _T("DASHB"), &c2 );
+      GetGlobalColor( wxT("DASHB"), &c2 );
       tdc.SetBackground( c2 );
       tdc.Clear();
 
       tdc.SetFont(*g_pFontData );
-      GetGlobalColor( _T("DASHF"), &cl );
+      GetGlobalColor( wxT("DASHF"), &cl );
       tdc.SetTextForeground( cl );
 
       tdc.DrawText(m_data, 10, 0);
@@ -235,7 +235,7 @@ void TacticsInstrument_Single::Draw(wxGCDC* dc)
       dc->DrawBitmap(tbm, 0, m_TitleHeight, false);
 #else
       dc->SetFont(*g_pFontData );
-      GetGlobalColor( _T("DASHF"), &cl );
+      GetGlobalColor( wxT("DASHF"), &cl );
       dc->SetTextForeground( cl );
 
       dc->DrawText(m_data, 10, m_TitleHeight);
@@ -248,40 +248,40 @@ void TacticsInstrument_Single::SetData(int st, double data, wxString unit)
 {
       if (m_cap_flag & st){
             if(!wxIsNaN(data)){
-                if (unit == _T("C"))
-                  m_data = wxString::Format(m_format, data)+DEGREE_SIGN+_T("C");
-                else if (unit == _T("\u00B0"))
+                if (unit == wxT("C"))
+                  m_data = wxString::Format(m_format, data)+DEGREE_SIGN+wxT("C");
+                else if (unit == wxT("\u00B0"))
                   m_data = wxString::Format(m_format, data)+DEGREE_SIGN;
-                else if (unit == _T("\u00B0T"))
+                else if (unit == wxT("\u00B0T"))
                   m_data = wxString::Format(m_format, data)+DEGREE_SIGN+_(" true");
-                else if (unit == _T("\u00B0M"))
+                else if (unit == wxT("\u00B0M"))
                   m_data = wxString::Format(m_format, data)+DEGREE_SIGN+_(" mag");
-                else if (unit == _T("\u00B0L"))
-                  m_data = _T(">")+ wxString::Format(m_format, data)+DEGREE_SIGN;
-                else if (unit == _T("\u00B0R"))
-                  m_data = wxString::Format(m_format, data)+DEGREE_SIGN+_T("<");
-                else if (unit == _T("\u00B0l")){  //22.04.TR
+                else if (unit == wxT("\u00B0L"))
+                  m_data = wxT(">")+ wxString::Format(m_format, data)+DEGREE_SIGN;
+                else if (unit == wxT("\u00B0R"))
+                  m_data = wxString::Format(m_format, data)+DEGREE_SIGN+wxT("<");
+                else if (unit == wxT("\u00B0l")){  //22.04.TR
                   if (data < 0) data = -data;     //22.04.TR
-                  m_data = +_T("<") + wxString::Format(m_format, data) + DEGREE_SIGN;//22.04.TR
+                  m_data = + wxT("<") + wxString::Format(m_format, data) + DEGREE_SIGN;//22.04.TR
                 }
-                else if (unit == _T("\u00B0r")){//22.04.TR
+                else if (unit == wxT("\u00B0r")){//22.04.TR
                   if (data < 0) data = -data;   //22.04.TR
-                  m_data = wxString::Format(m_format, data) + DEGREE_SIGN + _T(">"); //22.04.TR
+                  m_data = wxString::Format(m_format, data) + DEGREE_SIGN + wxT(">"); //22.04.TR
                 }
-                else if (unit == _T("N")) //Knots
-                  m_data = wxString::Format(m_format, data)+_T(" Kts");
+                else if (unit == wxT("N")) //Knots
+                  m_data = wxString::Format(m_format, data)+wxT(" Kts");
 /* maybe in the future ...
-                else if (unit == _T("M")) // m/s
-                  m_data = wxString::Format(m_format, data)+_T(" m/s");
-                else if (unit == _T("K")) // km/h
-                  m_data = wxString::Format(m_format, data)+_T(" km/h");
+                else if (unit == wxT("M")) // m/s
+                  m_data = wxString::Format(m_format, data)+wxT(" m/s");
+                else if (unit == wxT("K")) // km/h
+                  m_data = wxString::Format(m_format, data)+wxT(" km/h");
  ... to be completed
  */
                 else
-                  m_data = wxString::Format(m_format, data)+_T(" ")+unit;
+                  m_data = wxString::Format(m_format, data)+wxT(" ")+unit;
             }
             else
-                m_data = _T("---");
+                m_data = wxT("---");
       }
 }
 
@@ -295,8 +295,8 @@ TacticsInstrument_Position::TacticsInstrument_Position(wxWindow *pparent, wxWind
       :TacticsInstrument(pparent, id, title, cap_flag1 | cap_flag2)
 {
 
-      m_data1 = _T("---");
-      m_data2 = _T("---");
+      m_data1 = wxT("---");
+      m_data2 = wxT("---");
       m_cap_flag1 = cap_flag1;
       m_cap_flag2 = cap_flag2;
 }
@@ -306,7 +306,7 @@ wxSize TacticsInstrument_Position::GetSize( int orient, wxSize hint )
       wxClientDC dc(this);
       int w;
       dc.GetTextExtent(m_title, &w, &m_TitleHeight, 0, 0, g_pFontTitle);
-      dc.GetTextExtent(_T("000  00.0000 W"), &w, &m_DataHeight, 0, 0, g_pFontData);
+      dc.GetTextExtent(wxT("000  00.0000 W"), &w, &m_DataHeight, 0, 0, g_pFontData);
 
       if( orient == wxHORIZONTAL ) {
           return wxSize( w+10, wxMax(hint.y, m_TitleHeight+m_DataHeight*2) );
@@ -323,12 +323,12 @@ void TacticsInstrument_Position::Draw(wxGCDC* dc)
       wxBitmap tbm( dc->GetSize().x, m_DataHeight * 2, -1 );
       wxMemoryDC tdc( tbm );
       wxColour c2;
-      GetGlobalColor( _T("DASHB"), &c2 );
+      GetGlobalColor( wxT("DASHB"), &c2 );
       tdc.SetBackground( c2 );
       tdc.Clear();
 
       tdc.SetFont(*g_pFontData );
-      GetGlobalColor( _T("DASHF"), &cl );
+      GetGlobalColor( wxT("DASHF"), &cl );
       tdc.SetTextForeground( cl );
 
       tdc.DrawText(m_data1, 10, 0);
@@ -339,7 +339,7 @@ void TacticsInstrument_Position::Draw(wxGCDC* dc)
       dc->DrawBitmap(tbm, 0, m_TitleHeight, false);
 #else
       dc->SetFont(*g_pFontData );
-      GetGlobalColor( _T("DASHF"), &cl );
+      GetGlobalColor( wxT("DASHF"), &cl );
       dc->SetTextForeground( cl );
 
       dc->DrawText(m_data1, 10, m_TitleHeight);
@@ -388,7 +388,7 @@ wxString toSDMM ( int NEflag, double a )
       wxString s;
 
       if ( !NEflag )
-            s.Printf ( _T ( "%d %02ld.%03ld'" ), d, m / 1000, m % 1000 );
+            s.Printf ( wxT ( "%d %02ld.%03ld'" ), d, m / 1000, m % 1000 );
       else
       {
             if ( NEflag == 1 )
@@ -401,7 +401,7 @@ wxString toSDMM ( int NEflag, double a )
                         c = 'S';
                   }
 
-                  s.Printf ( _T ( "%03d %02ld.%03ld %c" ), d, m / 1000, ( m % 1000 ), c );
+                  s.Printf ( wxT ( "%03d %02ld.%03ld %c" ), d, m / 1000, ( m % 1000 ), c );
             }
             else if ( NEflag == 2 )
             {
@@ -412,7 +412,7 @@ wxString toSDMM ( int NEflag, double a )
                         d = -d;
                         c = 'W';
                   }
-                  s.Printf ( _T ( "%03d %02ld.%03ld %c" ), d, m / 1000, ( m % 1000 ), c );
+                  s.Printf ( wxT ( "%03d %02ld.%03ld %c" ), d, m / 1000, ( m % 1000 ), c );
             }
       }
       return s;

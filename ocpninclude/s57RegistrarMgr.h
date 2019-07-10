@@ -1,12 +1,9 @@
-/******************************************************************************
- * $Id: speedometer.cpp, v1.0 2010/08/05 SethDart Exp $
+/***************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  Tactics Plugin
- * Author:   Jean-Eudes Onfray
  *
  ***************************************************************************
- *   Copyright (C) 2010 - 2019 by David S. Register                        *
+ *   Copyright (C) 2010 by David S. Register                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -25,29 +22,45 @@
  ***************************************************************************
  */
 
-#include "speedometer.h"
+#ifndef __S57REGISTRARMGR_H__
+#define __S57REGISTRARMGR_H__
 
-// For compilers that support precompilation, includes "wx/wx.h".
-#include <wx/wxprec.h>
+#include <wx/string.h>
 
-#ifdef __BORLANDC__
-    #pragma hdrstop
-#endif
+WX_DECLARE_STRING_HASH_MAP( int, CSVHash1 );
 
-// for all others, include the necessary headers (this file is usually all you
-// need because it includes almost all "standard" wxWidgets headers)
-#ifndef WX_PRECOMP
-    #include <wx/wx.h>
-#endif
+WX_DECLARE_HASH_MAP( int,
+                     std::string,
+                     wxIntegerHash,
+                     wxIntegerEqual,
+                     CSVHash2 );
 
-// Not much to do here most of the default dial values are fine.
-// Note the default AngleStart = 225 and AngleRange = 270 set here.
 
-TacticsInstrument_Speedometer::TacticsInstrument_Speedometer( wxWindow *parent, wxWindowID id, wxString title, int cap_flag,
-                        int s_value, int e_value) : TacticsInstrument_Dial( parent, id, title, cap_flag, 225, 270, s_value, e_value)
+/**
+ * s57RegistrarMgr Definition
+ * This is a class holding the ctor and dtor for the global registrar
+ */
+class s57RegistrarMgr
 {
-      // We want the main value displayed inside the dial as well
-      // as the default arrow
-      SetOptionMainValue(wxT("%.2f"), DIAL_POSITION_INSIDE);
-}
+public:
+    s57RegistrarMgr(const wxString& csv_dir, FILE *flog);
+    ~s57RegistrarMgr();
+   
+    int getAttributeID(const char *pAttrName);
+    std::string getAttributeAcronym(int nID);
+    std::string getFeatureAcronym(int nID);
+    
+private:
+    
+    bool s57_attr_init( const wxString& csv_dir );
+    bool s57_feature_init( const wxString& csv_dir );
+    
+    CSVHash1       m_attrHash1;
+    CSVHash2       m_attrHash2;
 
+    CSVHash1       m_featureHash1;
+    CSVHash2       m_featureHash2;
+    
+};
+
+#endif
