@@ -169,7 +169,7 @@ void TacticsInstrument_PolarCompass::SetData(int st, double data, wxString unit)
     if (!GetSingleWaypoint(wxT("TacticsWP"), m_pMark)) m_pMark = NULL;
     if (m_pMark && !wxIsNaN(m_lat) && !wxIsNaN(m_lon)) {
       double dist;
-      DistanceBearingMercator_Plugin(m_pMark->m_lat, m_pMark->m_lon, m_lat, m_lon, &m_Bearing, &dist);
+      DistanceBearingMercator_Plugin(m_pMark->m_lat, m_pMark->m_lon, m_lat, m_lon, &m_Bearing, & dist);
       m_ToWpt = wxT("TacticsWP");
       m_ExtraValueDTW = toUsrDistance_Plugin(dist, g_iDashDistanceUnit);
       m_ExtraValueDTWUnit = getUsrDistanceUnit_Plugin(g_iDashDistanceUnit);
@@ -235,7 +235,7 @@ void TacticsInstrument_PolarCompass::Draw(wxGCDC* bdc)
 	//DrawData(bdc, m_MainValue, m_MainValueUnit, wxT("%.0f"), DIAL_POSITION_TOPINSIDE);
 
 //	 if (!wxIsNaN(m_predictedSog)) DrawData(bdc, m_predictedSog, wxT("kn "), wxT("prd.SOG:\u2245%.2f"), DIAL_POSITION_BOTTOMRIGHT);
-    DrawData(bdc, m_PolSpd_Percent, wxT("%"), wxT("%.0f"), DIAL_POSITION_BOTTOMRIGHT);
+    DrawData(bdc, m_PolSpd_Percent, wxT("%"), wxT("%.1f"), DIAL_POSITION_BOTTOMRIGHT);
 
 
 }

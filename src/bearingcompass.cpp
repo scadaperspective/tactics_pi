@@ -167,7 +167,7 @@ void TacticsInstrument_BearingCompass::SetData(int st, double data, wxString uni
     if (!GetSingleWaypoint(_T("TacticsWP"), m_pMark)) m_pMark = NULL;
     if (m_pMark && !wxIsNaN(m_lat) && !wxIsNaN(m_lon)) {
       double dist;
-      DistanceBearingMercator_Plugin(m_pMark->m_lat, m_pMark->m_lon, m_lat, m_lon, &m_Bearing, &dist);
+      DistanceBearingMercator_Plugin(m_pMark->m_lat, m_pMark->m_lon, m_lat, m_lon, &m_Bearing, & dist);
       m_ToWpt = _T("TacticsWP");
       m_ExtraValueDTW = toUsrDistance_Plugin(dist, g_iDashDistanceUnit);
       m_ExtraValueDTWUnit = getUsrDistanceUnit_Plugin(g_iDashDistanceUnit);
@@ -207,8 +207,8 @@ void TacticsInstrument_BearingCompass::Draw(wxGCDC* bdc)
 	DrawMarkers(bdc);
 	DrawBackground(bdc);
     if (!wxIsNaN(m_Bearing)){
-      DrawData(bdc, m_Bearing, m_BearingUnit, _T("BRG:%.f"), DIAL_POSITION_TOPLEFT);
-      DrawData(bdc, 0, m_ToWpt, _T(""), DIAL_POSITION_TOPRIGHT);
+      DrawData(bdc, m_Bearing, m_BearingUnit, _T("BRG:%.1f"), DIAL_POSITION_TOPLEFT);
+      DrawData(bdc, 0, m_ToWpt, _T(" "), DIAL_POSITION_TOPRIGHT); // Where WP Info Is Displayed on this tactics Dial
     }
     if (!wxIsNaN(m_CurrSpeed)) DrawData(bdc, m_CurrSpeed, m_CurrSpeedUnit, _T("Curr:%.2f"), DIAL_POSITION_INSIDE);
     if (!wxIsNaN(m_ExtraValueDTW)) DrawData(bdc, m_ExtraValueDTW, m_ExtraValueDTWUnit, _T("DTW:%.1f"), DIAL_POSITION_BOTTOMLEFT);
@@ -217,7 +217,7 @@ void TacticsInstrument_BearingCompass::Draw(wxGCDC* bdc)
 	DrawForeground(bdc);
 
 	DrawLaylines(bdc);
-    if (!wxIsNaN(m_MainValue)) DrawData(bdc, m_MainValue, m_MainValueUnit, _T("%.0f"), DIAL_POSITION_TOPINSIDE);
+    if (!wxIsNaN(m_MainValue)) DrawData(bdc, m_MainValue, m_MainValueUnit, _T("%.1f"), DIAL_POSITION_TOPINSIDE);
 
     if (!wxIsNaN(m_predictedSog)) DrawData(bdc, m_predictedSog, getUsrSpeedUnit_Plugin(g_iDashSpeedUnit), _T("prd.SOG:\u2245%.2f"), DIAL_POSITION_BOTTOMRIGHT);
 
@@ -259,14 +259,14 @@ void TacticsInstrument_BearingCompass::DrawWindAngles(wxGCDC* dc)
 		brush.SetColour(cl);
 		dc->SetBrush(brush);
 
-		/* this is fix for a +/-180° round instrument, when m_MainValue is supplied as <0..180><L | R>
+		/* this is fix for a +/-180ï¿½ round instrument, when m_MainValue is supplied as <0..180><L | R>
 		* for example TWA & AWA */
 		double data, TwaCog;
 		// head-up = COG, but TWA is based on Hdt --> add the diff here for a correct display
-		//TwaCog = m_TWA - m_diffCogHdt; //alt: für COG
+		//TwaCog = m_TWA - m_diffCogHdt; //alt: fï¿½r COG
 		TwaCog = m_TWA; //neu, jetzt HDt 
 
-		/* this is fix for a +/-180° round instrument, when m_MainValue is supplied as <0..180><L | R>
+		/* this is fix for a +/-180ï¿½ round instrument, when m_MainValue is supplied as <0..180><L | R>
 		* for example TWA & AWA */
 		if (m_curTack == _T("\u00B0L"))
 			data = 360 - TwaCog;
@@ -343,7 +343,7 @@ void TacticsInstrument_BearingCompass::DrawWindAngles(wxGCDC* dc)
 		dc->SetBrush(brush);
 
 		double data;
-		/* this is fix for a +/-180° round instrument, when m_MainValue is supplied as <0..180><L | R>
+		/* this is fix for a +/-180ï¿½ round instrument, when m_MainValue is supplied as <0..180><L | R>
 		* for example TWA & AWA */
 		if (m_curTack == _T("\u00B0L"))
 			data = 360 - m_AWA;
@@ -437,14 +437,14 @@ void TacticsInstrument_BearingCompass::DrawTargetAngle(wxGCDC* dc, double Target
       brush.SetColour(cl);
       dc->SetBrush(brush);
 
-      /* this is fix for a +/-180° round instrument, when m_MainValue is supplied as <0..180><L | R>
+      /* this is fix for a +/-180ï¿½ round instrument, when m_MainValue is supplied as <0..180><L | R>
       * for example TWA & AWA */
       double data, TwaCog;
       // head-up = COG, but TWA is based on Hdt --> add the diff here for a correct display
       TwaCog = TargetAngle;
 
 
-      /* this is fix for a +/-180° round instrument, when m_MainValue is supplied as <0..180><L | R>
+      /* this is fix for a +/-180ï¿½ round instrument, when m_MainValue is supplied as <0..180><L | R>
       * for example TWA & AWA */
       /*if (m_curTack == _T("\u00B0L"))
         data = 360 - TwaCog;
@@ -646,9 +646,9 @@ void TacticsInstrument_BearingCompass::DrawData(wxGCDC* dc, double value,
 	{
 		if (unit == _T("\u00B0"))
 			text = wxString::Format(format, value) + DEGREE_SIGN;
-		else if (unit == _T("\u00B0L")) // No special display for now, might be XX°< (as in text-only instrument)
+		else if (unit == _T("\u00B0L")) // No special display for now, might be XXï¿½< (as in text-only instrument)
 			text = wxString::Format(format, value) + DEGREE_SIGN;
-		else if (unit == _T("\u00B0R")) // No special display for now, might be >XX°
+		else if (unit == _T("\u00B0R")) // No special display for now, might be >XXï¿½
 			text = wxString::Format(format, value) + DEGREE_SIGN;
 		else if (unit == _T("\u00B0T"))
 			text = wxString::Format(format, value) + DEGREE_SIGN + _T("T");
@@ -813,10 +813,10 @@ void TacticsInstrument_BearingCompass::DrawLaylines(wxGCDC* dc)
 		wxPoint vpoints[3];
 		vpoints[0].x = m_cx;
 		vpoints[0].y = m_cy;
-		vpoints[1].x = m_cx + (m_radius * cos(value1));//neu : für HEadup = HDT
-		vpoints[1].y = m_cy + (m_radius * sin(value1));//neu : für HEadup = HDT
-		vpoints[2].x = m_cx + (m_radius * cos(value2));//neu : für HEadup = HDT
-		vpoints[2].y = m_cy + (m_radius * sin(value2));//neu : für HEadup = HDT
+		vpoints[1].x = m_cx + (m_radius * cos(value1));//neu : fï¿½r HEadup = HDT
+		vpoints[1].y = m_cy + (m_radius * sin(value1));//neu : fï¿½r HEadup = HDT
+		vpoints[2].x = m_cx + (m_radius * cos(value2));//neu : fï¿½r HEadup = HDT
+		vpoints[2].y = m_cy + (m_radius * sin(value2));//neu : fï¿½r HEadup = HDT
 		dc->DrawArc(vpoints[2], vpoints[1], vpoints[0]);
 
 		/*****************************************************************************************

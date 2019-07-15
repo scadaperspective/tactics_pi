@@ -612,7 +612,7 @@ int tactics_pi::Init(void)
 	// Context menue for making marks    
 	m_pmenu = new wxMenu();
 	// this is a dummy menu required by Windows as parent to item created
-	wxMenuItem *pmi = new wxMenuItem(m_pmenu, -1, wxT("Set Tactics Mark "));
+	wxMenuItem *pmi = new wxMenuItem(m_pmenu, -1, wxT("Set TacticsWP Mark "));
 	int miid = AddCanvasContextMenuItem(pmi, this);
 	SetCanvasContextMenuItemViz(miid, true);
 
@@ -2535,7 +2535,7 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 					// NKE style of XDR Airtemp
 					if (m_NMEA0183.Xdr.TransducerInfo[i].TransducerName == wxT("AirTemp")){
 						SendSentenceToAllInstruments(OCPN_DBP_STC_ATMP, m_NMEA0183.Xdr.TransducerInfo[i].MeasurementData, m_NMEA0183.Xdr.TransducerInfo[i].UnitOfMeasurement);
-					} //Nasa style air temp
+					} //NASA style air temp
 					// NKE style of XDR Barometer
 					if (m_NMEA0183.Xdr.TransducerInfo[i].TransducerName == wxT("Barometer")){
 
@@ -2546,7 +2546,7 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 							data = m_NMEA0183.Xdr.TransducerInfo[i].MeasurementData;
 
 						SendSentenceToAllInstruments(OCPN_DBP_STC_MDA, data, wxT("hPa"));
-					} //Nasa style air temp
+					} //NASA style air temp
 					if (m_NMEA0183.Xdr.TransducerInfo[i].TransducerName == wxT("ENV_OUTAIR_T") || m_NMEA0183.Xdr.TransducerInfo[i].TransducerName == wxT("ENV_OUTSIDE_T")){
 						SendSentenceToAllInstruments(OCPN_DBP_STC_ATMP, m_NMEA0183.Xdr.TransducerInfo[i].MeasurementData, m_NMEA0183.Xdr.TransducerInfo[i].UnitOfMeasurement);
 					}
@@ -5045,7 +5045,7 @@ Set MARK Position
 **********************************************************************************/
 void tactics_pi::OnContextMenuItemCallback(int id)
 {
-	m_pMark = new PlugIn_Waypoint(g_dcur_lat, g_dcur_lon, wxT("1st-Active-Waypoint"), wxT("Tactics temp. WP"), wxT("TacticsWP"));
+	m_pMark = new PlugIn_Waypoint(g_dcur_lat, g_dcur_lon, wxT("activepoint"), wxT("TacticsWP"), wxT("TacticsWP"));
 	g_dmark_lat = m_pMark->m_lat;
 	g_dmark_lon = m_pMark->m_lon;
 	AddSingleWaypoint(m_pMark, false);
