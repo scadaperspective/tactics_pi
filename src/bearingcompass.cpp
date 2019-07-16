@@ -89,8 +89,9 @@ TacticsInstrument_Dial(parent, id, title, cap_flag, 0, 360, 0, 360)
 	m_oldExpSmoothDiffCogHdt = 0;
 	for (int i = 0; i < COGRANGE; i++) m_COGRange[i] = 0;
 }
-/***************************************************************************************
-****************************************************************************************/
+/* **************************************************************************************
+ * Bearing Compass Roll back to get WP Info
+*************************************************************************************** */
 void TacticsInstrument_BearingCompass::SetData(int st, double data, wxString unit)
 {
 	if (st == OCPN_DBP_STC_COG) {
@@ -167,7 +168,7 @@ void TacticsInstrument_BearingCompass::SetData(int st, double data, wxString uni
     if (!GetSingleWaypoint(_T("TacticsWP"), m_pMark)) m_pMark = NULL;
     if (m_pMark && !wxIsNaN(m_lat) && !wxIsNaN(m_lon)) {
       double dist;
-      DistanceBearingMercator_Plugin(m_pMark->m_lat, m_pMark->m_lon, m_lat, m_lon, &m_Bearing, & dist);
+      DistanceBearingMercator_Plugin(m_pMark->m_lat, m_pMark->m_lon, m_lat, m_lon, &m_Bearing, &dist);
       m_ToWpt = _T("TacticsWP");
       m_ExtraValueDTW = toUsrDistance_Plugin(dist, g_iDashDistanceUnit);
       m_ExtraValueDTWUnit = getUsrDistanceUnit_Plugin(g_iDashDistanceUnit);
@@ -208,7 +209,7 @@ void TacticsInstrument_BearingCompass::Draw(wxGCDC* bdc)
 	DrawBackground(bdc);
     if (!wxIsNaN(m_Bearing)){
       DrawData(bdc, m_Bearing, m_BearingUnit, _T("BRG:%.1f"), DIAL_POSITION_TOPLEFT);
-      DrawData(bdc, 0, m_ToWpt, _T(" "), DIAL_POSITION_TOPRIGHT); // Where WP Info Is Displayed on this tactics Dial
+      DrawData(bdc, 0, m_ToWpt, _T(" "), DIAL_POSITION_TOPRIGHT); // Where WP Info Is Displayed on the Dial
     }
     if (!wxIsNaN(m_CurrSpeed)) DrawData(bdc, m_CurrSpeed, m_CurrSpeedUnit, _T("Curr:%.2f"), DIAL_POSITION_INSIDE);
     if (!wxIsNaN(m_ExtraValueDTW)) DrawData(bdc, m_ExtraValueDTW, m_ExtraValueDTWUnit, _T("DTW:%.1f"), DIAL_POSITION_BOTTOMLEFT);
