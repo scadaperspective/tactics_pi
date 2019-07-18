@@ -612,7 +612,7 @@ int tactics_pi::Init(void)
 	// Context menue for making marks    
 	m_pmenu = new wxMenu();
 	// this is a dummy menu required by Windows as parent to item created
-	wxMenuItem *pmi = new wxMenuItem(m_pmenu, -1, wxT("Set TacticsWP Mark "));
+	wxMenuItem *pmi = new wxMenuItem(m_pmenu, -1, wxT("Set TacticsWP"));
 	int miid = AddCanvasContextMenuItem(pmi, this);
 	SetCanvasContextMenuItemViz(miid, true);
 
@@ -1073,7 +1073,7 @@ void tactics_pi::DoRenderLaylineGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort
             if (wxIsNaN(m_SmoothedpredCog)) m_SmoothedpredCog = mCOG;
             if (wxIsNaN(mLeeway)) mLeeway = 0.0;
 			/*****************************************************************************************
-			Draw the boat laylines, independent from the "Temp. Tactics WP"
+			Draw the boat laylines, independent from the "Temporary WP for Tactics"
 
 			The first (foreward) layline is on the COG pointer
 			******************************************************************************************/
@@ -4377,11 +4377,11 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			break;
 		case ID_DBP_I_COG:
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_COG, wxT("%.0f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_COG, wxT("%.1f"));
 			break;
 		case ID_DBP_M_COG:
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_MCOG, wxT("%.0f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_MCOG, wxT("%.1f"));
 			break;
 		case ID_DBP_D_COG:
 			instrument = new TacticsInstrument_Compass(this, wxID_ANY,
@@ -4410,17 +4410,17 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 		case ID_DBP_I_HDT: //true heading
 			// TODO: Option True or Magnetic
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_HDT, wxT("%.0f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_HDT, wxT("%.1f"));
 			break;
 		case ID_DBP_I_HDM:  //magnetic heading
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_HDM, wxT("%.0f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_HDM, wxT("%.1f"));
 			break;
 		case ID_DBP_D_AW:
 		case ID_DBP_D_AWA:
 			instrument = new TacticsInstrument_Wind(this, wxID_ANY,
 				getInstrumentCaption(id), OCPN_DBP_STC_AWA);
-			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(wxT("%.0f"),
+			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(wxT("%.1f"),
 				DIAL_POSITION_BOTTOMLEFT);
 			((TacticsInstrument_Dial *)instrument)->SetOptionExtraValue(
 				OCPN_DBP_STC_AWS, wxT("%.1f"), DIAL_POSITION_INSIDE);
@@ -4444,7 +4444,7 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 		case ID_DBP_D_TW: //True Wind angle +-180° on boat axis
 			instrument = new TacticsInstrument_TrueWindAngle(this, wxID_ANY,
 				getInstrumentCaption(id), OCPN_DBP_STC_TWA);
-			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(wxT("%.0f"),
+			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(wxT("%.1f"),
 				DIAL_POSITION_BOTTOMLEFT);
 			((TacticsInstrument_Dial *)instrument)->SetOptionExtraValue(
 				OCPN_DBP_STC_TWS, wxT("%.1f"), DIAL_POSITION_INSIDE);
@@ -4452,7 +4452,7 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 		case ID_DBP_D_AWA_TWA: //App/True Wind angle +-180° on boat axis
 			instrument = new TacticsInstrument_AppTrueWindAngle(this, wxID_ANY,
 				getInstrumentCaption(id), OCPN_DBP_STC_AWA | OCPN_DBP_STC_TWA | OCPN_DBP_STC_TWD);
-			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(wxT("%.0f"),
+			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(wxT("%.1f"),
 				DIAL_POSITION_NONE);
 			((TacticsInstrument_Dial *)instrument)->SetOptionExtraValue(
 				OCPN_DBP_STC_TWS | OCPN_DBP_STC_AWS, wxT("%.1f"), DIAL_POSITION_NONE);
@@ -4460,7 +4460,7 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 		case ID_DBP_D_TWD: //True Wind direction
 			instrument = new TacticsInstrument_WindCompass(this, wxID_ANY,
 				getInstrumentCaption(id), OCPN_DBP_STC_TWD);
-			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(wxT("%.0f"),
+			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(wxT("%.1f"),
 				DIAL_POSITION_BOTTOMLEFT);
 			((TacticsInstrument_Dial *)instrument)->SetOptionExtraValue(
 				OCPN_DBP_STC_TWS, wxT("%.1f"), DIAL_POSITION_INSIDE);
@@ -4476,11 +4476,11 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			break;
 		case ID_DBP_I_TMP: //water temperature
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_TMP, wxT("%2.1f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_TMP, wxT("%2.2f"));
 			break;
 		case ID_DBP_I_MDA: //barometric pressure
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_MDA, wxT("%5.1f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_MDA, wxT("%5.3f"));
 			break;
 		case ID_DBP_D_MDA: //barometric pressure
 			instrument = new TacticsInstrument_Speedometer(this, wxID_ANY,
@@ -4489,12 +4489,12 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 				DIAL_LABEL_HORIZONTAL);
 			((TacticsInstrument_Dial *)instrument)->SetOptionMarker(5,
 				DIAL_MARKER_SIMPLE, 1);
-			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(wxT("%5.1f"),
+			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(wxT("%5.3f"),
 				DIAL_POSITION_INSIDE);
 			break;
 		case ID_DBP_I_ATMP: //air temperature
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_ATMP, wxT("%2.1f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_ATMP, wxT("%2.2f"));
 			break;
 			/*case ID_DBP_I_VLW1: // Trip Log
 			instrument = new TacticsInstrument_Single( this, wxID_ANY,
@@ -4506,11 +4506,11 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			break;*/
 		case ID_DBP_I_TWA: //true wind angle
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_TWA, wxT("%5.0f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_TWA, wxT("%5.1f"));
 			break;
 		case ID_DBP_I_TWD: //true wind direction
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_TWD, wxT("%5.0f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_TWD, wxT("%5.1f"));
 			break;
 		case ID_DBP_I_TWS: // true wind speed
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
@@ -4518,7 +4518,7 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			break;
 		case ID_DBP_I_AWA: //apparent wind angle
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_AWA, wxT("%5.0f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_AWA, wxT("%5.1f"));
 			break;
 		case ID_DBP_I_VMG:
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
@@ -4536,7 +4536,7 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			break;
 			//case ID_DBP_I_RSA:
 			//instrument = new TacticsInstrument_Single( this, wxID_ANY,
-			//        getInstrumentCaption( id ), OCPN_DBP_STC_RSA, wxT("%5.0f") );
+			//        getInstrumentCaption( id ), OCPN_DBP_STC_RSA, wxT("%5.2f") );
 			//break;
 			//case ID_DBP_D_RSA:
 			//instrument = new TacticsInstrument_RudderAngle( this, wxID_ANY,
@@ -4588,7 +4588,7 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			break;
 		case ID_DBP_I_CURRDIR:
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_CURRDIR, wxT("%2.0f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_CURRDIR, wxT("%2.1f"));
 			break;
 		case ID_DBP_I_CURRSPD:
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
@@ -4626,7 +4626,7 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			break;
 		case ID_DBP_I_TWAMARK:
 			instrument = new TacticsInstrument_PerformanceSingle(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_BRG | OCPN_DBP_STC_TWD | OCPN_DBP_STC_LAT | OCPN_DBP_STC_LON, wxT("%5.0f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_BRG | OCPN_DBP_STC_TWD | OCPN_DBP_STC_LAT | OCPN_DBP_STC_LON, wxT("%5.1f"));
 			((TacticsInstrument_PerformanceSingle *)instrument)->SetDisplayType(TWAMARK);
 			break;
 

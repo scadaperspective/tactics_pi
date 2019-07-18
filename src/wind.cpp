@@ -170,7 +170,7 @@ void TacticsInstrument_AppTrueWindAngle::Draw(wxGCDC* bdc)
 	DrawData(bdc, m_MainValueTrue, m_MainValueTrueUnit, m_MainValueFormat, m_MainValueOption2);
 	DrawData(bdc, m_ExtraValueApp, m_ExtraValueAppUnit, m_ExtraValueFormat, m_ExtraValueOption1);
 	DrawData(bdc, m_ExtraValueTrue, m_ExtraValueTrueUnit, m_ExtraValueFormat, m_ExtraValueOption2);
-    DrawData(bdc, m_TWD, m_MainValueTrueUnit, wxT("TWD:%.0f"), DIAL_POSITION_INSIDE);
+    DrawData(bdc, m_TWD, m_MainValueTrueUnit, wxT("TWD:%.1f"), DIAL_POSITION_INSIDE);
     DrawForeground(bdc);
 }
 void TacticsInstrument_AppTrueWindAngle::DrawForeground(wxGCDC* dc)
