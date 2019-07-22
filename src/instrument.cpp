@@ -256,27 +256,32 @@ void TacticsInstrument_Single::SetData(int st, double data, wxString unit)
                   m_data = wxString::Format(m_format, data)+DEGREE_SIGN+_(" true");
                 else if (unit == wxT("\u00B0M"))
                   m_data = wxString::Format(m_format, data)+DEGREE_SIGN+_(" mag");
-                else if (unit == wxT("\u00B0L"))
-                  m_data = wxT(">")+ wxString::Format(m_format, data)+DEGREE_SIGN;
-                else if (unit == wxT("\u00B0R"))
-                  m_data = wxString::Format(m_format, data)+DEGREE_SIGN+wxT("<");
-                else if (unit == wxT("\u00B0l")){  //22.04.TR
-                  if (data < 0) data = -data;     //22.04.TR
-                  m_data = + wxT("<") + wxString::Format(m_format, data) + DEGREE_SIGN;//22.04.TR
-                }
-                else if (unit == wxT("\u00B0r")){//22.04.TR
-                  if (data < 0) data = -data;   //22.04.TR
-                  m_data = wxString::Format(m_format, data) + DEGREE_SIGN + wxT(">"); //22.04.TR
-                }
                 else if (unit == wxT("N")) //Knots
-                  m_data = wxString::Format(m_format, data)+wxT(" Kts");
-/* maybe in the future ...
-                else if (unit == wxT("M")) // m/s
-                  m_data = wxString::Format(m_format, data)+wxT(" m/s");
-                else if (unit == wxT("K")) // km/h
-                  m_data = wxString::Format(m_format, data)+wxT(" km/h");
- ... to be completed
- */
+                                 m_data = wxString::Format(m_format, data)+wxT(" Kts");
+               /* maybe in the future ...
+                               else if (unit == wxT("M")) // m/s
+                                 m_data = wxString::Format(m_format, data)+wxT(" m/s");
+                               else if (unit == wxT("K")) // km/h
+                                 m_data = wxString::Format(m_format, data)+wxT(" km/h");
+                ... to be completed
+                */
+                else if (unit == wxT("\u00B0L"))
+                  m_data = wxT("<")+ wxString::Format(m_format, data)+DEGREE_SIGN;
+                else if (unit == wxT("\u00B0R"))
+                  m_data = wxString::Format(m_format, data)+DEGREE_SIGN+wxT(">");
+               else if (unit == wxT("\u00B0l")){
+                  if (data < 0) data = -data;
+                  m_data = + wxT("<") + wxString::Format(m_format, data) + DEGREE_SIGN;
+               }
+               else if (unit == wxT("\u00B0")){
+                 if (data < 0) data = -data;
+                 m_data = wxString::Format(m_format, data) + DEGREE_SIGN + wxT(""); //
+               }
+                else if (unit == wxT("\u00B0r")){
+                  if (data < 0) data = -data;
+                  m_data = wxString::Format(m_format, data) + DEGREE_SIGN + wxT(">");
+
+                }
                 else
                   m_data = wxString::Format(m_format, data)+wxT(" ")+unit;
             }

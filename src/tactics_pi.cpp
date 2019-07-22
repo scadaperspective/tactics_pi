@@ -4899,7 +4899,8 @@ void tactics_pi::CalculateLeeway(int st, double value, wxString unit)
 {
 
 	if (g_bUseFixedLeeway){
-		mHeelUnit = (mAWAUnit == wxT("\u00B0L")) ? wxT("\u00B0r") : wxT("\u00B0l");
+		mHeelUnit = (mAWAUnit == wxT("\u00B0L")) ? wxT("\u00B0r") : wxT("\u00B0l"); // Capital L
+		mHeelUnit = (mAWAUnit == wxT("\u00B0R")) ? wxT("\u00B0l") : wxT("\u00B0r"); // What about Capital R
 		mLeeway = g_dfixedLeeway;
 		if (wxIsNaN(mheel)) mheel = 0;
 
@@ -4923,6 +4924,9 @@ void tactics_pi::CalculateLeeway(int st, double value, wxString unit)
 			if (mLeeway > g_dfixedLeeway) mLeeway = g_dfixedLeeway;
 			if (mLeeway < -g_dfixedLeeway) mLeeway = -g_dfixedLeeway; //22.04TR : auf neg. Werte prüfen !!!
 			mHeelUnit = (mheel < 0) ? wxT("\u00B0l") : wxT("\u00B0r");
+		}
+		if	(mheel == 0){
+			mHeelUnit = wxT("\u00B0"); // This catches when the heel instrument is reading zero.
 		}
 	}
 
