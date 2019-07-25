@@ -242,11 +242,11 @@ wxString getInstrumentCaption(unsigned int id)
 	case ID_DBP_D_TWD:
 		return _("True Wind Dir. & Speed");
 	case ID_DBP_I_VMG:
-		//            return _("VMG");
-		 return g_sVMGSynonym;
+		            return _("VMG");
+		// return g_sVMGSynonym;
 	case ID_DBP_D_VMG:
-		//            return _("VMG");
-		 return g_sVMGSynonym;
+		            return _("VMG");
+		//return g_sVMGSynonym;
 		//case ID_DBP_I_RSA:
 		//    return _("Rudder Angle");
 		//case ID_DBP_D_RSA:
@@ -2277,13 +2277,51 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 				}
 			}
 		}
-		else if (m_NMEA0183.LastSentenceIDReceived == wxT("RMB")) { //TR, for compass ...
+/*		else if (m_NMEA0183.LastSentenceIDReceived == _T("RMB")) {
+		            if (m_NMEA0183.Parse()) {
+		                if (m_NMEA0183.Rmb.IsDataValid == NTrue) {
+		                //    if ( !wxIsNaN(m_NMEA0183.Rmb.BearingToDestinationDegreesTrue) &&
+		                //         (m_NMEA0183.Rmb.BearingToDestinationDegreesTrue < 999.) ) // empty field
+		                        SendSentenceToAllInstruments(
+		                            OCPN_DBP_STC_BRG, m_NMEA0183.Rmb.BearingToDestinationDegreesTrue, m_NMEA0183.Rmb.To);
+		               //     if ( !wxIsNaN(m_NMEA0183.Rmb.RangeToDestinationNauticalMiles) &&
+		               //          (m_NMEA0183.Rmb.RangeToDestinationNauticalMiles < 999.) ) // empty field
+		                        SendSentenceToAllInstruments(
+		                            OCPN_DBP_STC_DTW, m_NMEA0183.Rmb.RangeToDestinationNauticalMiles, _T("Nm"));
+		                    /*
+		                       Note: there are no consumers in Tactics functions for the below sentence but without it
+		                       the Dashboard's VMG-instruments remain silent when there is next active waypoint set
+		                       by the OpenCPN's routing functions. We capture here the sentence send by OpenCPN
+		                       to the autopilot and  other interested parties like. If the GitHub issue #1422 is
+		                       recognized and fixed in OpenCPN, this note and the below sentences can be removed */
+/*		                    if ( !wxIsNaN(m_NMEA0183.Rmb.DestinationClosingVelocityKnots) &&
+		                        (m_NMEA0183.Rmb.DestinationClosingVelocityKnots < 999.) ) { // empty field
+		                        SendSentenceToAllInstruments(
+		                            OCPN_DBP_STC_VMG, toUsrSpeed_Plugin(
+		                                m_NMEA0183.Rmb.DestinationClosingVelocityKnots, g_iDashWindSpeedUnit ),
+		                            getUsrSpeedUnit_Plugin( g_iDashWindSpeedUnit ) );
+		                        mTWS_Watchdog = gps_watchdog_timeout_ticks;
+		                    } // then valid sentence with VMG information received
+		             /*      if (!wxIsNaN(m_NMEA0183.Rmb.BearingToDestinationDegreesTrue) &&
+		                        (m_NMEA0183.Rmb.BearingToDestinationDegreesTrue < 999. ) ) {
+		                        SendSentenceToAllInstruments(
+		                            OCPN_DBP_STC_BRG, m_NMEA0183.Rmb.BearingToDestinationDegreesTrue, m_NMEA0183.ErrorMessage);
+		                        mTWS_Watchdog = gps_watchdog_timeout_ticks;
+		                    } // then valid bearing destination
+		                } // then valid data
+		            } // then sentence parse OK
+		        } // then last sentence is RMB */
+
+				else if (m_NMEA0183.LastSentenceIDReceived == wxT("RMB")) {
 			if (m_NMEA0183.Parse()) {
 				if (m_NMEA0183.Rmb.IsDataValid == NTrue) {
 					//					// it's always degrees, so send the WP Name as "unit"
 					SendSentenceToAllInstruments(OCPN_DBP_STC_BRG, m_NMEA0183.Rmb.BearingToDestinationDegreesTrue, m_NMEA0183.Rmb.To);
 					SendSentenceToAllInstruments(OCPN_DBP_STC_DTW, m_NMEA0183.Rmb.RangeToDestinationNauticalMiles, wxT("Nm"));
 					//					SendSentenceToAllInstruments(OCPN_DBP_STC_DCV, m_NMEA0183.Rmb.DestinationClosingVelocityKnots, wxT("Kn"));
+					 SendSentenceToAllInstruments(OCPN_DBP_STC_VMG, toUsrSpeed_Plugin(m_NMEA0183.Rmb.DestinationClosingVelocityKnots, g_iDashWindSpeedUnit ),
+							                            getUsrSpeedUnit_Plugin( g_iDashWindSpeedUnit ) );
+							                        mTWS_Watchdog = gps_watchdog_timeout_ticks;
 					/*double lat, lon;
 					float llt = m_NMEA0183.Rmb.DestinationPosition.Latitude.Latitude;
 					int lat_deg_int = (int)(llt / 100);
@@ -2304,7 +2342,8 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 					//mlong = lon;
 					SendSentenceToAllInstruments(OCPN_DBP_STC_RMBLON, lon, wxT("SDMM"));
 					*/
-				}
+
+	            }
 				else
 					SendSentenceToAllInstruments(OCPN_DBP_STC_BRG, m_NMEA0183.Rmb.BearingToDestinationDegreesTrue, m_NMEA0183.ErrorMessage);
 				if (!wxIsNaN(m_NMEA0183.Rmb.BearingToDestinationDegreesTrue))
