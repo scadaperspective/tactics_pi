@@ -168,33 +168,33 @@ void  TacticsInstrument_BaroHistory::DrawWindSpeedScale(wxGCDC* dc)
   m_MaxPressScale= (int)((m_MaxPress+15)-(m_TotalMinPress-15));
 
   if(!m_IsRunning) {
-    label1=_T("-- hPa");
-    label2=_T("-- hPa");
-    label3=_T("-- hPa");
-    label4=_T("-- hPa");
-    label5=_T("-- hPa");
+    label1=wxT("-- hPa");
+    label2=wxT("-- hPa");
+    label3=wxT("-- hPa");
+    label4=wxT("-- hPa");
+    label5=wxT("-- hPa");
   }
   else {
 /*
  The goal is to draw the legend with decimals only, if we really have them !
 */
     // top legend for max press
-    label1.Printf(_T("%.0f hPa"), m_MaxPressScale +(m_TotalMinPress-18)  );
+    label1.Printf(wxT("%.0f hPa"), m_MaxPressScale +(m_TotalMinPress-18)  );
 
     // 3/4 legend
 
-      label2.Printf(_T("%.0f hPa"), m_MaxPressScale *3./4 + (m_TotalMinPress-18)  );
+      label2.Printf(wxT("%.0f hPa"), m_MaxPressScale *3./4 + (m_TotalMinPress-18)  );
 
     // center legend
 
-      label3.Printf(_T("%.0f hPa"), m_MaxPressScale /2 +(m_TotalMinPress-18));
+      label3.Printf(wxT("%.0f hPa"), m_MaxPressScale /2 +(m_TotalMinPress-18));
 
     // 1/4 legend
 
-      label4.Printf(_T("%.0f hPa"), m_MaxPressScale /4 +(m_TotalMinPress-18)  );
+      label4.Printf(wxT("%.0f hPa"), m_MaxPressScale /4 +(m_TotalMinPress-18)  );
 
     //bottom legend for min wind
-    label5.Printf(_T("%.0f hPa"), (m_TotalMinPress-18));
+    label5.Printf(wxT("%.0f hPa"), (m_TotalMinPress-18));
   }
   dc->GetTextExtent(label1, &m_LeftLegend, &height, 0, 0, g_pFontSmall);
   dc->DrawText(label1, 4, (int)(m_TopLineHeight-height/2));
@@ -230,7 +230,7 @@ void TacticsInstrument_BaroHistory::DrawBackground(wxGCDC* dc)
   //---------------------------------------------------------------------------------
   // horizontal lines
   //---------------------------------------------------------------------------------
-  GetGlobalColor(_T("UBLCK"), &cl);
+  GetGlobalColor(wxT("UBLCK"), &cl);
   pen.SetColour(cl);
   dc->SetPen(pen);
   dc->DrawLine(m_LeftLegend+3, m_TopLineHeight, m_WindowRect.width-3-m_RightLegend, m_TopLineHeight); // the upper line
@@ -267,7 +267,7 @@ void TacticsInstrument_BaroHistory::DrawForeground(wxGCDC* dc)
   col=wxColour(61,61,204,255); //blue, opaque
   dc->SetFont(*g_pFontData);
   dc->SetTextForeground(col);
-  WindSpeed=wxString::Format(_T("hPa %3.1f  "), m_Press);
+  WindSpeed=wxString::Format(wxT("hPa %3.1f  "), m_Press);
   dc->GetTextExtent(WindSpeed, &degw, &degh, 0, 0, g_pFontData);
   dc->DrawText(WindSpeed, m_LeftLegend+3, m_TopLineHeight-degh);
   dc->SetFont(*g_pFontLabel);
@@ -291,7 +291,7 @@ void TacticsInstrument_BaroHistory::DrawForeground(wxGCDC* dc)
  wxString s_Since = _("since");
  wxString s_OMax = _("Overall Max");
  wxString s_Min = _("Min");
- dc->DrawText(wxString::Format(_T(" %s %.1f %s %02d:%02d  %s %.1f %s %.1f "), s_Max, m_MaxPress, s_Since, hour, min, s_OMax, m_TotalMaxPress, s_Min, m_TotalMinPress), m_LeftLegend + 3 + 2 + degw, m_TopLineHeight - degh + 5);
+ dc->DrawText(wxString::Format(wxT(" %s %.1f %s %02d:%02d  %s %.1f %s %.1f "), s_Max, m_MaxPress, s_Since, hour, min, s_OMax, m_TotalMaxPress, s_Min, m_TotalMinPress), m_LeftLegend + 3 + 2 + degw, m_TopLineHeight - degh + 5);
  //dc->DrawText(wxString::Format(_(" Max %.1f since %02d:%02d  Overall Max %.1f Min %.1f "),m_MaxPress,hour,min,m_TotalMaxPress,m_TotalMinPress), m_LeftLegend+3+2+degw, m_TopLineHeight-degh+5);
   pen.SetStyle(wxPENSTYLE_SOLID);
   pen.SetColour(wxColour(61,61,204,96)); //blue, transparent
@@ -346,7 +346,7 @@ void TacticsInstrument_BaroHistory::DrawForeground(wxGCDC* dc)
   //---------------------------------------------------------------------------------
   //draw vertical timelines every 5 minutes
   //---------------------------------------------------------------------------------
-  GetGlobalColor(_T("UBLCK"), &col);
+  GetGlobalColor(wxT("UBLCK"), &col);
   pen.SetColour(col);
   pen.SetStyle(wxPENSTYLE_DOT);
   dc->SetPen(pen);
@@ -363,7 +363,7 @@ void TacticsInstrument_BaroHistory::DrawForeground(wxGCDC* dc)
       if ( (hour*100+min) != done && (min % 5 == 0 ) && (sec == 0 || sec == 1) ) {
         pointTime.x = idx * m_ratioW + 3 + m_LeftLegend;
         dc->DrawLine( pointTime.x, m_TopLineHeight+1, pointTime.x,(m_TopLineHeight+m_DrawAreaRect.height+1) );
-        label.Printf(_T("%02d:%02d"), hour,min);
+        label.Printf(wxT("%02d:%02d"), hour,min);
         dc->GetTextExtent(label, &width, &height, 0, 0, g_pFontSmall);
         dc->DrawText(label, pointTime.x-width/2, m_WindowRect.height-height);
         done=hour*100+min;

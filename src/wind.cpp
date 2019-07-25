@@ -279,7 +279,7 @@ void TacticsInstrument_AppTrueWindAngle::DrawData(wxGCDC* dc, double value,
 	wxString text;
 	if (!wxIsNaN(value))
 	{
-		if (unit == _T("\u00B0"))
+		if (unit == wxT("\u00B0"))
 			text = wxString::Format(format, value) + DEGREE_SIGN;
 		else if (unit == wxT("\u00B0L")) // No special display for now, might be XX�< (as in text-only instrument)
 			text = wxString::Format(format, value) + DEGREE_SIGN;

@@ -1,7 +1,7 @@
 /***************************************************************************
 * $Id: tactics_pi.cpp, v1.0 2016/06/07 tomBigSpeedy Exp $
 *
-*Some mods by Ron Southworth
+* A Few mods perpetrated by Ron Southworth
 *
 * Project:  OpenCPN
 * Purpose:  tactics Plugin
@@ -2107,7 +2107,7 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 					mPriHeadingT = 1;
 					if (m_NMEA0183.Hdt.DegreesTrue < 999.) {
 						SendSentenceToAllInstruments(OCPN_DBP_STC_HDT, m_NMEA0183.Hdt.DegreesTrue,
-							_T("\u00B0T"));
+							wxT("\u00B0T"));
 					}
 				}
 				if (!wxIsNaN(m_NMEA0183.Hdt.DegreesTrue))
@@ -2138,7 +2138,7 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 
 				if (m_NMEA0183.Mda.Pressure > .8 && m_NMEA0183.Mda.Pressure < 1.1) {
 					SendSentenceToAllInstruments(OCPN_DBP_STC_MDA, m_NMEA0183.Mda.Pressure * 1000,
-						_T("hPa")); //Convert to hpa befor sending to instruments.
+						wxT("hPa")); //Convert to hpa befor sending to instruments.
 				}
 
 			}
@@ -2176,12 +2176,12 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 				wxString windunit;
 				if (m_NMEA0183.Mwd.WindAngleTrue < 999.) { //if WindAngleTrue is available, use it ...
 					SendSentenceToAllInstruments(OCPN_DBP_STC_TWD, m_NMEA0183.Mwd.WindAngleTrue,
-						_T("\u00B0T"));
+						wxT("\u00B0T"));
 					mTWD_Watchdog = gps_watchdog_timeout_ticks;
 				}
 				else if (m_NMEA0183.Mwd.WindAngleMagnetic < 999.) { //otherwise try WindAngleMagnetic ...
 					SendSentenceToAllInstruments(OCPN_DBP_STC_TWD, m_NMEA0183.Mwd.WindAngleMagnetic,
-						_T("\u00B0M"));
+						wxT("\u00B0M"));
 					mTWD_Watchdog = gps_watchdog_timeout_ticks;
 				}
                 
@@ -2277,7 +2277,7 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 				}
 			}
 		}
-/*		else if (m_NMEA0183.LastSentenceIDReceived == _T("RMB")) {
+/*		else if (m_NMEA0183.LastSentenceIDReceived == wxT("RMB")) {
 		            if (m_NMEA0183.Parse()) {
 		                if (m_NMEA0183.Rmb.IsDataValid == NTrue) {
 		                //    if ( !wxIsNaN(m_NMEA0183.Rmb.BearingToDestinationDegreesTrue) &&
@@ -2287,7 +2287,7 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 		               //     if ( !wxIsNaN(m_NMEA0183.Rmb.RangeToDestinationNauticalMiles) &&
 		               //          (m_NMEA0183.Rmb.RangeToDestinationNauticalMiles < 999.) ) // empty field
 		                        SendSentenceToAllInstruments(
-		                            OCPN_DBP_STC_DTW, m_NMEA0183.Rmb.RangeToDestinationNauticalMiles, _T("Nm"));
+		                            OCPN_DBP_STC_DTW, m_NMEA0183.Rmb.RangeToDestinationNauticalMiles, wxT("Nm"));
 		                    /*
 		                       Note: there are no consumers in Tactics functions for the below sentence but without it
 		                       the Dashboard's VMG-instruments remain silent when there is next active waypoint set
@@ -2446,10 +2446,10 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 			if (m_NMEA0183.Parse()) {
 				/*if( m_NMEA0183.Rsa.IsStarboardDataValid == NTrue ) {
 				SendSentenceToAllInstruments(OCPN_DBP_STC_RSA, m_NMEA0183.Rsa.Starboard,
-				_T("\u00B0") );
+				wxT("\u00B0") );
 				} else if( m_NMEA0183.Rsa.IsPortDataValid == NTrue ) {
 				SendSentenceToAllInstruments( OCPN_DBP_STC_RSA, -m_NMEA0183.Rsa.Port,
-				_T("\u00B0") );
+				wxT("\u00B0") );
 				}*/
 			}
 		}
@@ -2461,13 +2461,13 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 						mPriHeadingT = 2;
 						//mHdt = m_NMEA0183.Vhw.DegreesTrue;
 						SendSentenceToAllInstruments(OCPN_DBP_STC_HDT, m_NMEA0183.Vhw.DegreesTrue,
-							_T("\u00B0T"));
+							wxT("\u00B0T"));
 					}
 				}
 				if (mPriHeadingM >= 3) {
 					mPriHeadingM = 3;
 					SendSentenceToAllInstruments(OCPN_DBP_STC_HDM, m_NMEA0183.Vhw.DegreesMagnetic,
-						_T("\u00B0M"));
+						wxT("\u00B0M"));
 				}
 				if (m_NMEA0183.Vhw.Knots < 999.) {
 					SendSentenceToAllInstruments(OCPN_DBP_STC_STW, toUsrSpeed_Plugin(m_NMEA0183.Vhw.Knots, g_iDashSpeedUnit),
@@ -2737,7 +2737,7 @@ void tactics_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
 		}
 
 		// get the DECL value from the JSON message
-		wxString decl = root[_T("Decl")].AsString();
+		wxString decl = root[wxT("Decl")].AsString();
 		double decl_val;
 		decl.ToDouble(&decl_val);
 
@@ -4200,7 +4200,7 @@ unsigned int AddInstrumentDlg::GetInstrumentAdded()
 TacticsWindow::TacticsWindow(wxWindow *pparent, wxWindowID id, wxAuiManager *auimgr,
 	tactics_pi* plugin, int orient, TacticsWindowContainer* mycont) :
 	wxWindow(pparent, id, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE,
-	_T("Tactics"))
+	wxT("Tactics"))
 {
 	m_pauimgr = auimgr;
 	m_plugin = plugin;

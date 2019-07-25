@@ -50,7 +50,7 @@ wxSize TacticsInstrument_Clock::GetSize( int orient, wxSize hint )
       wxClientDC dc(this);
       int w;
       dc.GetTextExtent(m_title, &w, &m_TitleHeight, 0, 0, g_pFontTitle);
-      dc.GetTextExtent(_T("00:00:00 UTC"), &w, &m_DataHeight, 0, 0, g_pFontData);
+      dc.GetTextExtent(wxT("00:00:00 UTC"), &w, &m_DataHeight, 0, 0, g_pFontData);
 
       if( orient== wxHORIZONTAL ) {
           return wxSize( DefaultWidth, wxMax(m_TitleHeight+m_DataHeight, hint.y) );
@@ -68,16 +68,16 @@ void TacticsInstrument_Clock::SetUtcTime( wxDateTime data )
 {
     if (data.IsValid())
     {
-        m_data = data.FormatISOTime().Append(_T(" UTC"));
+        m_data = data.FormatISOTime().Append(wxT(" UTC"));
     }
 }
 
 TacticsInstrument_Moon::TacticsInstrument_Moon( wxWindow *parent, wxWindowID id, wxString title ) :
-      TacticsInstrument_Clock( parent, id, title, OCPN_DBP_STC_CLK|OCPN_DBP_STC_LAT, _T("%i/4 %c") )
+      TacticsInstrument_Clock( parent, id, title, OCPN_DBP_STC_CLK|OCPN_DBP_STC_LAT, wxT("%i/4 %c") )
 {
     m_phase = -1;
     m_radius = 14;
-    m_hemisphere = _T("");
+    m_hemisphere = wxT("");
 }
 
 wxSize TacticsInstrument_Moon::GetSize( int orient, wxSize hint )
@@ -96,19 +96,19 @@ wxSize TacticsInstrument_Moon::GetSize( int orient, wxSize hint )
 void TacticsInstrument_Moon::SetData( int st, double value, wxString format )
 {
     if( st == OCPN_DBP_STC_LAT ) {
-        m_hemisphere = (value < 0 ? _T("S") : _T("N") );
+        m_hemisphere = (value < 0 ? wxT("S") : wxT("N") );
     }
 }
 
 void TacticsInstrument_Moon::Draw(wxGCDC* dc)
 {
-    if ( m_phase == -1 || m_hemisphere == _T("") ) return;
+    if ( m_phase == -1 || m_hemisphere == wxT("") ) return;
 
     wxSize sz = GetClientSize();
     wxColour cl0, cl1, cl2;
 
     dc->SetPen( *wxTRANSPARENT_PEN );
-    GetGlobalColor(_T("DASHL"), &cl0);
+    GetGlobalColor(wxT("DASHL"), &cl0);
     dc->SetBrush(cl0);
     wxPoint points[3];
     points[0].x = 5;
@@ -125,9 +125,9 @@ void TacticsInstrument_Moon::Draw(wxGCDC* dc)
     /* Moon phases are seen upside-down on the southern hemisphere */
     int startangle = ( m_hemisphere == _("N") ? -90 : 90 );
 
-    GetGlobalColor(_T("DASH2"), &cl0);
-    GetGlobalColor(_T("DASH1"), &cl1);
-    GetGlobalColor(_T("DASHF"), &cl2);
+    GetGlobalColor(wxT("DASH2"), &cl0);
+    GetGlobalColor(wxT("DASH1"), &cl1);
+    GetGlobalColor(wxT("DASHF"), &cl2);
 
     dc->SetBrush(cl0);
     dc->DrawCircle( x, y, m_radius );
@@ -240,8 +240,8 @@ TacticsInstrument_Sun::TacticsInstrument_Sun( wxWindow *parent, wxWindowID id, w
 {
     m_lat = m_lon = 999.9;
     m_dt = wxDateTime::Now().ToUTC();
-    m_sunrise = _T("---");
-    m_sunset = _T("---");
+    m_sunrise = wxT("---");
+    m_sunset = wxT("---");
 }
 
 wxSize TacticsInstrument_Sun::GetSize( int orient, wxSize hint )
@@ -249,7 +249,7 @@ wxSize TacticsInstrument_Sun::GetSize( int orient, wxSize hint )
       wxClientDC dc(this);
       int w;
       dc.GetTextExtent(m_title, &w, &m_TitleHeight, 0, 0, g_pFontTitle);
-      dc.GetTextExtent(_T("00:00:00 UTC"), &w, &m_DataHeight, 0, 0, g_pFontData);
+      dc.GetTextExtent(wxT("00:00:00 UTC"), &w, &m_DataHeight, 0, 0, g_pFontData);
 
       if( orient== wxHORIZONTAL ) {
           return wxSize( DefaultWidth, wxMax(m_TitleHeight+m_DataHeight*2, hint.y) );
@@ -263,7 +263,7 @@ void TacticsInstrument_Sun::Draw(wxGCDC* dc)
       wxColour cl;
 
       dc->SetFont(*g_pFontData);
-      GetGlobalColor(_T("DASHF"), &cl);
+      GetGlobalColor(wxT("DASHF"), &cl);
       dc->SetTextForeground(cl);
 
       dc->DrawText(m_sunrise, 10, m_TitleHeight);
@@ -278,13 +278,13 @@ void TacticsInstrument_Sun::SetUtcTime( wxDateTime data )
         wxDateTime sunrise, sunset;
         calculateSun(m_lat, m_lon, sunrise, sunset);
         if (sunrise.GetYear() != 999)
-            m_sunrise = sunrise.FormatISOTime().Append(_T(" UTC"));
+            m_sunrise = sunrise.FormatISOTime().Append(wxT(" UTC"));
         else
-            m_sunrise = _T("---");
+            m_sunrise = wxT("---");
         if (sunset.GetYear() != 999)
-            m_sunset = sunset.FormatISOTime().Append(_T(" UTC"));
+            m_sunset = sunset.FormatISOTime().Append(wxT(" UTC"));
         else
-            m_sunset = _T("---");
+            m_sunset = wxT("---");
     }
 }
 
@@ -306,13 +306,13 @@ void TacticsInstrument_Sun::SetData( int st, double data, wxString unit )
       wxDateTime sunset, sunrise;
       calculateSun(m_lat, m_lon, sunrise, sunset);
       if (sunrise.GetYear() != 999)
-            m_sunrise = sunrise.FormatISOTime().Append(_T(" UTC"));
+            m_sunrise = sunrise.FormatISOTime().Append(wxT(" UTC"));
       else
-            m_sunrise = _T("---");
+            m_sunrise = wxT("---");
       if (sunset.GetYear() != 999)
-            m_sunset = sunset.FormatISOTime().Append(_T(" UTC"));
+            m_sunset = sunset.FormatISOTime().Append(wxT(" UTC"));
       else
-            m_sunset = _T("---");
+            m_sunset = wxT("---");
 }
 
 void TacticsInstrument_Sun::calculateSun(double latit, double longit, wxDateTime &sunrise, wxDateTime &sunset){

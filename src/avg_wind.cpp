@@ -184,7 +184,7 @@ void TacticsInstrument_AvgWindDir::CalcAvgWindDir(double CurWindDir)
 void TacticsInstrument_AvgWindDir::Draw(wxGCDC* dc)
 {
   wxColour c1;
-  GetGlobalColor(_T("DASHB"), &c1);
+  GetGlobalColor(wxT("DASHB"), &c1);
   wxBrush b1(c1);
   dc->SetBackground(b1);
   dc->Clear();
@@ -198,7 +198,7 @@ void TacticsInstrument_AvgWindDir::Draw(wxGCDC* dc)
 //  m_width = size.x;
   m_height = size.y;
 
-  dc->GetTextExtent(_T("30"), &w, &h, 0, 0, g_pFontSmall);
+  dc->GetTextExtent(wxT("30"), &w, &h, 0, 0, g_pFontSmall);
   m_Legend = w;
   m_width = size.x - 2 * m_Legend-2;
 
@@ -219,7 +219,7 @@ void TacticsInstrument_AvgWindDir::DrawBackground(wxGCDC* dc)
   //---------------------------------------------------------------------------------
   // horizontal lines
   //---------------------------------------------------------------------------------
-  GetGlobalColor(_T("UBLCK"), &cl);
+  GetGlobalColor(wxT("UBLCK"), &cl);
   pen.SetColour(cl);
   pen.SetStyle(wxPENSTYLE_SOLID);
   dc->SetPen(pen);
@@ -233,12 +233,12 @@ void TacticsInstrument_AvgWindDir::DrawBackground(wxGCDC* dc)
   dc->DrawLine(m_cx, m_TopLineHeight + m_SliderHeight, m_cx, (int)(m_TopLineHeight + m_SliderHeight + m_availableHeight)); // the vertical center line
 
   //top horzontal line
-  label = wxString::Format(_T("%2d"), 0);
+  label = wxString::Format(wxT("%2d"), 0);
   dc->GetTextExtent(label, &width, &height, 0, 0, g_pFontSmall);
   dc->DrawText(label, 1, (int)(m_TopLineHeight + m_SliderHeight - height / 2.));
   dc->DrawLine(m_Legend + 1, m_TopLineHeight + m_SliderHeight, m_Legend + 1 + m_width, m_TopLineHeight + m_SliderHeight);
 //bottom line + legend
-  label = wxString::Format(_T("%2d"), time);
+  label = wxString::Format(wxT("%2d"), time);
   dc->GetTextExtent(label, &width, &height, 0, 0, g_pFontSmall);
   dc->DrawText(label, 1, (int)(m_TopLineHeight + m_SliderHeight + m_availableHeight - height / 2.)); 
   dc->DrawLine(m_Legend + 1, (int)(m_TopLineHeight + m_SliderHeight + m_availableHeight), m_Legend + 1 + m_width, (int)(m_TopLineHeight + m_SliderHeight + m_availableHeight));
@@ -248,7 +248,7 @@ void TacticsInstrument_AvgWindDir::DrawBackground(wxGCDC* dc)
     if (i % 5 == 0){
       x1 = m_cx;
       x2 = m_cx;
-      label = wxString::Format(_T("%2d"), i);
+      label = wxString::Format(wxT("%2d"), i);
       dc->DrawText(label, 1, (int)(m_TopLineHeight + m_SliderHeight - height / 2. + m_availableHeight / (double)time * i));
     }
     else{
@@ -282,12 +282,12 @@ void TacticsInstrument_AvgWindDir::DrawForeground(wxGCDC* dc)
   col = wxColour(255, 0, 0, 255); //red, solid
   dc->SetTextForeground(col);
   if (!m_IsRunning || wxIsNaN(m_WindDir))
-    avgWindAngle = _T("---");
+    avgWindAngle = wxT("---");
   else {
     dir = wxRound(m_AvgWindDir);
     while (dir > 360) dir -= 360;
     while (dir <0) dir += 360;
-    avgWindAngle = wxString::Format(_T("%3.0f"), dir) + DEGREE_SIGN;
+    avgWindAngle = wxString::Format(wxT("%3.1f"), dir) + DEGREE_SIGN;
   }
   dc->GetTextExtent(avgWindAngle, &degw, &degh, 0, 0, g_pFontData);
   dc->DrawText(avgWindAngle, m_Legend + 1+m_width / 2 - degw / 2, m_TopLineHeight + m_SliderHeight - degh);
@@ -363,19 +363,19 @@ void TacticsInstrument_AvgWindDir::DrawForeground(wxGCDC* dc)
   //---------------------------------------------------------------------------------
   dc->SetFont(*g_pFontData);
   if (!m_IsRunning || wxIsNaN(m_WindDir)){
-    minAngle = _T("---");
-    maxAngle = _T("---");
+    minAngle = wxT("---");
+    maxAngle = wxT("---");
   }
   else{
     double leftAngle = wxRound(m_AvgWindDir + m_DegRangePort);
     while (leftAngle > 360) leftAngle -= 360;
     while (leftAngle <0) leftAngle += 360;
 
-    minAngle = wxString::Format(_T("%3.0f"), leftAngle) + DEGREE_SIGN;
+    minAngle = wxString::Format(wxT("%3.1f"), leftAngle) + DEGREE_SIGN;
     double rightAngle = wxRound(m_AvgWindDir + m_DegRangeStb);
     while (rightAngle > 360) rightAngle -= 360;
     while (rightAngle <0) rightAngle += 360;
-    maxAngle = wxString::Format(_T("%3.0f"), rightAngle) + DEGREE_SIGN;
+    maxAngle = wxString::Format(wxT("%3.1f"), rightAngle) + DEGREE_SIGN;
   }
   dc->GetTextExtent(minAngle, &degw, &degh, 0, 0, g_pFontData);
   col = wxColour(wxColour(204, 41, 41, 128)); //red, opaque
