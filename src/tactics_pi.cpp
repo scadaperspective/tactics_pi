@@ -1,6 +1,8 @@
 /***************************************************************************
 * $Id: tactics_pi.cpp, v1.0 2016/06/07 tomBigSpeedy Exp $
 *
+*Some mods by Ron Southworth
+*
 * Project:  OpenCPN
 * Purpose:  tactics Plugin
 * Author:   Thomas Rauch
@@ -241,10 +243,10 @@ wxString getInstrumentCaption(unsigned int id)
 		return _("True Wind Dir. & Speed");
 	case ID_DBP_I_VMG:
 		//            return _("VMG");
-		return g_sVMGSynonym;
+		 return g_sVMGSynonym;
 	case ID_DBP_D_VMG:
 		//            return _("VMG");
-		return g_sVMGSynonym;
+		 return g_sVMGSynonym;
 		//case ID_DBP_I_RSA:
 		//    return _("Rudder Angle");
 		//case ID_DBP_D_RSA:

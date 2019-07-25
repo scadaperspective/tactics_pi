@@ -574,7 +574,7 @@ void TacticsInstrument_WindDirHistory::DrawForeground(wxGCDC* dc)
     dir = m_WindDir;
     while (dir > 360) dir -= 360;
     while (dir <0) dir += 360;
-    WindAngle = wxString::Format(_T("TWD %3.0f"), dir) + DEGREE_SIGN;
+    WindAngle = wxString::Format(_T("TWD %3.1f"), dir) + DEGREE_SIGN;
   }
   dc->GetTextExtent(WindAngle, &degw, &degh, 0, 0, g_pFontData);
   dc->DrawText(WindAngle, m_WindowRect.width - degw - m_RightLegend - 3, m_TopLineHeight - degh);

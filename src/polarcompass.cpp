@@ -57,7 +57,7 @@ TacticsInstrument_Dial(parent, id, title, cap_flag, 0, 360, 0, 360)
 {
 	SetOptionMarker(5, DIAL_MARKER_SIMPLE, 2);
 	SetOptionLabel(20, DIAL_LABEL_ROTATED);
-	SetOptionMainValue(wxT("%.0f"), DIAL_POSITION_INSIDE);
+	SetOptionMainValue(wxT("%.1f"), DIAL_POSITION_INSIDE);
 	//    Get a pointer to the opencpn configuration object
 
 	m_pconfig = GetOCPNConfigObject();
@@ -232,7 +232,7 @@ void TacticsInstrument_PolarCompass::Draw(wxGCDC* bdc)
 //		DrawCurrent(bdc);
 
 	DrawLaylines(bdc);
-	//DrawData(bdc, m_MainValue, m_MainValueUnit, wxT("%.0f"), DIAL_POSITION_TOPINSIDE);
+	//DrawData(bdc, m_MainValue, m_MainValueUnit, wxT("%.1f"), DIAL_POSITION_TOPINSIDE);
 
 //	 if (!wxIsNaN(m_predictedSog)) DrawData(bdc, m_predictedSog, wxT("kn "), wxT("prd.SOG:\u2245%.2f"), DIAL_POSITION_BOTTOMRIGHT);
     DrawData(bdc, m_PolSpd_Percent, wxT("%"), wxT("%.1f"), DIAL_POSITION_BOTTOMRIGHT);
