@@ -49,7 +49,7 @@ TacticsInstrument_Wind::TacticsInstrument_Wind( wxWindow *parent, wxWindowID id,
 {
       SetOptionMarker(10, DIAL_MARKER_REDGREENBAR, 3);
       // Labels are set static because we've no logic to display them this way
-      wxString labels[] = {wxT(""), wxT("30"), wxT("60"), wxT("90"), wxT("120"), wxT("150"), wxT(""), wxT("150"), wxT("120"), wxT("90"), wxT("60"), wxT("30")};
+      wxString labels[] = {_T(""), wxT("30"), wxT("60"), wxT("90"), wxT("120"), wxT("150"), wxT(""), wxT("150"), wxT("120"), wxT("90"), wxT("60"), wxT("30")};
       SetOptionLabel(30, DIAL_LABEL_HORIZONTAL, wxArrayString(12, labels));
 }
 
@@ -79,7 +79,7 @@ TacticsInstrument_TrueWindAngle::TacticsInstrument_TrueWindAngle( wxWindow *pare
 {
       SetOptionMarker(10, DIAL_MARKER_REDGREENBAR, 3);
       // Labels are set static because we've no logic to display them this way
-      wxString labels[] = {wxT(""), wxT("30"), wxT("60"), wxT("90"), wxT("120"), wxT("150"), wxT(""), wxT("150"), wxT("120"), wxT("90"), wxT("60"), wxT("30")};
+      wxString labels[] = {_T(""), wxT("30"), wxT("60"), wxT("90"), wxT("120"), wxT("150"), wxT(""), wxT("150"), wxT("120"), wxT("90"), wxT("60"), wxT("30")};
       SetOptionLabel(30, DIAL_LABEL_HORIZONTAL, wxArrayString(12, labels));
 }
 
@@ -147,7 +147,7 @@ void TacticsInstrument_AppTrueWindAngle::SetData(int st, double data, wxString u
 void TacticsInstrument_AppTrueWindAngle::Draw(wxGCDC* bdc)
 {
 	wxColour c1;
-	GetGlobalColor(wxT("DASHB"), &c1);
+	GetGlobalColor(_T("DASHB"), &c1);
 	wxBrush b1(c1);
 	bdc->SetBackground(b1);
 	bdc->Clear();
@@ -156,7 +156,7 @@ void TacticsInstrument_AppTrueWindAngle::Draw(wxGCDC* bdc)
 	m_cx = size.x / 2;
 	int availableHeight = size.y - m_TitleHeight - 6;
 	int width, height;
-	bdc->GetTextExtent(wxT("000"), &width, &height, 0, 0, g_pFontLabel);
+	bdc->GetTextExtent(_T("000"), &width, &height, 0, 0, g_pFontLabel);
 	m_cy = m_TitleHeight + 2;
 	m_cy += availableHeight / 2;
 	m_radius = availableHeight / 2.0 * 0.95;
@@ -181,13 +181,13 @@ void TacticsInstrument_AppTrueWindAngle::DrawForeground(wxGCDC* dc)
 	double value;
 	// The default foreground is the arrow used in most dials
 	wxColour cl;
-	GetGlobalColor(wxT("DASH2"), &cl);
+	GetGlobalColor(_T("DASH2"), &cl);
 	wxPen pen1;
 	pen1.SetStyle(wxSOLID);
 	pen1.SetColour(cl);
 	pen1.SetWidth(2);
 	dc->SetPen(pen1);
-	GetGlobalColor(wxT("DASH1"), &cl);
+	GetGlobalColor(_T("DASH1"), &cl);
 	wxBrush brush1;
 	brush1.SetStyle(wxSOLID);
 	brush1.SetColour(cl);
@@ -198,7 +198,7 @@ void TacticsInstrument_AppTrueWindAngle::DrawForeground(wxGCDC* dc)
     if (!wxIsNaN(m_ExtraValueTrue)){  //m_ExtraValueTrue = True Wind Angle; we have a watchdog for TWS; if TWS becomes NAN, TWA must be NAN as well
       dc->SetPen(*wxTRANSPARENT_PEN);
 
-      GetGlobalColor(wxT("BLUE3"), &cl);
+      GetGlobalColor(_T("BLUE3"), &cl);
       wxBrush brush2;
       brush2.SetStyle(wxSOLID);
       brush2.SetColour(cl);
@@ -232,7 +232,7 @@ void TacticsInstrument_AppTrueWindAngle::DrawForeground(wxGCDC* dc)
     if (!wxIsNaN(m_ExtraValueApp)){ //m_ExtraValueApp=AWA; we have a watchdog for AWS; if AWS becomes NAN, AWA will also be NAN ...
       dc->SetPen(*wxTRANSPARENT_PEN);
 
-      GetGlobalColor(wxT("DASHN"), &cl);
+      GetGlobalColor(_T("DASHN"), &cl);
       wxBrush brush;
       brush.SetStyle(wxSOLID);
       brush.SetColour(cl);
@@ -271,7 +271,7 @@ void TacticsInstrument_AppTrueWindAngle::DrawData(wxGCDC* dc, double value,
 
 	dc->SetFont(*g_pFontLabel);
 	wxColour cl;
-	GetGlobalColor(wxT("DASHF"), &cl);
+	GetGlobalColor(_T("DASHF"), &cl);
 	dc->SetTextForeground(cl);
 
 	wxSize size = GetClientSize();
@@ -295,7 +295,7 @@ void TacticsInstrument_AppTrueWindAngle::DrawData(wxGCDC* dc, double value,
 			text = wxString::Format(format, value) + wxT(" ") + unit;
 	}
 	else
-	        text = wxT("---");
+		text = wxT("---");
 
 	int width, height;
 	dc->GetMultiLineTextExtent(text, &width, &height, NULL, g_pFontLabel);
@@ -315,11 +315,11 @@ void TacticsInstrument_AppTrueWindAngle::DrawData(wxGCDC* dc, double value,
 	{
 		TextPoint.x = m_cx - (width / 2) - 1;
 		TextPoint.y = (size.y * .75) - height;
-		GetGlobalColor(wxT("DASHL"), &cl);
+		GetGlobalColor(_T("DASHL"), &cl);
 		int penwidth = size.x / 100;
 		wxPen* pen = wxThePenList->FindOrCreatePen(cl, penwidth, wxSOLID);
 		dc->SetPen(*pen);
-		GetGlobalColor(wxT("DASHB"), &cl);
+		GetGlobalColor(_T("DASHB"), &cl);
 		dc->SetBrush(cl);
 		// There might be a background drawn below
 		// so we must clear it first.
@@ -327,30 +327,30 @@ void TacticsInstrument_AppTrueWindAngle::DrawData(wxGCDC* dc, double value,
 		break;
 	}
 	case DIAL_POSITION_TOPLEFT:
-		GetGlobalColor(wxT("DASHN"), &c3);
+		GetGlobalColor(_T("DASHN"), &c3);
 		TextPoint.x = 0;
 		TextPoint.y = m_TitleHeight;
 		text = wxT("A:") + text;
 		break;
 	case DIAL_POSITION_TOPRIGHT:
-		GetGlobalColor(wxT("DASHN"), &c3);
+		GetGlobalColor(_T("DASHN"), &c3);
 		TextPoint.x = size.x - width - 1;
 		TextPoint.y = m_TitleHeight;
 		break;
 	case DIAL_POSITION_BOTTOMLEFT:
-		GetGlobalColor(wxT("BLUE3"), &c3);
+		GetGlobalColor(_T("BLUE3"), &c3);
 		text = wxT("T:") + text;
 		TextPoint.x = 0;
 		TextPoint.y = size.y - height;
 		break;
 	case DIAL_POSITION_BOTTOMRIGHT:
-		GetGlobalColor(wxT("BLUE3"), &c3);
+		GetGlobalColor(_T("BLUE3"), &c3);
 		TextPoint.x = size.x - width - 1;
 		TextPoint.y = size.y - height;
 		break;
 	}
 	wxColour c2;
-	GetGlobalColor(wxT("DASHB"), &c2);
+	GetGlobalColor(_T("DASHB"), &c2);
 	wxStringTokenizer tkz(text, wxT("\n"));
 	wxString token;
 

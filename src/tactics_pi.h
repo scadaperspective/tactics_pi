@@ -211,7 +211,6 @@ private:
       // FFU
       double               mSatsInView;
 	  double               mHdm;
-	  double               calmHdt;
       wxDateTime           mUTCDateTime;
       int                  m_config_version;
       wxString             m_VDO_accumulator;
@@ -302,7 +301,7 @@ public:
       void ApplyPrefs(wxCommandEvent& event);
 	  void SaveTacticsConfig();
 
-      wxArrayOfTactics             m_Config;
+      wxArrayOfTactics            m_Config;
       wxFontPickerCtrl             *m_pFontPickerTitle;
       wxFontPickerCtrl             *m_pFontPickerData;
       wxFontPickerCtrl             *m_pFontPickerLabel;
@@ -320,7 +319,7 @@ public:
       wxSpinCtrl                   *m_minLayLineWidth;//TR
 	  wxSpinCtrl                   *m_maxLayLineWidth;//TR
       wxSpinCtrlDouble             *m_LeewayFactor;//TR
-      wxSpinCtrl                   *m_AlphaCurrDir; //TR
+      wxSpinCtrl           *m_AlphaCurrDir; //TR
       wxSpinCtrlDouble             *m_fixedLeeway;//TR
       //wxSlider                     *m_AlphaCurrDir; //TR
 	  wxButton                     *m_buttonLoadPolar;//TR

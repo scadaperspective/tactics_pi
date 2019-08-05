@@ -1,12 +1,11 @@
-/***************************************************************************
-* $Id: tactics_pi.cpp, v1.0 2016/06/07 tomBigSpeedy Exp $
-*
-* A Few mods perpetrated by Ron Southworth
+/* **************************************************************************
+* $Id: tactics_pi.cpp, v1.03 2016/06/07 tomBigSpeedy Exp $
 *
 * Project:  OpenCPN
 * Purpose:  tactics Plugin
 * Author:   Thomas Rauch
 *       (Inspired by original work from Jean-Eudes Onfray)
+*       modified version Ron Southworth
 ***************************************************************************
 *   Copyright (C) 2010 - 2019 by David S. Register                        *
 *                                                                         *
@@ -111,6 +110,7 @@ bool g_bExpPerfData05;
 bool g_bNKE_TrueWindTableBug;//variable for NKE TrueWindTable-Bugfix
 bool b_tactics_dc_message_shown = false;
 wxString g_sCMGSynonym, g_sVMGSynonym;
+wxString g_sDataExportSeparator;
 
 #if !defined(NAN)
 static const long long lNaN = 0xfff8000000000000;
@@ -242,11 +242,11 @@ wxString getInstrumentCaption(unsigned int id)
 	case ID_DBP_D_TWD:
 		return _("True Wind Dir. & Speed");
 	case ID_DBP_I_VMG:
-		            return _("VMG");
+		         return _("VMG");
 		// return g_sVMGSynonym;
 	case ID_DBP_D_VMG:
-		            return _("VMG");
-		//return g_sVMGSynonym;
+		           return _("VMG");
+		// return g_sVMGSynonym;
 		//case ID_DBP_I_RSA:
 		//    return _("Rudder Angle");
 		//case ID_DBP_D_RSA:
@@ -559,7 +559,6 @@ int tactics_pi::Init(void)
 	for (int i = 0; i < COGRANGE; i++) m_COGRange[i] = NAN;
 
 	m_bTrueWind_available = false;
-	// m_bTrueWind_available = true;
 	//*****************
 	g_pFontTitle = new wxFont(10, wxFONTFAMILY_SWISS, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL);
 	g_pFontData = new wxFont(14, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
@@ -778,6 +777,7 @@ wxString tactics_pi::GetLongDescription()
 //*********************************************************************************
 void tactics_pi::SendSentenceToAllInstruments(int st, double value, wxString unit)
 {
+  double org_value=value;
 	if (st == OCPN_DBP_STC_AWS){
 		//Correct AWS with heel if global variable set and heel is available
 		//correction only makes sense if you use a heel sensor 
@@ -840,7 +840,7 @@ void tactics_pi::SendSentenceToAllInstruments(int st, double value, wxString uni
 	// calculate some data and distribute to all instruments as well
 	SetCalcVariables(st, value, unit);
 	CalculateTrueWind(st, value, unit);
-	CalculateLeeway(st, value, unit);
+	CalculateLeeway(st, org_value, unit);
 	CalculateCurrent(st, value, unit);
 	CalculateLaylineDegreeRange();
 	CalculatePerformanceData();
@@ -2057,15 +2057,13 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 				if (!wxIsNaN(m_NMEA0183.Hdg.MagneticSensorHeadingDegrees)) {
 					if (!wxIsNaN(mVar) && (mPriHeadingT > 3)){
 						mPriHeadingT = 4;
-						calmHdt = mHdm + mVar;
-						if (calmHdt < 0.0) {
-							calmHdt = calmHdt + 360.0;
-						}
-						else if (calmHdt >= 360.0) {
-							calmHdt = calmHdt - 360.0;
-						}
-						SendSentenceToAllInstruments(OCPN_DBP_STC_HDT, calmHdt, wxT("\u00B0"));
-						mHDT_Watchdog = gps_watchdog_timeout_ticks;
+                        double heading = mHdm + mVar;
+                        if (heading < 0)
+                            heading += 360;
+                        else if (heading >= 360.0)
+                            heading -= 360;
+                        SendSentenceToAllInstruments(OCPN_DBP_STC_HDT, heading, wxT("\u00B0"));
+                        mHDT_Watchdog = gps_watchdog_timeout_ticks;
 					}
 				}
 			}
@@ -2086,14 +2084,12 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 				if (!wxIsNaN(m_NMEA0183.Hdm.DegreesMagnetic)) {
 					if (!wxIsNaN(mVar) && (mPriHeadingT > 2)){
 						mPriHeadingT = 3;
-						calmHdt = mHdm + mVar;
-						if (calmHdt < 0.0) {
-							calmHdt = calmHdt + 360.0;
-						}
-						else if (calmHdt >= 360.0) {
-							calmHdt = calmHdt - 360.0;
-						}
-						SendSentenceToAllInstruments(OCPN_DBP_STC_HDT, calmHdt, wxT("\u00B0"));
+                        double heading = mHdm + mVar;
+                        if (heading < 0)
+                          heading += 360;
+                        else if (heading >= 360.0)
+                          heading -= 360;
+                        SendSentenceToAllInstruments(OCPN_DBP_STC_HDT, heading, wxT("\u00B0"));
 						mHDT_Watchdog = gps_watchdog_timeout_ticks;
 					}
 				}
@@ -2189,8 +2185,8 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
                 // this almost duplicates the TWS values delivered in MWD & VWT and destroys the Wind history view, showing weird peaks
                 // It is particularly annoying when @anchor and trying to record windspeeds ...
                 // It seems to happen only when 
-                // * VWR sentence --> AWA changes from "Left" to "Right" through 0° AWA
-                // * with low AWA values like 0...4 degrees
+                // * VWR sentence --> AWA changes from "Left" to "Right" through 0° AWA (TWA)
+                // * with low AWA/TWA values like 0...4 degrees
                 // NMEA stream looks like this:
                 //  $IIMWD,,,349,M,6.6,N,3.4,M*29                 6.6N TWS
                 //  $IIVWT, 3, R, 7.1, N, 3.7, M, 13.1, K * 63
@@ -2277,42 +2273,46 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 				}
 			}
 		}
-/*		else if (m_NMEA0183.LastSentenceIDReceived == wxT("RMB")) {
-		            if (m_NMEA0183.Parse()) {
-		                if (m_NMEA0183.Rmb.IsDataValid == NTrue) {
-		                //    if ( !wxIsNaN(m_NMEA0183.Rmb.BearingToDestinationDegreesTrue) &&
-		                //         (m_NMEA0183.Rmb.BearingToDestinationDegreesTrue < 999.) ) // empty field
-		                        SendSentenceToAllInstruments(
-		                            OCPN_DBP_STC_BRG, m_NMEA0183.Rmb.BearingToDestinationDegreesTrue, m_NMEA0183.Rmb.To);
-		               //     if ( !wxIsNaN(m_NMEA0183.Rmb.RangeToDestinationNauticalMiles) &&
-		               //          (m_NMEA0183.Rmb.RangeToDestinationNauticalMiles < 999.) ) // empty field
-		                        SendSentenceToAllInstruments(
-		                            OCPN_DBP_STC_DTW, m_NMEA0183.Rmb.RangeToDestinationNauticalMiles, wxT("Nm"));
-		                    /*
-		                       Note: there are no consumers in Tactics functions for the below sentence but without it
-		                       the Dashboard's VMG-instruments remain silent when there is next active waypoint set
-		                       by the OpenCPN's routing functions. We capture here the sentence send by OpenCPN
-		                       to the autopilot and  other interested parties like. If the GitHub issue #1422 is
-		                       recognized and fixed in OpenCPN, this note and the below sentences can be removed */
-/*		                    if ( !wxIsNaN(m_NMEA0183.Rmb.DestinationClosingVelocityKnots) &&
-		                        (m_NMEA0183.Rmb.DestinationClosingVelocityKnots < 999.) ) { // empty field
-		                        SendSentenceToAllInstruments(
-		                            OCPN_DBP_STC_VMG, toUsrSpeed_Plugin(
-		                                m_NMEA0183.Rmb.DestinationClosingVelocityKnots, g_iDashWindSpeedUnit ),
-		                            getUsrSpeedUnit_Plugin( g_iDashWindSpeedUnit ) );
-		                        mTWS_Watchdog = gps_watchdog_timeout_ticks;
-		                    } // then valid sentence with VMG information received
-		             /*      if (!wxIsNaN(m_NMEA0183.Rmb.BearingToDestinationDegreesTrue) &&
-		                        (m_NMEA0183.Rmb.BearingToDestinationDegreesTrue < 999. ) ) {
-		                        SendSentenceToAllInstruments(
-		                            OCPN_DBP_STC_BRG, m_NMEA0183.Rmb.BearingToDestinationDegreesTrue, m_NMEA0183.ErrorMessage);
-		                        mTWS_Watchdog = gps_watchdog_timeout_ticks;
-		                    } // then valid bearing destination
-		                } // then valid data
-		            } // then sentence parse OK
-		        } // then last sentence is RMB */
+/*		else if (m_NMEA0183.LastSentenceIDReceived == wxT("RMB")) { //TR, for compass ...
+			if (m_NMEA0183.Parse()) {
+				if (m_NMEA0183.Rmb.IsDataValid == NTrue) {
+					//					// it's always degrees, so send the WP Name as "unit"
+					SendSentenceToAllInstruments(OCPN_DBP_STC_BRG, m_NMEA0183.Rmb.BearingToDestinationDegreesTrue, m_NMEA0183.Rmb.To);
+					SendSentenceToAllInstruments(OCPN_DBP_STC_DTW, m_NMEA0183.Rmb.RangeToDestinationNauticalMiles, wxT("Nm"));
+					//					SendSentenceToAllInstruments(OCPN_DBP_STC_DCV, m_NMEA0183.Rmb.DestinationClosingVelocityKnots, wxT("Kn"));
+					/*double lat, lon;
+					float llt = m_NMEA0183.Rmb.DestinationPosition.Latitude.Latitude;
+					int lat_deg_int = (int)(llt / 100);
+					float lat_deg = lat_deg_int;
+					float lat_min = llt - (lat_deg * 100);
+					lat = lat_deg + (lat_min / 60.);
+					if (m_NMEA0183.Rmb.DestinationPosition.Latitude.Northing == South) lat = -lat;
+					//mlat = lat;
+					SendSentenceToAllInstruments(OCPN_DBP_STC_RMBLAT, lat, wxT("SDMM"));
 
-				else if (m_NMEA0183.LastSentenceIDReceived == wxT("RMB")) {
+
+					float lln = m_NMEA0183.Rmb.DestinationPosition.Longitude.Longitude;
+					int lon_deg_int = (int)(lln / 100);
+					float lon_deg = lon_deg_int;
+					float lon_min = lln - (lon_deg * 100);
+					lon = lon_deg + (lon_min / 60.);
+					if (m_NMEA0183.Rmb.DestinationPosition.Longitude.Easting == West) lon = -lon;
+					//mlong = lon;
+					SendSentenceToAllInstruments(OCPN_DBP_STC_RMBLON, lon, wxT("SDMM"));
+					*/
+
+		/*
+				}
+				else
+					SendSentenceToAllInstruments(OCPN_DBP_STC_BRG, m_NMEA0183.Rmb.BearingToDestinationDegreesTrue, m_NMEA0183.ErrorMessage);
+				if (!wxIsNaN(m_NMEA0183.Rmb.BearingToDestinationDegreesTrue))
+					mBRG_Watchdog = gps_watchdog_timeout_ticks;
+
+			}
+
+		} */
+
+		else if (m_NMEA0183.LastSentenceIDReceived == wxT("RMB")) {
 			if (m_NMEA0183.Parse()) {
 				if (m_NMEA0183.Rmb.IsDataValid == NTrue) {
 					//					// it's always degrees, so send the WP Name as "unit"
@@ -2352,7 +2352,6 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 			}
 
 		}
-
 		else if (m_NMEA0183.LastSentenceIDReceived == wxT("RMC")) {
 			if (m_NMEA0183.Parse()) {
 				if (m_NMEA0183.Rmc.IsDataValid == NTrue) {
@@ -2576,7 +2575,7 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 					// NKE style of XDR Airtemp
 					if (m_NMEA0183.Xdr.TransducerInfo[i].TransducerName == wxT("AirTemp")){
 						SendSentenceToAllInstruments(OCPN_DBP_STC_ATMP, m_NMEA0183.Xdr.TransducerInfo[i].MeasurementData, m_NMEA0183.Xdr.TransducerInfo[i].UnitOfMeasurement);
-					} //NASA style air temp
+					} //Nasa style air temp
 					// NKE style of XDR Barometer
 					if (m_NMEA0183.Xdr.TransducerInfo[i].TransducerName == wxT("Barometer")){
 
@@ -2587,7 +2586,7 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 							data = m_NMEA0183.Xdr.TransducerInfo[i].MeasurementData;
 
 						SendSentenceToAllInstruments(OCPN_DBP_STC_MDA, data, wxT("hPa"));
-					} //NASA style air temp
+					} //Nasa style air temp
 					if (m_NMEA0183.Xdr.TransducerInfo[i].TransducerName == wxT("ENV_OUTAIR_T") || m_NMEA0183.Xdr.TransducerInfo[i].TransducerName == wxT("ENV_OUTSIDE_T")){
 						SendSentenceToAllInstruments(OCPN_DBP_STC_ATMP, m_NMEA0183.Xdr.TransducerInfo[i].MeasurementData, m_NMEA0183.Xdr.TransducerInfo[i].UnitOfMeasurement);
 					}
@@ -3006,6 +3005,9 @@ bool tactics_pi::LoadConfig(void)
 		pConf->Read(wxT("CMGSynonym"), &g_sCMGSynonym, wxT("CMG"));
 		pConf->Read(wxT("VMGSynonym"), &g_sVMGSynonym, wxT("VMG"));
 		m_bDisplayCurrentOnChart = g_bDisplayCurrentOnChart;
+        //DataExportSeparator for WindHistory, BaroHistory & PolarPerformance         
+        pConf->Read(wxT("DataExportSeparator"), &g_sDataExportSeparator, _(";"));
+
 		int d_cnt;
 		pConf->Read(wxT("TacticsCount"), &d_cnt, -1);
 		// TODO: Memory leak? We should destroy everything first
@@ -3120,6 +3122,9 @@ bool tactics_pi::SaveConfig(void)
 		pConf->Write(wxT("ShowCurrentOnChart"), g_bDisplayCurrentOnChart);
 		pConf->Write(wxT("CMGSynonym"), g_sCMGSynonym);
 		pConf->Write(wxT("VMGSynonym"), g_sVMGSynonym);
+        //WindHistory, BaroHistory & PolarPerformance need DataExportSeparator         
+        pConf->Write(wxT("DataExportSeparator"), g_sDataExportSeparator);
+
 		pConf->SetPath(wxT("/PlugIns/Tactics/Performance"));
 		pConf->Write(wxT("PolarFile"), g_path_to_PolarFile);
 		pConf->Write(wxT("BoatLeewayFactor"), g_dLeewayFactor);
@@ -4577,7 +4582,7 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			break;
 			//case ID_DBP_I_RSA:
 			//instrument = new TacticsInstrument_Single( this, wxID_ANY,
-			//        getInstrumentCaption( id ), OCPN_DBP_STC_RSA, wxT("%5.2f") );
+			//        getInstrumentCaption( id ), OCPN_DBP_STC_RSA, wxT("%5.1f") );
 			//break;
 			//case ID_DBP_D_RSA:
 			//instrument = new TacticsInstrument_RudderAngle( this, wxID_ANY,
@@ -4667,7 +4672,7 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			break;
 		case ID_DBP_I_TWAMARK:
 			instrument = new TacticsInstrument_PerformanceSingle(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_BRG | OCPN_DBP_STC_TWD | OCPN_DBP_STC_LAT | OCPN_DBP_STC_LON, wxT("%5.1f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_BRG | OCPN_DBP_STC_TWD | OCPN_DBP_STC_LAT | OCPN_DBP_STC_LON, wxT("%5.0f"));
 			((TacticsInstrument_PerformanceSingle *)instrument)->SetDisplayType(TWAMARK);
 			break;
 
@@ -4938,7 +4943,6 @@ Calculate Leeway from heel
 **********************************************************************************/
 void tactics_pi::CalculateLeeway(int st, double value, wxString unit)
 {
-
 	if (g_bUseFixedLeeway){
 		mHeelUnit = (mAWAUnit == wxT("\u00B0L")) ? wxT("\u00B0r") : wxT("\u00B0l"); // Capital L
 		mHeelUnit = (mAWAUnit == wxT("\u00B0R")) ? wxT("\u00B0l") : wxT("\u00B0r"); // What about Capital R
@@ -4952,23 +4956,26 @@ void tactics_pi::CalculateLeeway(int st, double value, wxString unit)
 	else {//g_bUseHeelSensor or g_bManHeelInput
 
 		// only start calculating if we have a full set of data
-		if (!wxIsNaN(mheel) && !wxIsNaN(mStW)) {
-			double stw_kts = fromUsrSpeed_Plugin(mStW, g_iDashSpeedUnit);
+//      if (!wxIsNaN(mheel) && !wxIsNaN(mStW)) {
+//        double stw_kts = fromUsrSpeed_Plugin(mStW, g_iDashSpeedUnit);
+      if (st == OCPN_DBP_STC_STW && !wxIsNaN(mheel) && !wxIsNaN(value)) {
+			double stw_kts = fromUsrSpeed_Plugin(value, g_iDashSpeedUnit);
 
 			// calculate Leeway based on Heel
 			if (mheel == 0)
 				mLeeway = 0;
-			else if (mStW == 0)
-				mLeeway = g_dfixedLeeway;
+//			else if (mStW == 0)
+            else if (value == 0)
+              mLeeway = g_dfixedLeeway;
 			else
 				mLeeway = (g_dLeewayFactor*mheel) / (stw_kts*stw_kts);
 			if (mLeeway > g_dfixedLeeway) mLeeway = g_dfixedLeeway;
 			if (mLeeway < -g_dfixedLeeway) mLeeway = -g_dfixedLeeway; //22.04TR : auf neg. Werte prüfen !!!
 			mHeelUnit = (mheel < 0) ? wxT("\u00B0l") : wxT("\u00B0r");
 		}
-		if	(mheel == 0){
-			mHeelUnit = wxT("\u00B0"); // This catches when the heel instrument is reading zero.
-		}
+            if	(mheel == 0){
+      		mHeelUnit = wxT("\u00B0"); // This catches when the heel instrument is reading zero.
+        }
 	}
 
 	//distribute data to all instruments
