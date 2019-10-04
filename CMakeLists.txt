@@ -83,12 +83,11 @@ SET(SRC_TACTICS
     src/baro_history.h
     src/from_ownship.cpp
     src/from_ownship.h
+    src/wxJSON/jsonval.cpp
+    src/wxJSON/jsonreader.cpp
     src/ocpn_plugin.h
-    src/wx/jsonreader.h
-    src/wx/jsonval.h
-    src/wx/jsonwriter.h
-      
 )
+
 SET(SRC_NMEA0183
     src/nmea0183/LatLong.hpp
     src/nmea0183/latlong.cpp

@@ -105,19 +105,19 @@ void TacticsInstrument_GPS::DrawFrame(wxGCDC* dc)
       wxSize size = GetClientSize();
       wxColour cb;
 
-      GetGlobalColor(wxT("DASHB"), &cb);
+      GetGlobalColor(_T("DASHB"), &cb);
       dc->SetTextBackground(cb);
       dc->SetBackgroundMode(wxSOLID);
 
       wxColour cl;
-      GetGlobalColor(wxT("DASHL"), &cl);
+      GetGlobalColor(_T("DASHL"), &cl);
       dc->SetTextForeground(cl);
       dc->SetBrush(*wxTRANSPARENT_BRUSH);
 
       wxPen pen;
       pen.SetStyle(wxPENSTYLE_SOLID);
       wxColour cf;
-      GetGlobalColor(wxT("DASHF"), &cf);
+      GetGlobalColor(_T("DASHF"), &cf);
       pen.SetColour(cf);
       pen.SetWidth(1);
       dc->SetPen(pen);
@@ -128,7 +128,7 @@ void TacticsInstrument_GPS::DrawFrame(wxGCDC* dc)
 
       wxScreenDC sdc;
       int height, width;
-      sdc.GetTextExtent(wxT("W"), &width, &height, NULL, NULL, g_pFontSmall);
+      sdc.GetTextExtent(_T("W"), &width, &height, NULL, NULL, g_pFontSmall);
 
       wxBitmap tbm( width, height, -1 );
       wxMemoryDC tdc( tbm );
@@ -183,24 +183,24 @@ void TacticsInstrument_GPS::DrawBackground(wxGCDC* dc)
 
       wxScreenDC sdc;
       int height, width;
-      sdc.GetTextExtent(wxT("W"), &width, &height, NULL, NULL, g_pFontSmall);
+      sdc.GetTextExtent(_T("W"), &width, &height, NULL, NULL, g_pFontSmall);
 
       wxColour cl;
       wxBitmap tbm( dc->GetSize().x, height, -1 );
       wxMemoryDC tdc( tbm );
       wxColour c2;
-      GetGlobalColor( wxT("DASHB"), &c2 );
+      GetGlobalColor( _T("DASHB"), &c2 );
       tdc.SetBackground( c2 );
       tdc.Clear();
 
       tdc.SetFont(*g_pFontSmall );
-      GetGlobalColor( wxT("DASHF"), &cl );
+      GetGlobalColor( _T("DASHF"), &cl );
       tdc.SetTextForeground( cl );
 
       for (int idx = 0; idx < 12; idx++)
       {
             if (m_SatInfo[idx].SatNumber)
-                  tdc.DrawText(wxString::Format(wxT("%02d"), m_SatInfo[idx].SatNumber), idx*16+5, 0);
+                  tdc.DrawText(wxString::Format(_T("%02d"), m_SatInfo[idx].SatNumber), idx*16+5, 0);
       }
 
       tdc.SelectObject( wxNullBitmap );
@@ -211,19 +211,19 @@ void TacticsInstrument_GPS::DrawBackground(wxGCDC* dc)
 void TacticsInstrument_GPS::DrawForeground( wxGCDC* dc )
 {
     wxColour cl;
-    GetGlobalColor( wxT("DASHL"), &cl );
+    GetGlobalColor( _T("DASHL"), &cl );
     wxBrush brush( cl );
     dc->SetBrush( brush );
     dc->SetPen( *wxTRANSPARENT_PEN);
     dc->SetTextBackground( cl );
 
     wxColor cf;
-    GetGlobalColor( wxT("DASHF"), &cf );
+    GetGlobalColor( _T("DASHF"), &cf );
     dc->SetTextForeground( cf );
     dc->SetBackgroundMode( wxSOLID );
 
     wxColour cb;
-    GetGlobalColor( wxT("DASHB"), &cb );
+    GetGlobalColor( _T("DASHB"), &cb );
 
     for( int idx = 0; idx < 12; idx++ ) {
         if( m_SatInfo[idx].SignalToNoiseRatio ) {
@@ -235,7 +235,7 @@ void TacticsInstrument_GPS::DrawForeground( wxGCDC* dc )
     wxString label;
     for( int idx = 0; idx < 12; idx++ ) {
         if( m_SatInfo[idx].SignalToNoiseRatio ) {
-            label.Printf( wxT("%02d"), m_SatInfo[idx].SatNumber );
+            label.Printf( _T("%02d"), m_SatInfo[idx].SatNumber );
             int width, height;
             wxScreenDC sdc;
             sdc.GetTextExtent( label, &width, &height, 0, 0, g_pFontSmall );

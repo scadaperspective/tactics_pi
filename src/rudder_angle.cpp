@@ -47,12 +47,12 @@ TacticsInstrument_RudderAngle::TacticsInstrument_RudderAngle( wxWindow *parent, 
      /* // Default Rudder position is centered
       m_MainValue = 0;
 
-      //SetOptionMainValue(wxT("%3.1f Deg"), DIAL_POSITION_BOTTOMLEFT);
+      //SetOptionMainValue(_T("%3.0f Deg"), DIAL_POSITION_BOTTOMLEFT);
       SetOptionMarker(5, DIAL_MARKER_REDGREEN, 2);
       // Labels are set static because we've no logic to display them this way
-      wxString labels[] = {wxT("40"), wxT("30"), wxT("20"), wxT("10"), wxT("0"), wxT("10"), wxT("20"), wxT("30"), wxT("40")};
+      wxString labels[] = {_T("40"), _T("30"), _T("20"), _T("10"), _T("0"), _T("10"), _T("20"), _T("30"), _T("40")};
       SetOptionLabel(10, DIAL_LABEL_HORIZONTAL, wxArrayString(9, labels));
-//      SetOptionExtraValue(wxT("%02.1f"), DIAL_POSITION_INSIDE);
+//      SetOptionExtraValue(_T("%02.0f"), DIAL_POSITION_INSIDE);
 */
 }
 
@@ -106,7 +106,7 @@ void TacticsInstrument_RudderAngle::DrawFrame(wxGCDC* dc)
       wxPen pen;
       pen.SetStyle(wxPENSTYLE_SOLID);
       pen.SetWidth(2);
-      GetGlobalColor(wxT("DASHF"), &cl);
+      GetGlobalColor(_T("DASHF"), &cl);
       pen.SetColour(cl);
       dc->SetPen(pen);
 
