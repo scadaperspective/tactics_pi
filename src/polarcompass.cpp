@@ -57,7 +57,7 @@ TacticsInstrument_Dial(parent, id, title, cap_flag, 0, 360, 0, 360)
 {
 	SetOptionMarker(5, DIAL_MARKER_SIMPLE, 2);
 	SetOptionLabel(20, DIAL_LABEL_ROTATED);
-	SetOptionMainValue(_T("%.1f"), DIAL_POSITION_INSIDE);
+	SetOptionMainValue(_T("%.2f"), DIAL_POSITION_INSIDE);
 	//    Get a pointer to the opencpn configuration object
 
 	m_pconfig = GetOCPNConfigObject();
@@ -90,7 +90,7 @@ TacticsInstrument_Dial(parent, id, title, cap_flag, 0, 360, 0, 360)
 	m_oldExpSmoothDiffCogHdt = 0;
 	for (int i = 0; i < COGRANGE; i++) m_COGRange[i] = 0;
 }
-/***************************************************************************************
+/* **************************************************************************************
 ****************************************************************************************/
 void TacticsInstrument_PolarCompass::SetData(int st, double data, wxString unit)
 {
@@ -184,7 +184,7 @@ void TacticsInstrument_PolarCompass::SetData(int st, double data, wxString unit)
     }
 	CalculateLaylineDegreeRange();
 }
-/***************************************************************************************
+/* **************************************************************************************
 ****************************************************************************************/
 void TacticsInstrument_PolarCompass::Draw(wxGCDC* bdc)
 {
@@ -224,29 +224,29 @@ void TacticsInstrument_PolarCompass::Draw(wxGCDC* bdc)
     else{
       m_PolSpd = m_PolSpd_Percent = 0;
     }
-    DrawData(bdc, m_StW, m_StWUnit, _T("STW:%.1f"), DIAL_POSITION_INSIDE);
-    DrawData(bdc, toUsrSpeed_Plugin(m_PolSpd, g_iDashSpeedUnit), m_StWUnit, _T("T-PS:%.1f"), DIAL_POSITION_BOTTOMLEFT);
+    DrawData(bdc, m_StW, m_StWUnit, _T("STW:%.2f"), DIAL_POSITION_INSIDE);
+    DrawData(bdc, toUsrSpeed_Plugin(m_PolSpd, g_iDashSpeedUnit), m_StWUnit, _T("T-PS:%.2f"), DIAL_POSITION_BOTTOMLEFT);
     DrawMarkers(bdc);
-    //if (!wxIsNaN(m_ExtraValueDTW)) DrawData(bdc, m_ExtraValueDTW, m_ExtraValueDTWUnit, _T("DTW:%.1f"), DIAL_POSITION_BOTTOMLEFT);
+    //if (!wxIsNaN(m_ExtraValueDTW)) DrawData(bdc, m_ExtraValueDTW, m_ExtraValueDTWUnit, _T("DTW:%.2f"), DIAL_POSITION_BOTTOMLEFT);
     //	if (m_CurrDir >= 0 && m_CurrDir < 360)
 //		DrawCurrent(bdc);
 
 	DrawLaylines(bdc);
-	//DrawData(bdc, m_MainValue, m_MainValueUnit, _T("%.1f"), DIAL_POSITION_TOPINSIDE);
+	//DrawData(bdc, m_MainValue, m_MainValueUnit, _T("%.2f"), DIAL_POSITION_TOPINSIDE);
 
 //	 if (!wxIsNaN(m_predictedSog)) DrawData(bdc, m_predictedSog, _T("kn "), _T("prd.SOG:\u2245%.2f"), DIAL_POSITION_BOTTOMRIGHT);
-    DrawData(bdc, m_PolSpd_Percent, _T("%"), _T("%.1f"), DIAL_POSITION_BOTTOMRIGHT);
+    DrawData(bdc, m_PolSpd_Percent, _T("%"), _T("%.2f"), DIAL_POSITION_BOTTOMRIGHT);
 
 
 }
-/***************************************************************************************
+/* **************************************************************************************
 ****************************************************************************************/
 void TacticsInstrument_PolarCompass::DrawBackground(wxGCDC* dc)
 {
 //    DrawCompassRose( dc, m_cx, m_cy, 0.7 * m_radius, m_AngleStart, true );
 	DrawBoat(dc, m_cx, m_cy, m_radius);
 }
-/***************************************************************************************
+/* **************************************************************************************
 ****************************************************************************************/
 void TacticsInstrument_PolarCompass::DrawBoat(wxGCDC* dc, int cx, int cy, int radius)
 {
@@ -296,7 +296,7 @@ void TacticsInstrument_PolarCompass::DrawBoat(wxGCDC* dc, int cx, int cy, int ra
   dc->DrawLine(points[0], hdg);
 }
 
-/***************************************************************************************
+/* **************************************************************************************
  Draw the 'wind needle' for  TWA.
  Just a simple line to avoid confusion with BearingCompass' placing the tip onto
  the VMG / CMG markers there.
@@ -375,7 +375,7 @@ void TacticsInstrument_PolarCompass::DrawWindAngles(wxGCDC* dc)
 		dc->SetPen(*wxTRANSPARENT_PEN);
 	}
 }
-/***************************************************************************************
+/* **************************************************************************************
 Draw pointers for the optimum target VMG- and CMG Angle (if bearing is available)
 ****************************************************************************************/
 void TacticsInstrument_PolarCompass::DrawTargetxMGAngle(wxGCDC* dc){
@@ -403,7 +403,7 @@ void TacticsInstrument_PolarCompass::DrawTargetxMGAngle(wxGCDC* dc){
     }
   }
 }
-/***************************************************************************************
+/* **************************************************************************************
 Draw pointers for the optimum target VMG- and CMG Angle (if bearing is available)
 ****************************************************************************************/
 void TacticsInstrument_PolarCompass::DrawTargetAngle(wxGCDC* dc, double TargetAngle, wxString color, int size){
@@ -468,7 +468,7 @@ void TacticsInstrument_PolarCompass::DrawTargetAngle(wxGCDC* dc, double TargetAn
     //}
   }
 }
-/***************************************************************************************
+/* **************************************************************************************
 ****************************************************************************************/
 void TacticsInstrument_PolarCompass::DrawForeground(wxGCDC* dc)
 {
@@ -480,7 +480,7 @@ void TacticsInstrument_PolarCompass::DrawForeground(wxGCDC* dc)
       DrawTargetxMGAngle(dc);
     }
 }
-/***************************************************************************************
+/* **************************************************************************************
 ****************************************************************************************/
 void TacticsInstrument_PolarCompass::DrawBearing(wxGCDC* dc)
 {
@@ -513,7 +513,7 @@ void TacticsInstrument_PolarCompass::DrawBearing(wxGCDC* dc)
 	dc->SetPen(*wxTRANSPARENT_PEN);
 
 }
-/***************************************************************************************
+/* **************************************************************************************
 ****************************************************************************************/
 #define POLSTEPS 180 //we draw in 2 degree steps
 void TacticsInstrument_PolarCompass::DrawPolar(wxGCDC*dc)
@@ -531,7 +531,7 @@ void TacticsInstrument_PolarCompass::DrawPolar(wxGCDC*dc)
     int i;
     for (i = 0; i < POLSTEPS / 2; i++){ //0...179
     //wxLogMessage("-- ..PolarCompass-DrawPolar() - i=%d m_TWS=%f", i, m_TWS);
-      polval[i] = BoatPolar->GetPolarSpeed(i*2 + 1, m_TWS); //polar data is 1...180 !!! i*2 : we draw in 2 degree steps
+      polval[i] = BoatPolar->GetPolarSpeed(i*1 + 1, m_TWS); //polar data is 1...180 !!! was i*2 : we draw in 2 degree steps
       polval[POLSTEPS - 1 - i] = polval[i];
       if (wxIsNaN(polval[i]))polval[i] = polval[POLSTEPS - 1 - i] = 0.0;
       if (polval[i]>max) max = polval[i];
