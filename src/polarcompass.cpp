@@ -529,9 +529,9 @@ void TacticsInstrument_PolarCompass::DrawPolar(wxGCDC*dc)
     double polval[POLSTEPS];
     double max = 0;
     int i;
-    for (i = 0; i < POLSTEPS / 2; i++){ //0...179
+    for (i = 0; i < POLSTEPS / 1; i++){ //0...179
     //wxLogMessage("-- ..PolarCompass-DrawPolar() - i=%d m_TWS=%f", i, m_TWS);
-      polval[i] = BoatPolar->GetPolarSpeed(i*1 + 1, m_TWS); //polar data is 1...180 !!! was i*2 : we draw in 2 degree steps
+      polval[i] = BoatPolar->GetPolarSpeed(i*2 + 1, m_TWS); //polar data is 1...180 !!! i*2 : we draw in 2 degree steps
       polval[POLSTEPS - 1 - i] = polval[i];
       if (wxIsNaN(polval[i]))polval[i] = polval[POLSTEPS - 1 - i] = 0.0;
       if (polval[i]>max) max = polval[i];
