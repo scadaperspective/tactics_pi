@@ -135,12 +135,12 @@ void TacticsInstrument_Depth::DrawBackground(wxGCDC* dc)
       m_MaxDepth *= 1.2;
 
       wxString label;
-      label.Printf(_T("%.0f ")+m_DepthUnit, 0.0);
+      label.Printf(_T("%.2f ")+m_DepthUnit, 0.0);
       int width, height;
       dc->GetTextExtent(label, &width, &height, 0, 0, g_pFontSmall);
       dc->DrawText(label, size.x-width-1, 40-height);
 
-      label.Printf(_T("%.0f ")+m_DepthUnit, m_MaxDepth);
+      label.Printf(_T("%.2f ")+m_DepthUnit, m_MaxDepth);
       dc->GetTextExtent(label, &width, &height, 0, 0, g_pFontSmall);
       dc->DrawText(label, size.x-width-1, size.y-height);
 }

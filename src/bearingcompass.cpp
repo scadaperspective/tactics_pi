@@ -4,6 +4,8 @@
 * Project:  OpenCPN
 * Purpose:  tactics Plugin
 * Author:   Thomas Rauch
+*
+*  Mods RGS
 *     
 ***************************************************************************
 *   Copyright (C) 2010 by David S. Register                               *
@@ -57,7 +59,7 @@ TacticsInstrument_Dial(parent, id, title, cap_flag, 0, 360, 0, 360)
 {
 	SetOptionMarker(5, DIAL_MARKER_SIMPLE, 2);
 	SetOptionLabel(20, DIAL_LABEL_ROTATED);
-	SetOptionMainValue(_T("%.1f"), DIAL_POSITION_INSIDE);
+	SetOptionMainValue(_T("%3.2f"), DIAL_POSITION_INSIDE); // RGS changed from 3.1
 	//    Get a pointer to the opencpn configuration object
 
 	m_pconfig = GetOCPNConfigObject();
@@ -207,19 +209,19 @@ void TacticsInstrument_BearingCompass::Draw(wxGCDC* bdc)
 	DrawMarkers(bdc);
 	DrawBackground(bdc);
     if (!wxIsNaN(m_Bearing)){
-      DrawData(bdc, m_Bearing, m_BearingUnit, _T("BRG:%.1f"), DIAL_POSITION_TOPLEFT);
+      DrawData(bdc, m_Bearing, m_BearingUnit, _T("BRG:\n%3.2f"), DIAL_POSITION_TOPLEFT);
       DrawData(bdc, 0, m_ToWpt, _T(""), DIAL_POSITION_TOPRIGHT);
     }
     if (!wxIsNaN(m_CurrSpeed)) DrawData(bdc, m_CurrSpeed, m_CurrSpeedUnit, _T("Curr:%.2f"), DIAL_POSITION_INSIDE);
-    if (!wxIsNaN(m_ExtraValueDTW)) DrawData(bdc, m_ExtraValueDTW, m_ExtraValueDTWUnit, _T("DTW:%.1f"), DIAL_POSITION_BOTTOMLEFT);
+    if (!wxIsNaN(m_ExtraValueDTW)) DrawData(bdc, m_ExtraValueDTW, m_ExtraValueDTWUnit, _T("DTW:\n%.2f"), DIAL_POSITION_BOTTOMLEFT);
     if (!wxIsNaN(m_CurrDir) && m_CurrDir >= 0 && m_CurrDir < 360)
 		DrawCurrent(bdc);
 	DrawForeground(bdc);
 
 	DrawLaylines(bdc);
-    if (!wxIsNaN(m_MainValue)) DrawData(bdc, m_MainValue, m_MainValueUnit, _T("%.1f"), DIAL_POSITION_TOPINSIDE);
+    if (!wxIsNaN(m_MainValue)) DrawData(bdc, m_MainValue, m_MainValueUnit, _T("%3.2f"), DIAL_POSITION_TOPINSIDE);
 
-    if (!wxIsNaN(m_predictedSog)) DrawData(bdc, m_predictedSog, getUsrSpeedUnit_Plugin(g_iDashSpeedUnit), _T("prd.SOG:\u2245%.2f"), DIAL_POSITION_BOTTOMRIGHT);
+    if (!wxIsNaN(m_predictedSog)) DrawData(bdc, m_predictedSog, getUsrSpeedUnit_Plugin(g_iDashSpeedUnit), _T("SOG:\n\u2245%.2f"), DIAL_POSITION_BOTTOMRIGHT);
 
 
 }
@@ -241,13 +243,13 @@ void TacticsInstrument_BearingCompass::DrawWindAngles(wxGCDC* dc)
 		wxColour cl;
 		GetGlobalColor(_T("DASH2"), &cl);
 		wxPen pen1;
-		pen1.SetStyle(wxSOLID);
+		pen1.SetStyle(wxPENSTYLE_SOLID);
 		pen1.SetColour(cl);
 		pen1.SetWidth(2);
 		dc->SetPen(pen1);
 		GetGlobalColor(_T("DASH1"), &cl);
 		wxBrush brush1;
-		brush1.SetStyle(wxSOLID);
+		brush1.SetStyle(wxBRUSHSTYLE_SOLID);
 		brush1.SetColour(cl);
 		dc->SetBrush(brush1);
 
@@ -255,7 +257,7 @@ void TacticsInstrument_BearingCompass::DrawWindAngles(wxGCDC* dc)
 
 		GetGlobalColor(_T("BLUE3"), &cl);
 		wxBrush brush;
-		brush.SetStyle(wxSOLID);
+		brush.SetStyle(wxBRUSHSTYLE_SOLID);
 		brush.SetColour(cl);
 		dc->SetBrush(brush);
 
@@ -311,7 +313,7 @@ void TacticsInstrument_BearingCompass::DrawWindAngles(wxGCDC* dc)
 		brg[1].y = m_cy + (m_radius * 0.75 * sin(value));
 
 		wxPen pen2;
-		pen2.SetStyle(wxSOLID);
+		pen2.SetStyle(wxPENSTYLE_SOLID);
 		pen2.SetColour(cl);
 		pen2.SetWidth(1);
 		dc->SetPen(pen2);
@@ -324,13 +326,13 @@ void TacticsInstrument_BearingCompass::DrawWindAngles(wxGCDC* dc)
 		wxColour cl;
 		GetGlobalColor(_T("DASH2"), &cl);
 		wxPen pen1;
-		pen1.SetStyle(wxSOLID);
+		pen1.SetStyle(wxPENSTYLE_SOLID);
 		pen1.SetColour(cl);
 		pen1.SetWidth(2);
 		dc->SetPen(pen1);
 		GetGlobalColor(_T("DASH1"), &cl);
 		wxBrush brush1;
-		brush1.SetStyle(wxSOLID);
+		brush1.SetStyle(wxBRUSHSTYLE_SOLID);
 		brush1.SetColour(cl);
 		dc->SetBrush(brush1);
 
@@ -338,7 +340,7 @@ void TacticsInstrument_BearingCompass::DrawWindAngles(wxGCDC* dc)
 
 		GetGlobalColor(_T("DASHN"), &cl);
 		wxBrush brush;
-		brush.SetStyle(wxSOLID);
+		brush.SetStyle(wxBRUSHSTYLE_SOLID);
 		brush.SetColour(cl);
 		dc->SetBrush(brush);
 
@@ -388,7 +390,7 @@ void TacticsInstrument_BearingCompass::DrawWindAngles(wxGCDC* dc)
 		brg[1].y = m_cy + (m_radius * 0.75 * sin(value));
 
 		wxPen pen2;
-		pen2.SetStyle(wxSOLID);
+		pen2.SetStyle(wxPENSTYLE_SOLID);
 		pen2.SetColour(cl);
 		pen2.SetWidth(1);
 		dc->SetPen(pen2);
@@ -433,7 +435,7 @@ void TacticsInstrument_BearingCompass::DrawTargetAngle(wxGCDC* dc, double Target
       dc->SetPen(*wxTRANSPARENT_PEN);
       GetGlobalColor(color, &cl);
       wxBrush brush;
-      brush.SetStyle(wxSOLID);
+      brush.SetStyle(wxBRUSHSTYLE_SOLID);
       brush.SetColour(cl);
       dc->SetBrush(brush);
 
@@ -515,7 +517,7 @@ void TacticsInstrument_BearingCompass::DrawBearing(wxGCDC* dc)
 
 	GetGlobalColor(_T("URED"), &cl);
 	wxBrush brush;
-	brush.SetStyle(wxSOLID);
+	brush.SetStyle(wxBRUSHSTYLE_SOLID);
 	brush.SetColour(cl);
 	dc->SetBrush(brush);
 
@@ -529,7 +531,7 @@ void TacticsInstrument_BearingCompass::DrawBearing(wxGCDC* dc)
 	brg[1].y = m_cy + (m_radius * 0.98 * sin(value));
 
 	wxPen pen2;
-	pen2.SetStyle(wxSOLID);
+	pen2.SetStyle(wxPENSTYLE_SOLID);
 	pen2.SetColour(cl);
 	pen2.SetWidth(2);
 	dc->SetPen(pen2);
@@ -546,7 +548,7 @@ void TacticsInstrument_BearingCompass::DrawBearing(wxGCDC* dc)
     wxColour cl;
     GetGlobalColor(_T("UBLCK"), &cl);
     wxPen pen1;
-    pen1.SetStyle(wxSOLID);
+    pen1.SetStyle(wxPENSTYLE_SOLID);
     pen1.SetColour(cl);
     pen1.SetWidth(2);
     dc->SetPen(pen1);
@@ -572,7 +574,7 @@ void TacticsInstrument_BearingCompass::DrawBearing(wxGCDC* dc)
     }
     wxBrush currbrush;
     currbrush.SetColour(wxColour(7, 107, 183, 0));
-    currbrush.SetStyle(wxSOLID);
+    currbrush.SetStyle(wxBRUSHSTYLE_SOLID);
     dc->SetBrush(currbrush);
     dc->DrawPolygon(72, currpoints, 0, 0);
   }
@@ -587,7 +589,7 @@ void TacticsInstrument_BearingCompass::DrawCurrent(wxGCDC* dc)
 
 	wxBrush currbrush;
 	currbrush.SetColour(wxColour(7, 107, 183, 192));
-	currbrush.SetStyle(wxSOLID);
+	currbrush.SetStyle(wxBRUSHSTYLE_SOLID);
 	dc->SetBrush(currbrush);
 
 	double currvalue = deg2rad(m_CurrDir) + deg2rad(m_AngleStart - ANGLE_OFFSET);
@@ -776,13 +778,13 @@ void TacticsInstrument_BearingCompass::DrawLaylines(wxGCDC* dc)
 		wxColour cl;
 		GetGlobalColor(_T("DASH2"), &cl);
 		wxPen pen1;
-		pen1.SetStyle(wxSOLID);
+		pen1.SetStyle(wxPENSTYLE_SOLID);
 		pen1.SetColour(cl);
 		pen1.SetWidth(2);
 		dc->SetPen(pen1);
 		GetGlobalColor(_T("DASH1"), &cl);
 		wxBrush brush1;
-		brush1.SetStyle(wxSOLID);
+		brush1.SetStyle(wxBRUSHSTYLE_SOLID);
 		brush1.SetColour(cl);
 		dc->SetBrush(brush1);
 
@@ -790,8 +792,8 @@ void TacticsInstrument_BearingCompass::DrawLaylines(wxGCDC* dc)
 
 		GetGlobalColor(_T("DASHN"), &cl);
 		wxBrush vbrush, tackbrush;
-		vbrush.SetStyle(wxSOLID);
-		tackbrush.SetStyle(wxSOLID);
+		vbrush.SetStyle(wxBRUSHSTYLE_SOLID);
+		tackbrush.SetStyle(wxBRUSHSTYLE_SOLID);
 		//m_curTack = TWA unit
 		//it shows L= wind from left = port tack or R=wind from right = starboard tack
 		//we're on port tack, so vertical layline is red

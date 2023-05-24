@@ -241,7 +241,7 @@ msgid "Polar Speed"
 msgstr ""
 
 #: src\tactics_pi.cpp:290 src\tactics_pi.cpp:299
-msgid "Actual "
+msgid "Vessel "
 msgstr ""
 
 #: src\tactics_pi.cpp:293 src\tactics_pi.cpp:296 src\tactics_pi.cpp:302

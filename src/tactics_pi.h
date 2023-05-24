@@ -34,12 +34,8 @@
   #include "wx/wx.h"
 #endif //precompiled headers
 
-#define     PLUGIN_VERSION_MAJOR    1
-#define     PLUGIN_VERSION_MINOR    0
-#define     PLUGIN_VERSION_PATCH    10
 
-#define     MY_API_VERSION_MAJOR    1
-#define     MY_API_VERSION_MINOR    12
+#include "version.h"
 
 #include <wx/notebook.h>
 #include <wx/fileconf.h>
@@ -52,7 +48,8 @@
 //wx2.9 #include <wx/wrapsizer.h>
 
 #include "ocpn_plugin.h"
-#include "nmea0183/nmea0183.h"
+//#include "nmea0183/nmea0183.h"
+#include "nmea0183.h"
 #include "instrument.h"
 #include "speedometer.h"
 #include "compass.h"
@@ -123,7 +120,7 @@ WX_DEFINE_ARRAY(TacticsInstrumentContainer *, wxArrayOfInstrument);
 //----------------------------------------------------------------------------------------------------------
 
 
-class tactics_pi : public wxTimer, opencpn_plugin_112
+class tactics_pi : public wxTimer, opencpn_plugin_116
 {
 public:
       tactics_pi(void *ppimgr);
@@ -143,6 +140,8 @@ public:
       wxString GetCommonName();
       wxString GetShortDescription();
       wxString GetLongDescription();
+	  // from shipdriver to read listing panel bitmap png
+	  wxBitmap m_panelBitmap; 
 
 //    The optional method overrides
       void SetNMEASentence(wxString &sentence);
@@ -193,10 +192,14 @@ public:
 private:
       bool LoadConfig(void);
       void ApplyConfig(void);
+      wxString GetCommonNameVersion(void);
+      wxString GetNameVersion(void);
       void SendSentenceToAllInstruments(int st, double value, wxString unit);
       void SendSatInfoToAllInstruments(int cnt, int seq, SAT_INFO sats[4]);
       void SendUtcTimeToAllInstruments( wxDateTime value );
-
+      void OnAvgWindUpdTimer(wxTimerEvent & event);
+      wxTimer m_avgWindUpdTimer;
+      static const char    *s_common_name;
       wxFileConfig         *m_pconfig;
       wxAuiManager         *m_pauimgr;
       int                  m_toolbar_item_id;
@@ -245,7 +248,7 @@ private:
       //double exp.smoothing of predicted Cog for Tactics WP laylines
       double               m_ExpSmcur_tacklinedir, m_ExpSmtarget_tacklinedir,m_ExpSmoothSincur_tacklinedir, m_ExpSmoothCoscur_tacklinedir, m_ExpSmoothSintarget_tacklinedir, m_ExpSmoothCostarget_tacklinedir; //TR20190623
       //Performance Variables
-      double               mPolarTargetSpeed, mPredictedHdG, mPredictedCoG, mPredictedSoG, mPercentTargetVMGupwind, mPercentTargetVMGdownwind;
+      double               mPolarTargetSpeed, mPredictedHdG, mPredictedCoG, mPredictedSoG, mPercentTargetVMGupwind, mPercentTargetVMGdownwind, mPercentUserTargetSpeed;
       TargetxMG tvmg,tcmg;
       double               mVMGGain, mCMGGain, mVMGoptAngle, mCMGoptAngle,mBRG;
 	  wxDC            *m_pdc;
@@ -280,7 +283,9 @@ private:
 class TacticsPreferencesDialog : public wxDialog
 {
 public:
-      TacticsPreferencesDialog( wxWindow *pparent, wxWindowID id, wxArrayOfTactics config );
+      TacticsPreferencesDialog( wxWindow *pparent, wxWindowID id, wxArrayOfTactics config
+        , wxString commonName, wxString nameVersion
+      );
       ~TacticsPreferencesDialog() {}
 
       void OnCloseDialog(wxCloseEvent& event);
@@ -324,7 +329,7 @@ public:
       //wxSlider                     *m_AlphaCurrDir; //TR
 	  wxButton                     *m_buttonLoadPolar;//TR
       wxButton                     *m_buttonPrefsApply;//TR
-       wxButton                     *m_buttonPrefOK;//TR
+       //wxButton                     *m_buttonPrefOK;//TR
 	  wxTextCtrl                   *m_pTextCtrlPolar; //TR
       wxSpinCtrlDouble             *m_pLaylineLength; //TR
       wxSpinCtrlDouble             *m_heel5_45;
@@ -360,6 +365,9 @@ public:
       wxCheckBox                   *m_ExpPerfData03;
       wxCheckBox                   *m_ExpPerfData04;
       wxCheckBox                   *m_ExpPerfData05;
+      wxCheckBox                   *m_ExpFileData01;
+      wxCheckBox                   *m_ExpFileData02;
+      wxTextCtrl                   *m_pDataExportSeparator;
 private:
       void UpdateTacticsButtonsState(void);
       void UpdateButtonsState(void);

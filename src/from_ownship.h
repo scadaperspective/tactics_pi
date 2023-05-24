@@ -5,6 +5,8 @@
  * Purpose:  Tactics Plugin
  * Author:   Pavel Kalian
  *
+ * Mods RGS
+ *
  ***************************************************************************
  *   Copyright (C) 2010 by David S. Register                               *
  *                                                                         *
