@@ -1,29 +1,29 @@
 /***************************************************************************
 * $Id: tactics_pi.cpp, v1.0 07/06/2016 tomBigSpeedy Exp $
-* Mods:  Ron Southworth 01/05/2023
+*
 * Project:  OpenCPN
 * Purpose:  tactics Plugin
-* Author:   Thomas Rauch
-*       (Inspired by original work from Jean-Eudes Onfray)
-* Mods RGS
-***************************************************************************
-*   Copyright (C) 2010 by David S. Register                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
-***************************************************************************
+* Author(s):Thomas Rauch (Inspired by the original work of Jean-Eudes Onfray)
+*
+* Mods: Ron Southworth RGS
+****************************************************************************
+*   Copyright (C) 2010 - 2023 by David S. Register                         *
+*                                                                          *
+*   This program is free software; you can redistribute it and/or modify   *
+*   it under the terms of the GNU General Public License as published by   *
+*   the Free Software Foundation; either version 2 of the License, or      *
+*   (at your option) any later version.                                    *
+*                                                                          *
+*   This program is distributed in the hope that it will be useful,        *
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+*   GNU General Public License for more details.                           *
+*                                                                          *
+*   You should have received a copy of the GNU General Public License      *
+*   along with this program; if not, write to the                          *
+*   Free Software Foundation, Inc.,                                        *
+*   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.          *
+****************************************************************************
 */
 
 #include "wx/wxprec.h"
@@ -145,12 +145,22 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 enum {
 	ID_DBP_I_POS, ID_DBP_I_SOG, ID_DBP_D_SOG, ID_DBP_I_COG, ID_DBP_D_COG, ID_DBP_I_STW,
 	ID_DBP_I_HDT, ID_DBP_D_AW, ID_DBP_D_AWA, ID_DBP_I_AWS, ID_DBP_D_AWS, ID_DBP_D_TW,
-	ID_DBP_I_DPT, ID_DBP_D_DPT, ID_DBP_I_TMP, ID_DBP_I_VMG, ID_DBP_D_VMG,
-	ID_DBP_I_CLK, ID_DBP_I_SUN, ID_DBP_I_ATMP, ID_DBP_I_AWA, ID_DBP_I_TWA, ID_DBP_I_TWD, ID_DBP_I_TWS,
-	ID_DBP_D_TWD, ID_DBP_I_HDM, ID_DBP_D_HDT, ID_DBP_D_WDH, ID_DBP_I_TWAMARK, ID_DBP_D_MDA, ID_DBP_I_MDA, ID_DBP_D_BPH, ID_DBP_I_FOS,
-	ID_DBP_M_COG, ID_DBP_I_PITCH, ID_DBP_I_HEEL, ID_DBP_D_AWA_TWA, ID_DBP_I_LEEWAY, ID_DBP_I_CURRDIR,
-	ID_DBP_I_CURRSPD, ID_DBP_D_BRG, ID_DBP_I_POLSPD, ID_DBP_I_POLVMG, ID_DBP_I_POLTVMG,
-	ID_DBP_I_POLTVMGANGLE, ID_DBP_I_POLCMG, ID_DBP_I_POLTCMG, ID_DBP_I_POLTCMGANGLE, ID_DBP_D_POLPERF, ID_DBP_D_AVGWIND, ID_DBP_D_POLCOMP,
+//	ID_DBP_I_DPT, ID_DBP_D_DPT, ID_DBP_I_TMP,
+	ID_DBP_I_VMG, ID_DBP_D_VMG,
+//	ID_DBP_I_RSA,ID_DBP_D_RSA, ID_DBP_I_SAT, ID_DBP_D_GPS, ID_DBP_I_PTR, ID_DBP_I_GPSUTC,ID_DBP_I_SUN,
+//	ID_DBP_D_MON, ID_DBP_I_ATMP,
+	ID_DBP_I_AWA, ID_DBP_I_TWA, ID_DBP_I_TWD, ID_DBP_I_TWS,
+	ID_DBP_D_TWD, ID_DBP_I_HDM, ID_DBP_D_HDT, ID_DBP_D_WDH,
+//	ID_DBP_I_VLW1, ID_DBP_I_VLW2,
+//	ID_DBP_D_MDA, ID_DBP_I_MDA, ID_DBP_D_BPH,
+//	ID_DBP_I_FOS,
+	ID_DBP_M_COG, ID_DBP_I_PITCH, ID_DBP_I_HEEL, ID_DBP_D_AWA_TWA,
+//	ID_DBP_I_GPSLCL, ID_DBP_I_CPULCL,
+//	ID_DBP_I_SUNLCL,
+//	ID_DBP_I_ALTI, ID_DBP_D_ALTI,
+	ID_DBP_I_CLK, ID_DBP_I_TWAMARK, ID_DBP_I_LEEWAY, ID_DBP_I_CURRDIR, ID_DBP_I_CURRSPD, ID_DBP_D_BRG,
+	ID_DBP_I_POLSPD, ID_DBP_I_POLVMG, ID_DBP_I_POLTVMG, ID_DBP_I_POLTVMGANGLE, ID_DBP_I_POLCMG,
+	ID_DBP_I_POLTCMG, ID_DBP_I_POLTCMGANGLE, ID_DBP_D_POLPERF, ID_DBP_D_AVGWIND, ID_DBP_D_POLCOMP,
 	ID_DBP_LAST_ENTRY //this has a reference in one of the routines; defining a "LAST_ENTRY" and setting the reference to it, is one codeline less to change (and find) when adding new instruments :-)
 };
 
@@ -204,13 +214,13 @@ wxString getInstrumentCaption(unsigned int id)
 	case ID_DBP_D_COG:
 		return _("GPS Compass");
 	case ID_DBP_D_HDT:
-		return _("True Compass");
+		return _("Core Compass?");
 	case ID_DBP_I_STW:
 		return _("STW");
 	case ID_DBP_I_HDT:
-		return _("Gyro HDT");
+		return _("Core HDT");
 	case ID_DBP_I_HDM:
-		return _("HDG Compass");
+		return _("HDM Inst.");
 	case ID_DBP_D_AW:
 	case ID_DBP_D_AWA:
 		return _("App. Wind Angle & Speed");
@@ -222,18 +232,22 @@ wxString getInstrumentCaption(unsigned int id)
 		return _("App. Wind Speed");
 	case ID_DBP_D_TW:
 		return _("True Wind Angle & Speed");
-	case ID_DBP_I_DPT:
-		return _("Depth");
-	case ID_DBP_D_DPT:
-		return _("Depth");
-	case ID_DBP_D_MDA:
-		return _("Barometric pressure");
-	case ID_DBP_I_MDA:
-		return _("Barometric pressure");
-	case ID_DBP_I_TMP:
-		return _("Water Temp.");
-	case ID_DBP_I_ATMP:
-		return _("Air Temp.");
+//    case ID_DBP_I_ALTI:
+//        return _("Altitude");
+//    case ID_DBP_D_ALTI:
+//        return _("Altitude Trace");
+//	case ID_DBP_I_DPT:
+//		return _("Depth");
+//	case ID_DBP_D_DPT:
+//		return _("Depth");
+//	case ID_DBP_D_MDA:
+//		return _("Barometric pressure");
+//	case ID_DBP_I_MDA:
+//		return _("Barometric pressure");
+//	case ID_DBP_I_TMP:
+//		return _("Water Temp.");
+//	case ID_DBP_I_ATMP:
+//		return _("Air Temp.");
 	case ID_DBP_I_AWA:
 		return _("App. Wind Angle");
 	case ID_DBP_I_TWA:
@@ -250,38 +264,46 @@ wxString getInstrumentCaption(unsigned int id)
 	case ID_DBP_D_VMG:
 		//           return _("VMG");
 		return g_sVMGSynonym; 
-		//case ID_DBP_I_RSA:
-		//    return _("Rudder Angle");
-		//case ID_DBP_D_RSA:
-		//    return _("Rudder Angle");
-		//case ID_DBP_I_SAT:
-		//    return _("GPS in View");
-		//case ID_DBP_D_GPS:
-		//    return _("GPS Status");
-		//case ID_DBP_I_PTR:
-		//    return _("Cursor");
-	case ID_DBP_I_CLK:
-		return _("Clock");
-	case ID_DBP_I_SUN:
-		return _("Sunrise/Sunset");
-		//case ID_DBP_D_MON:
-		//    return _("Moon phase");
+//    case ID_DBP_I_RSA:
+//	    return _("Rudder Angle");
+//    case ID_DBP_D_RSA:
+//	    return _("Rudder Angle");
+//	case ID_DBP_I_SAT:
+//	    return _("GNSS in use");
+//	case ID_DBP_D_GPS:
+//	    return _("GNSS Status");
+//	case ID_DBP_I_PTR:
+//	    return _("Cursor");
+//    case ID_DBP_I_GPSUTC:
+//        return _("GNSS Clock");
+//	case ID_DBP_I_SUN:
+//		return _("Sunrise/Sunset");
+//	case ID_DBP_D_MON:
+//	    return _("Moon phase");
 	case ID_DBP_D_WDH:
 		return _("Wind history");
-	case ID_DBP_D_BPH:
-		return  _("Barometric history");
-		//case ID_DBP_I_VLW1:
-		//    return _("Trip Log");
-		//case ID_DBP_I_VLW2:
-		//    return _("Sum Log");
-	case ID_DBP_I_TWAMARK:
-		return _("TWA to Waypoint");
-	case ID_DBP_I_FOS:
-		return _("From Ownship");
+//	case ID_DBP_D_BPH:
+//		return  _("Barometric history");
+//	case ID_DBP_I_VLW1:
+//	    return _("Trip Log");
+//	case ID_DBP_I_VLW2:
+//	    return _("Sum Log");
+//	case ID_DBP_I_FOS:
+//		return _("From Ownship");
 	case ID_DBP_I_PITCH:
 		return _("Pitch");
 	case ID_DBP_I_HEEL:
 		return _("Heel");
+//    case ID_DBP_I_GPSLCL:
+//     return _("Local GNSS Clock");
+//    case ID_DBP_I_CPULCL:
+//      return _("Local CPU Clock");
+//    case ID_DBP_I_SUNLCL:
+//      return _("Local Sunrise/Sunset");
+	case ID_DBP_I_CLK:
+		return _("Clock");
+	case ID_DBP_I_TWAMARK:
+		return _("TWA to Waypoint");
 	case  ID_DBP_I_LEEWAY:
 		return _("Leeway");
 	case ID_DBP_I_CURRDIR:
@@ -316,7 +338,6 @@ wxString getInstrumentCaption(unsigned int id)
 		return _("Average Wind Direction");
 	case ID_DBP_D_POLCOMP:
 		return _("Polar Compass");
-
 	}
 	return _T("");
 }
@@ -334,27 +355,52 @@ void getListItemForInstrument(wxListItem &item, unsigned int id)
 	case ID_DBP_I_HDT:
 	case ID_DBP_I_HDM:
 	case ID_DBP_I_AWS:
-	case ID_DBP_I_DPT:
-	case ID_DBP_I_MDA:
-	case ID_DBP_I_TMP:
-	case ID_DBP_I_ATMP:
+//	case ID_DBP_I_DPT:
+//	case ID_DBP_I_MDA:
+//	case ID_DBP_I_TMP:
+//	case ID_DBP_I_ATMP:
 	case ID_DBP_I_TWA:
 	case ID_DBP_I_TWD:
 	case ID_DBP_I_TWS:
 	case ID_DBP_I_AWA:
 	case ID_DBP_I_VMG:
-		//case ID_DBP_I_RSA:
-		//case ID_DBP_I_SAT:
-		//case ID_DBP_I_PTR:
-	case ID_DBP_I_CLK:
-	case ID_DBP_I_SUN:
-		//       case ID_DBP_I_VLW1:
-		//case ID_DBP_I_VLW2:
-	case ID_DBP_I_TWAMARK:
-	case ID_DBP_I_FOS:
+//  case ID_DBP_I_RSA:
+//	case ID_DBP_I_SAT:
+//	case ID_DBP_I_PTR:
+//    case ID_DBP_I_GPSUTC:
+//    case ID_DBP_I_GPSLCL:
+//  case ID_DBP_I_CPULCL:
+//	case ID_DBP_I_SUN:
+//	case ID_DBP_I_SUNLCL:
+//  case ID_DBP_I_VLW1:
+//	case ID_DBP_I_VLW2:
+//	case ID_DBP_I_FOS:
 	case ID_DBP_I_PITCH:
 	case ID_DBP_I_HEEL:
-	case  ID_DBP_I_LEEWAY:
+//    case ID_DBP_I_ALTI:
+	      item.SetImage(0);
+	      break;
+    case ID_DBP_D_SOG:
+    case ID_DBP_D_COG:
+    case ID_DBP_D_AW:
+    case ID_DBP_D_AWA:
+    case ID_DBP_D_AWS:
+    case ID_DBP_D_TW:
+    case ID_DBP_D_AWA_TWA:
+    case ID_DBP_D_TWD:
+//    case ID_DBP_D_DPT:
+//    case ID_DBP_D_MDA:
+    case ID_DBP_D_VMG:
+//    case ID_DBP_D_RSA:
+//    case ID_DBP_D_GPS:
+    case ID_DBP_D_HDT:
+//    case ID_DBP_D_MON:
+    case ID_DBP_D_WDH:
+//    case ID_DBP_D_BPH:
+//    case ID_DBP_D_ALTI:
+	case ID_DBP_I_CLK:
+	case ID_DBP_I_TWAMARK:
+	case ID_DBP_I_LEEWAY:
 	case ID_DBP_I_CURRDIR:
 	case ID_DBP_I_CURRSPD:
 	case ID_DBP_I_POLSPD:
@@ -364,26 +410,7 @@ void getListItemForInstrument(wxListItem &item, unsigned int id)
 	case ID_DBP_I_POLCMG:
 	case ID_DBP_I_POLTCMG:
 	case ID_DBP_I_POLTCMGANGLE:
-		item.SetImage(0);
-		break;
-	case ID_DBP_D_SOG:
-	case ID_DBP_D_COG:
-	case ID_DBP_D_AW:
-	case ID_DBP_D_AWA:
-	case ID_DBP_D_AWS:
-	case ID_DBP_D_TW:
-	case ID_DBP_D_AWA_TWA:
-	case ID_DBP_D_TWD:
-	case ID_DBP_D_DPT:
-	case ID_DBP_D_MDA:
-	case ID_DBP_D_VMG:
-		//case ID_DBP_D_RSA:
-		//case ID_DBP_D_GPS:
-	case ID_DBP_D_HDT:
-		//case ID_DBP_D_MON:
-	case ID_DBP_D_WDH:
-	case ID_DBP_D_BPH:
-		//case ID_DBP_D_CURRDIR:
+//case ID_DBP_D_CURRDIR:
 	case ID_DBP_D_BRG:
 	case ID_DBP_D_POLPERF:
 	case ID_DBP_D_AVGWIND:
@@ -2118,7 +2145,7 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 				if (mPriHeadingM >= 1) {
 					mPriHeadingM = 1;
 					mHdm = m_NMEA0183.Hdg.MagneticSensorHeadingDegrees;
-					SendSentenceToAllInstruments(OCPN_DBP_STC_HDM, mHdm, _T("\u00B0"));
+					SendSentenceToAllInstruments(OCPN_DBP_STC_HDM, mHdm, _T("\u00B0i"));
 				}
 				if (!wxIsNaN(m_NMEA0183.Hdg.MagneticSensorHeadingDegrees))
 					mHDx_Watchdog = gps_watchdog_timeout_ticks;
@@ -2145,7 +2172,7 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 				if (mPriHeadingM >= 2) {
 					mPriHeadingM = 2;
 					mHdm = m_NMEA0183.Hdm.DegreesMagnetic;
-					SendSentenceToAllInstruments(OCPN_DBP_STC_HDM, mHdm, _T("\u00B0M"));
+					SendSentenceToAllInstruments(OCPN_DBP_STC_HDM, mHdm, _T("\u00B0z"));
 				}
 				if (!wxIsNaN(m_NMEA0183.Hdm.DegreesMagnetic))
 					mHDx_Watchdog = gps_watchdog_timeout_ticks;
@@ -2247,8 +2274,7 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 					mTWD_Watchdog = gps_watchdog_timeout_ticks;
 				}
 				else if (m_NMEA0183.Mwd.WindAngleMagnetic < 999.) { //otherwise try WindAngleMagnetic ...
-					SendSentenceToAllInstruments(OCPN_DBP_STC_TWD, m_NMEA0183.Mwd.WindAngleMagnetic,
-						_T("\u00B0M"));
+					SendSentenceToAllInstruments(OCPN_DBP_STC_TWD, m_NMEA0183.Mwd.WindAngleMagnetic, _T("\u00B0ML"));
 					mTWD_Watchdog = gps_watchdog_timeout_ticks;
 				}
 
@@ -2440,8 +2466,7 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 								if (dMagneticCOG >= 360.0) dMagneticCOG = dMagneticCOG - 360.0;
 							}
 							//mCOG = dMagneticCOG;
-							SendSentenceToAllInstruments(OCPN_DBP_STC_MCOG,
-								dMagneticCOG, _T("\u00B0M"));
+							SendSentenceToAllInstruments(OCPN_DBP_STC_MCOG,	dMagneticCOG, _T("\u00B0mC"));
 						}
 						else {
 							//->SetData(_T("---"));
@@ -2494,8 +2519,7 @@ void tactics_pi::SetNMEASentence(wxString &sentence)
 				}
 				if (mPriHeadingM >= 3) {
 					mPriHeadingM = 3;
-					SendSentenceToAllInstruments(OCPN_DBP_STC_HDM, m_NMEA0183.Vhw.DegreesMagnetic,
-						_T("\u00B0M"));
+					SendSentenceToAllInstruments(OCPN_DBP_STC_HDM, m_NMEA0183.Vhw.DegreesMagnetic, _T("\u00B0M3"));
 				}
 				if (m_NMEA0183.Vhw.Knots < 999.) {
 					SendSentenceToAllInstruments(OCPN_DBP_STC_STW, toUsrSpeed_Plugin(m_NMEA0183.Vhw.Knots, g_iDashSpeedUnit),
@@ -2733,7 +2757,7 @@ void tactics_pi::SetPositionFix(PlugIn_Position_Fix &pfix)
 		dMagneticCOG = mCOGFilter.get() - pfix.Var;
 		if (dMagneticCOG < 0.0) dMagneticCOG = 360.0 + dMagneticCOG;
 		if (dMagneticCOG >= 360.0) dMagneticCOG = dMagneticCOG - 360.0;
-		SendSentenceToAllInstruments(OCPN_DBP_STC_MCOG, dMagneticCOG, _T("\u00B0M"));
+		SendSentenceToAllInstruments(OCPN_DBP_STC_MCOG, dMagneticCOG, _T("\u00B0mC1"));
 	}
 	if (mPriVar >= 1) {
 		if (!wxIsNaN(pfix.Var)){
@@ -2761,8 +2785,8 @@ void tactics_pi::SetCursorLatLon(double lat, double lon)
 	g_dcur_lat = lat; //TR
 	g_dcur_lon = lon;
 
-	//SendSentenceToAllInstruments( OCPN_DBP_STC_PLA, lat, _T("SDMM") );
-	//SendSentenceToAllInstruments( OCPN_DBP_STC_PLO, lon, _T("SDMM") );
+//	SendSentenceToAllInstruments( OCPN_DBP_STC_PLA, lat, _T("SDMM") );
+//	SendSentenceToAllInstruments( OCPN_DBP_STC_PLO, lon, _T("SDMM") );
 }
 
 void tactics_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
@@ -4553,29 +4577,28 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			break;
 		case ID_DBP_I_STW:
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_STW, _T("%.2f")); //RGS Precision Changes
+				getInstrumentCaption(id), OCPN_DBP_STC_STW, _T("%3.2f")); //RGS Precision Changes
 			break;
 		case ID_DBP_I_HDT: //true heading
 			// TODO: Option True or Magnetic
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_HDT, _T("%.2f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_HDT, _T("%3.2f"));
 			break;
 		case ID_DBP_I_HDM:  //magnetic heading
-			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_HDM, _T("%.2f"));
+			instrument = new TacticsInstrument_Single(this, wxID_ANY, getInstrumentCaption(id), OCPN_DBP_STC_HDM, _T("%3.2f"));
 			break;
 		case ID_DBP_D_AW:
 		case ID_DBP_D_AWA:
 			instrument = new TacticsInstrument_Wind(this, wxID_ANY,
 				getInstrumentCaption(id), OCPN_DBP_STC_AWA);
-			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(_T("%.2f"),
+			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(_T("%3.2f"),
 				DIAL_POSITION_BOTTOMLEFT);
 			((TacticsInstrument_Dial *)instrument)->SetOptionExtraValue(
-				OCPN_DBP_STC_AWS, _T("%.1f"), DIAL_POSITION_INSIDE);
+				OCPN_DBP_STC_AWS, _T("%.2f"), DIAL_POSITION_INSIDE);
 			break;
 		case ID_DBP_I_AWS:
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_AWS, _T("%.2f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_AWS, _T("%3.2f"));
 			break;
 		case ID_DBP_D_AWS:
 			instrument = new TacticsInstrument_Speedometer(this, wxID_ANY,
@@ -4587,7 +4610,7 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(_T("A %.2f"),
 				DIAL_POSITION_BOTTOMLEFT);
 			((TacticsInstrument_Dial *)instrument)->SetOptionExtraValue(
-				OCPN_DBP_STC_TWS, _T("T %.1f"), DIAL_POSITION_BOTTOMRIGHT);
+				OCPN_DBP_STC_TWS, _T("T %.2f"), DIAL_POSITION_BOTTOMRIGHT);
 			break;
 		case ID_DBP_D_TW: //True Wind angle +-180° on boat axis
 			instrument = new TacticsInstrument_TrueWindAngle(this, wxID_ANY,
@@ -4614,11 +4637,11 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 				OCPN_DBP_STC_TWS, _T("%.1f"), DIAL_POSITION_INSIDE);
 			//TR			        OCPN_DBP_STC_TWS2, _T("%.1f"), DIAL_POSITION_INSIDE );
 			break;
-		case ID_DBP_I_DPT:
-			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_DPT, _T("%5.2f"));
-			break;
-		case ID_DBP_D_DPT:
+//		case ID_DBP_I_DPT:
+//			instrument = new TacticsInstrument_Single(this, wxID_ANY,
+//				getInstrumentCaption(id), OCPN_DBP_STC_DPT, _T("%5.2f"));
+//			break;
+/*		case ID_DBP_D_DPT:
 			instrument = new TacticsInstrument_Depth(this, wxID_ANY,
 				getInstrumentCaption(id));
 			break;
@@ -4644,7 +4667,7 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
 				getInstrumentCaption(id), OCPN_DBP_STC_ATMP, _T("%2.2f"));
 			break;
-/*	    case ID_DBP_I_VLW1: // Trip Log
+	    case ID_DBP_I_VLW1: // Trip Log
 			instrument = new TacticsInstrument_Single( this, wxID_ANY,
 			getInstrumentCaption( id ), OCPN_DBP_STC_VLW1, _T("%2.2f") );
 			break;
@@ -4697,19 +4720,19 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			//case ID_DBP_D_GPS:
 			//instrument = new TacticsInstrument_GPS( this, wxID_ANY,
 			//        getInstrumentCaption( id ) );
-			//  break;
-			//case ID_DBP_I_PTR:
-			// instrument = new TacticsInstrument_Position( this, wxID_ANY,
-			//       getInstrumentCaption( id ), OCPN_DBP_STC_PLA, OCPN_DBP_STC_PLO );
-			//break;
+//			 break;
+//		case ID_DBP_I_PTR:
+//			 instrument = new TacticsInstrument_Position( this, wxID_ANY,
+//			       getInstrumentCaption( id ), OCPN_DBP_STC_PLA, OCPN_DBP_STC_PLO );
+//			break;
 		case ID_DBP_I_CLK:
 			instrument = new TacticsInstrument_Clock(this, wxID_ANY,
 				getInstrumentCaption(id));
 			break;
-		case ID_DBP_I_SUN:
-			instrument = new TacticsInstrument_Sun(this, wxID_ANY,
-				getInstrumentCaption(id));
-			break;
+//		case ID_DBP_I_SUN:
+//			instrument = new TacticsInstrument_Sun(this, wxID_ANY,
+//				getInstrumentCaption(id));
+//			break;
 			/*case ID_DBP_D_MON:
 			instrument = new TacticsInstrument_Moon( this, wxID_ANY,
 			getInstrumentCaption( id ) );
@@ -4718,14 +4741,14 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			instrument = new TacticsInstrument_WindDirHistory(this, wxID_ANY,
 				getInstrumentCaption(id));
 			break;
-		case ID_DBP_D_BPH:
-			instrument = new TacticsInstrument_BaroHistory(this, wxID_ANY,
-				getInstrumentCaption(id));
-			break;
-		case ID_DBP_I_FOS:
-			instrument = new TacticsInstrument_FromOwnship(this, wxID_ANY,
-				getInstrumentCaption(id));
-			break;
+//		case ID_DBP_D_BPH:
+//			instrument = new TacticsInstrument_BaroHistory(this, wxID_ANY,
+//				getInstrumentCaption(id));
+//			break;
+//		case ID_DBP_I_FOS:
+//			instrument = new TacticsInstrument_FromOwnship(this, wxID_ANY,
+//				getInstrumentCaption(id));
+//			break;
 		case ID_DBP_I_PITCH:
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
 				getInstrumentCaption(id), OCPN_DBP_STC_PITCH, _T("%2.1f"));
@@ -5192,7 +5215,7 @@ Set MARK Position
 **********************************************************************************/
 void tactics_pi::OnContextMenuItemCallback(int id)
 {
-	m_pMark = new PlugIn_Waypoint(g_dcur_lat, g_dcur_lon, _T("circle"), _T("Tactics temp. WP"), _T("TacticsWP"));
+	m_pMark = new PlugIn_Waypoint(g_dcur_lat, g_dcur_lon, _T("circle"), _T("Tactics WP (temp.)"), _T("TacticsWP"));
 	g_dmark_lat = m_pMark->m_lat;
 	g_dmark_lon = m_pMark->m_lon;
 	AddSingleWaypoint(m_pMark, false);

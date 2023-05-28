@@ -254,19 +254,19 @@ void TacticsInstrument_Single::SetData(int st, double data, wxString unit)
                   m_data = wxString::Format(m_format, data)+DEGREE_SIGN;
                 else if (unit == _T("\u00B0T"))
                   m_data = wxString::Format(m_format, data)+DEGREE_SIGN+_(" true");
-                else if (unit == _T("\u00B0M"))
+                else if (unit == _T("\u00B0z"))
                   m_data = wxString::Format(m_format, data)+DEGREE_SIGN+_(" mag");
                 else if (unit == _T("\u00B0L"))
                   m_data = _T(">")+ wxString::Format(m_format, data)+DEGREE_SIGN;
                 else if (unit == _T("\u00B0R"))
-                  m_data = wxString::Format(m_format, data)+DEGREE_SIGN+_T("<");
+                  m_data = wxString::Format(m_format, data)+DEGREE_SIGN+_T(" <");
                 else if (unit == _T("\u00B0l")){  //22.04.TR
                   if (data < 0) data = -data;     //22.04.TR
-                  m_data = +_T("<") + wxString::Format(m_format, data) + DEGREE_SIGN;//22.04.TR
+                  m_data = +_T(">") + wxString::Format(m_format, data) + DEGREE_SIGN;//22.04.TR
                 }
                 else if (unit == _T("\u00B0r")){//22.04.TR
                   if (data < 0) data = -data;   //22.04.TR
-                  m_data = wxString::Format(m_format, data) + DEGREE_SIGN + _T(">"); //22.04.TR
+                  m_data = wxString::Format(m_format, data) + DEGREE_SIGN + _T(" <"); //22.04.TR
                 }
                 else if (unit == _T("N")) //Knots
                   m_data = wxString::Format(m_format, data)+_T(" Kts");
@@ -281,7 +281,7 @@ void TacticsInstrument_Single::SetData(int st, double data, wxString unit)
                   m_data = wxString::Format(m_format, data)+_T(" ")+unit;
             }
             else
-                m_data = _T("---");
+                m_data = wxString::Format(_T("---"));
       }
 }
 
