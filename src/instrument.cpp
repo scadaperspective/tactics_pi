@@ -1,4 +1,4 @@
-/******************************************************************************
+/***************************************************************************
  * $Id: instrument.cpp, v1.0 2016/06/07 tom_BigSpeedy Exp $
  *
  * Project:  OpenCPN
@@ -6,7 +6,7 @@
  * Author:   Thomas Rauch
  *   (Inspired by original work from Jean-Eudes Onfray)
  ***************************************************************************
- *   Copyright (C) 2010 by David S. Register                               *
+ *   Copyright (C) 2010 -2023 by David S. Register                         *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,11 +27,9 @@
 
 
 #include "wx/wxprec.h"
-
 #ifndef  WX_PRECOMP
-  #include "wx/wx.h"
+#include "wx/wx.h"
 #endif //precompiled headers
-
 #include "instrument.h"
 #include "wx28compat.h"
 
@@ -42,7 +40,7 @@
 //----------------------------------------------------------------
 
 TacticsInstrument::TacticsInstrument(wxWindow *pparent, wxWindowID id, wxString title, int cap_flag)
-      :wxControl(pparent, id, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE)
+                  :wxControl(pparent, id, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE)
 {
       m_title = title;
       m_cap_flag = cap_flag;
@@ -123,7 +121,6 @@ void TacticsInstrument::OnPaint( wxPaintEvent& WXUNUSED(event) )
     GetGlobalColor( _T("DASHB"), &cl );
     dc.SetBackground( cl );
     dc.Clear();
-
     Draw( &dc );
 
     if(!m_drawSoloInPane) {
@@ -150,7 +147,6 @@ void TacticsInstrument::OnPaint( wxPaintEvent& WXUNUSED(event) )
             GetGlobalColor( _T("DASHF"), &cl );
             dc.SetTextForeground( cl );
             dc.DrawText( m_title, 5, 0 );
-
             //mdc.SelectObject( wxNullBitmap );
             //pdc.DrawBitmap( bm, 0, 0, false );
         }

@@ -1,9 +1,9 @@
 /***************************************************************************
 * $Id: tactics_pi.cpp, v1.0 07/06/2016 tomBigSpeedy Exp $
 *
-* Project:  OpenCPN
-* Purpose:  tactics Plugin
-* Author(s):Thomas Rauch (Inspired by the original work of Jean-Eudes Onfray)
+* Project:   OpenCPN
+* Purpose:   tactics Plugin
+* Author(s): Thomas Rauch - Inspired by the original work Jean-Eudes Onfray
 *
 * Mods: Ron Southworth RGS
 ****************************************************************************
@@ -161,14 +161,15 @@ enum {
 	ID_DBP_I_CLK, ID_DBP_I_TWAMARK, ID_DBP_I_LEEWAY, ID_DBP_I_CURRDIR, ID_DBP_I_CURRSPD, ID_DBP_D_BRG,
 	ID_DBP_I_POLSPD, ID_DBP_I_POLVMG, ID_DBP_I_POLTVMG, ID_DBP_I_POLTVMGANGLE, ID_DBP_I_POLCMG,
 	ID_DBP_I_POLTCMG, ID_DBP_I_POLTCMGANGLE, ID_DBP_D_POLPERF, ID_DBP_D_AVGWIND, ID_DBP_D_POLCOMP,
-	ID_DBP_LAST_ENTRY //this has a reference in one of the routines; defining a "LAST_ENTRY" and setting the reference to it, is one codeline less to change (and find) when adding new instruments :-)
+	ID_DBP_LAST_ENTRY //this has a reference in one of the routines; defining a "LAST_ENTRY" and setting the reference to it,
+//                   	is one codeline less to change (and find) when adding new instruments :-)
 };
 
 /********************************************************************************************************/
 //   Distance measurement for simple sphere
 /********************************************************************************************************/
 
-/* currently not used, but maybe less costy in terms of CPU usage ? To be investigated ...*/
+/* currently not used, but maybe less costly in terms of CPU usage ? To be investigated ...*/
 static double local_distance(double lat1, double lon1, double lat2, double lon2) {
 	// Spherical Law of Cosines
 	double theta, dist;
@@ -2757,7 +2758,7 @@ void tactics_pi::SetPositionFix(PlugIn_Position_Fix &pfix)
 		dMagneticCOG = mCOGFilter.get() - pfix.Var;
 		if (dMagneticCOG < 0.0) dMagneticCOG = 360.0 + dMagneticCOG;
 		if (dMagneticCOG >= 360.0) dMagneticCOG = dMagneticCOG - 360.0;
-		SendSentenceToAllInstruments(OCPN_DBP_STC_MCOG, dMagneticCOG, _T("\u00B0mC1"));
+		SendSentenceToAllInstruments(OCPN_DBP_STC_MCOG, dMagneticCOG, _T("\u00B0z"));
 	}
 	if (mPriVar >= 1) {
 		if (!wxIsNaN(pfix.Var)){
