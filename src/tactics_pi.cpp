@@ -4636,7 +4636,7 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 				DIAL_POSITION_BOTTOMLEFT);
 			((TacticsInstrument_Dial *)instrument)->SetOptionExtraValue(
 				OCPN_DBP_STC_TWS, _T("%.2f"), DIAL_POSITION_INSIDE);
-			//TR			        OCPN_DBP_STC_TWS2, _T("%.1f"), DIAL_POSITION_INSIDE );
+			//TR			        OCPN_DBP_STC_TWS2, _T("%.2f"), DIAL_POSITION_INSIDE );
 			break;
 //		case ID_DBP_I_DPT:
 //			instrument = new TacticsInstrument_Single(this, wxID_ANY,

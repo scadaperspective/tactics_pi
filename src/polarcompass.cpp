@@ -224,7 +224,7 @@ void TacticsInstrument_PolarCompass::Draw(wxGCDC* bdc)
     else{
       m_PolSpd = m_PolSpd_Percent = 0;
     }
-    DrawData(bdc, m_StW, m_StWUnit, _T("STW:%.1f"), DIAL_POSITION_INSIDE);
+    DrawData(bdc, m_StW, m_StWUnit, _T("STW:%.2f"), DIAL_POSITION_INSIDE);
     DrawData(bdc, toUsrSpeed_Plugin(m_PolSpd, g_iDashSpeedUnit), m_StWUnit, _T("T-PS:\n%.2f"), DIAL_POSITION_BOTTOMLEFT);
     DrawMarkers(bdc);
     //if (!wxIsNaN(m_ExtraValueDTW)) DrawData(bdc, m_ExtraValueDTW, m_ExtraValueDTWUnit, _T("DTW:\n%.2f"), DIAL_POSITION_BOTTOMLEFT);
@@ -232,9 +232,9 @@ void TacticsInstrument_PolarCompass::Draw(wxGCDC* bdc)
 //		DrawCurrent(bdc);
 
 	DrawLaylines(bdc);
-	//DrawData(bdc, m_MainValue, m_MainValueUnit, _T("%3.1f"), DIAL_POSITION_TOPINSIDE);
+	//DrawData(bdc, m_MainValue, m_MainValueUnit, _T("%3.2f"), DIAL_POSITION_TOPINSIDE);
 
-//	 if (!wxIsNaN(m_predictedSog)) DrawData(bdc, m_predictedSog, _T("kn "), _T("SOG:\n\u2245%.1f"), DIAL_POSITION_BOTTOMRIGHT);
+//	 if (!wxIsNaN(m_predictedSog)) DrawData(bdc, m_predictedSog, _T("kn "), _T("SOG:\n\u2245%.2f"), DIAL_POSITION_BOTTOMRIGHT);
     DrawData(bdc, m_PolSpd_Percent, _T("%"), _T("PERF:\n%3.2f"), DIAL_POSITION_BOTTOMRIGHT);
 
 
@@ -312,13 +312,13 @@ void TacticsInstrument_PolarCompass::DrawWindAngles(wxGCDC* dc)
 		brush.SetColour(cl);
 		dc->SetBrush(brush);
 
-		/* this is fix for a +/-180° round instrument, when m_MainValue is supplied as <0..180><L | R>
+		/* this is fix for a +/-180ï¿½ round instrument, when m_MainValue is supplied as <0..180><L | R>
 		* for example TWA & AWA */
 		double data, TwaCog;
 		// head-up = COG, but TWA is based on Hdt --> add the diff here for a correct display
 		TwaCog = m_TWA; //neu, jetzt HDt 
 
-		/* this is fix for a +/-180° round instrument, when m_MainValue is supplied as <0..180><L | R>
+		/* this is fix for a +/-180ï¿½ round instrument, when m_MainValue is supplied as <0..180><L | R>
 		* for example TWA & AWA */
 		if (m_curTack == _T("\u00B0L"))
 			data = 360 - TwaCog;
@@ -572,9 +572,9 @@ void TacticsInstrument_PolarCompass::DrawData(wxGCDC* dc, double value,
 	{
 		if (unit == _T("\u00B0"))
 			text = wxString::Format(format, value) + DEGREE_SIGN;
-		else if (unit == _T("\u00B0L")) // No special display for now, might be XX°< (as in text-only instrument)
+		else if (unit == _T("\u00B0L")) // No special display for now, might be XXï¿½< (as in text-only instrument)
 			text = wxString::Format(format, value) + DEGREE_SIGN;
-		else if (unit == _T("\u00B0R")) // No special display for now, might be >XX°
+		else if (unit == _T("\u00B0R")) // No special display for now, might be >XXï¿½
 			text = wxString::Format(format, value) + DEGREE_SIGN;
 		else if (unit == _T("\u00B0T"))
 			text = wxString::Format(format, value) + DEGREE_SIGN + _T("T");
@@ -739,10 +739,10 @@ void TacticsInstrument_PolarCompass::DrawLaylines(wxGCDC* dc)
 		wxPoint vpoints[3];
 		vpoints[0].x = m_cx;
 		vpoints[0].y = m_cy;
-		vpoints[1].x = m_cx + (m_radius * cos(value1));//neu : für Headup = HDT
-		vpoints[1].y = m_cy + (m_radius * sin(value1));//neu : für Headup = HDT
-		vpoints[2].x = m_cx + (m_radius * cos(value2));//neu : für Headup = HDT
-		vpoints[2].y = m_cy + (m_radius * sin(value2));//neu : für Headup = HDT
+		vpoints[1].x = m_cx + (m_radius * cos(value1));//neu : fï¿½r Headup = HDT
+		vpoints[1].y = m_cy + (m_radius * sin(value1));//neu : fï¿½r Headup = HDT
+		vpoints[2].x = m_cx + (m_radius * cos(value2));//neu : fï¿½r Headup = HDT
+		vpoints[2].y = m_cy + (m_radius * sin(value2));//neu : fï¿½r Headup = HDT
 		dc->DrawArc(vpoints[2], vpoints[1], vpoints[0]);
 
 		/*****************************************************************************************
