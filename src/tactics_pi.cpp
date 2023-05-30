@@ -4619,12 +4619,12 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(_T("%.2f"),
 				DIAL_POSITION_BOTTOMLEFT);
 			((TacticsInstrument_Dial *)instrument)->SetOptionExtraValue(
-				OCPN_DBP_STC_TWS, _T("%.1f"), DIAL_POSITION_INSIDE);
+				OCPN_DBP_STC_TWS, _T("%.2f"), DIAL_POSITION_INSIDE);
 			break;
 		case ID_DBP_D_AWA_TWA: //App/True Wind angle +-180° on boat axis
 			instrument = new TacticsInstrument_AppTrueWindAngle(this, wxID_ANY,
 				getInstrumentCaption(id), OCPN_DBP_STC_AWA | OCPN_DBP_STC_TWA | OCPN_DBP_STC_TWD);
-			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(_T("%.1f"),
+			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(_T("%.2f"),
 				DIAL_POSITION_NONE);
 			((TacticsInstrument_Dial *)instrument)->SetOptionExtraValue(
 				OCPN_DBP_STC_TWS | OCPN_DBP_STC_AWS, _T("%.2f"), DIAL_POSITION_NONE);
@@ -4632,10 +4632,10 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 		case ID_DBP_D_TWD: //True Wind direction
 			instrument = new TacticsInstrument_WindCompass(this, wxID_ANY,
 				getInstrumentCaption(id), OCPN_DBP_STC_TWD);
-			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(_T("%.1f"),
+			((TacticsInstrument_Dial *)instrument)->SetOptionMainValue(_T("%.2f"),
 				DIAL_POSITION_BOTTOMLEFT);
 			((TacticsInstrument_Dial *)instrument)->SetOptionExtraValue(
-				OCPN_DBP_STC_TWS, _T("%.1f"), DIAL_POSITION_INSIDE);
+				OCPN_DBP_STC_TWS, _T("%.2f"), DIAL_POSITION_INSIDE);
 			//TR			        OCPN_DBP_STC_TWS2, _T("%.1f"), DIAL_POSITION_INSIDE );
 			break;
 //		case ID_DBP_I_DPT:
@@ -4678,11 +4678,11 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			break;*/
 		case ID_DBP_I_TWA: //true wind angle
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_TWA, _T("%5.1f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_TWA, _T("%5.2f"));
 			break;
 		case ID_DBP_I_TWD: //true wind direction
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_TWD, _T("%5.1f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_TWD, _T("%5.2f"));
 			break;
 		case ID_DBP_I_TWS: // true wind speed
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
@@ -4690,7 +4690,7 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			break;
 		case ID_DBP_I_AWA: //apparent wind angle
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_AWA, _T("%5.1f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_AWA, _T("%5.2f"));
 			break;
 		case ID_DBP_I_VMG:
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
@@ -4752,15 +4752,15 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 //			break;
 		case ID_DBP_I_PITCH:
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_PITCH, _T("%2.1f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_PITCH, _T("%2.2f"));
 			break;
 		case ID_DBP_I_HEEL:
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_HEEL, _T("%2.1f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_HEEL, _T("%2.2f"));
 			break;
 		case ID_DBP_I_CURRDIR:
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_CURRDIR, _T("%2.0f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_CURRDIR, _T("%2.2f"));
 			break;
 		case ID_DBP_I_CURRSPD:
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
@@ -4768,7 +4768,7 @@ void TacticsWindow::SetInstrumentList(wxArrayInt list)
 			break;
 		case ID_DBP_I_LEEWAY:
 			instrument = new TacticsInstrument_Single(this, wxID_ANY,
-				getInstrumentCaption(id), OCPN_DBP_STC_LEEWAY, _T("%2.1f"));
+				getInstrumentCaption(id), OCPN_DBP_STC_LEEWAY, _T("%2.2f"));
 			break;
 		case ID_DBP_D_BRG:  // Bearing Compass
 			instrument = new TacticsInstrument_BearingCompass(this, wxID_ANY,
@@ -5417,14 +5417,14 @@ void tactics_pi::createPNKEP_NMEA(int sentence, double data1, double data2, doub
 		/*course on next tack(code PNKEP02)
 		$PNKEP, 02, x.x*hh<CR><LF>
 		\ Cap sur bord Opposé / prochain bord de 0 à 359°*/
-		nmeastr = _T("$PNKEP,02,") + wxString::Format("%.1f", data1);
+		nmeastr = _T("$PNKEP,02,") + wxString::Format("%.2f", data1);
 		break;
 	case 3:
 		/*    $PNKEP, 03, x.x, x.x, x.x*hh<CR><LF>
 		|    |     \ performance downwind from 0 to 99 %
 		|     \ performance upwind from 0 to 99 %
 		\ opt.VMG angle  0 à 359°  */
-		nmeastr = _T("$PNKEP,03,") + wxString::Format("%.1f,", data1) + wxString::Format("%.1f,", data2) + wxString::Format("%.1f", data3);
+		nmeastr = _T("$PNKEP,03,") + wxString::Format("%.2f,", data1) + wxString::Format("%.2f,", data2) + wxString::Format("%.2f", data3);
 		break;
 	case 4:
 		/*Calculates the gain for VMG & CMG and stores it in the variables
@@ -5436,10 +5436,10 @@ void tactics_pi::createPNKEP_NMEA(int sentence, double data1, double data2, doub
 		|    |     \ Angle pour optimiser le VMG de 0 à 359°
 		|    \ Gain CMG de 0 à 999 %
 		\ Angle pour optimiser le CMG de 0 à 359°*/
-		nmeastr = _T("$PNKEP,04,") + wxString::Format("%.1f,", data1) + wxString::Format("%.1f,", data2) + wxString::Format("%.1f,", data3) + wxString::Format("%.1f", data4);
+		nmeastr = _T("$PNKEP,04,") + wxString::Format("%.2f,", data1) + wxString::Format("%.2f,", data2) + wxString::Format("%.2f,", data3) + wxString::Format("%.2f", data4);
 		break;
 	case 5:
-		nmeastr = _T("$PNKEP,05,") + wxString::Format("%.1f,", data1) + wxString::Format("%.2f,N,", data2) + wxString::Format("%.2f,K", data3);
+		nmeastr = _T("$PNKEP,05,") + wxString::Format("%.2f,", data1) + wxString::Format("%.2f,N,", data2) + wxString::Format("%.2f,K", data3);
 		break;
 	default:
 		nmeastr = _T("");
