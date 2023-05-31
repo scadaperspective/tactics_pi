@@ -551,7 +551,7 @@ void TacticsInstrument_WindDirHistory::DrawForeground(wxGCDC* dc)
     dir = m_WindDir;
     while (dir > 360) dir -= 360;
     while (dir <0) dir += 360;
-    WindAngle = wxString::Format(_T("TWD %3.0f"), dir) + DEGREE_SIGN;
+    WindAngle = wxString::Format(_T("TWD %3.2f"), dir) + DEGREE_SIGN;
   }
   dc->GetTextExtent(WindAngle, &degw, &degh, 0, 0, g_pFontData);
   dc->DrawText(WindAngle, m_WindowRect.width - degw - m_RightLegend - 3, m_TopLineHeight - degh);
@@ -602,7 +602,7 @@ void TacticsInstrument_WindDirHistory::DrawForeground(wxGCDC* dc)
   col = wxColour(61, 61, 204, 255); //blue, opaque
   dc->SetFont(*g_pFontData);
   dc->SetTextForeground(col);
-  WindSpeed = wxString::Format(_T("TWS %3.1f %s "), toUsrSpeed_Plugin(m_WindSpd, g_iDashWindSpeedUnit), m_WindSpeedUnit.c_str());
+  WindSpeed = wxString::Format(_T("TWS %3.2f %s "), toUsrSpeed_Plugin(m_WindSpd, g_iDashWindSpeedUnit), m_WindSpeedUnit.c_str());
   dc->GetTextExtent(WindSpeed, &degw, &degh, 0, 0, g_pFontData);
   dc->DrawText(WindSpeed, m_LeftLegend + 3, m_TopLineHeight - degh);
   dc->SetFont(*g_pFontLabel);
@@ -622,7 +622,7 @@ void TacticsInstrument_WindDirHistory::DrawForeground(wxGCDC* dc)
   wxString s_Max = _("Max");
   wxString s_Since = _("since");
   wxString s_OMax = _("Overall");
-  dc->DrawText(wxString::Format(_T("%s %.1f %s %s %02d:%02d  %s %.1f %s"), s_Max, toUsrSpeed_Plugin(m_MaxWindSpd, g_iDashWindSpeedUnit), m_WindSpeedUnit.c_str(), s_Since, hour, min, s_OMax, toUsrSpeed_Plugin(m_TotalMaxWindSpd, g_iDashWindSpeedUnit), m_WindSpeedUnit.c_str()), m_LeftLegend + 3 + 2 + degw, m_TopLineHeight - degh +2);
+  dc->DrawText(wxString::Format(_T("%s %.2f %s %s %02d:%02d  %s %.2f %s"), s_Max, toUsrSpeed_Plugin(m_MaxWindSpd, g_iDashWindSpeedUnit), m_WindSpeedUnit.c_str(), s_Since, hour, min, s_OMax, toUsrSpeed_Plugin(m_TotalMaxWindSpd, g_iDashWindSpeedUnit), m_WindSpeedUnit.c_str()), m_LeftLegend + 3 + 2 + degw, m_TopLineHeight - degh +2);
   pen.SetStyle(wxPENSTYLE_SOLID);
   pen.SetColour(wxColour(61, 61, 204, 96)); //blue, transparent
   pen.SetWidth(1);

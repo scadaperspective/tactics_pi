@@ -171,10 +171,10 @@ SET(SRCS
     src/compass.h
     src/dial.cpp
     src/dial.h
-    src/gps.cpp
-    src/gps.h
-    src/rudder_angle.cpp
-    src/rudder_angle.h
+//    src/gps.cpp
+//    src/gps.h
+//    src/rudder_angle.cpp
+//    src/rudder_angle.h
     src/speedometer.cpp
     src/speedometer.h
     src/wind.cpp
@@ -187,10 +187,10 @@ SET(SRCS
     src/icons.h
     src/wind_history.cpp
     src/wind_history.h
-    src/baro_history.cpp
-    src/baro_history.h
-    src/from_ownship.cpp
-    src/from_ownship.h
+//    src/baro_history.cpp
+//    src/baro_history.h
+//    src/from_ownship.cpp
+//    src/from_ownship.h
     libs/wxJSON/src/jsonval.cpp
     libs/wxJSON/src/jsonreader.cpp
     libs/ocpn-api/ocpn_plugin.h

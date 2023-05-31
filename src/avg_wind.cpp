@@ -431,11 +431,11 @@ void TacticsInstrument_AvgWindDir::DrawForeground(wxGCDC* dc)
     while (leftAngle > 360) leftAngle -= 360;
     while (leftAngle <0) leftAngle += 360;
 
-    minAngle = wxString::Format(_T("%3.0f"), leftAngle) + DEGREE_SIGN;
+    minAngle = wxString::Format(_T("%3.2f"), leftAngle) + DEGREE_SIGN;
     double rightAngle = wxRound(m_AvgWindDir + m_DegRangeStb);
     while (rightAngle > 360) rightAngle -= 360;
     while (rightAngle <0) rightAngle += 360;
-    maxAngle = wxString::Format(_T("%3.0f"), rightAngle) + DEGREE_SIGN;
+    maxAngle = wxString::Format(_T("%3.2f"), rightAngle) + DEGREE_SIGN;
   }
   dc->GetTextExtent(minAngle, &degw, &degh, 0, 0, g_pFontData);
   col = wxColour(wxColour(204, 41, 41, 128)); //red, opaque

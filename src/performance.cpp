@@ -222,7 +222,7 @@ void TacticsInstrument_PerformanceSingle::SetData(int st, double data, wxString 
 					else {
                         double percent = mSTW / targetspeed * 100;
                         double user_targetSpeed = toUsrSpeed_Plugin(targetspeed, g_iDashSpeedUnit);
-                        m_data = wxString::Format("%d", wxRound(percent)) + _T(" % / ") + wxString::Format("%.2f ", user_targetSpeed) + stwunit;
+                        m_data = wxString::Format("%.2f", wxRound(percent)) + _T(" % / ") + wxString::Format("%.2f ", user_targetSpeed) + stwunit;
                         //m_data = wxString::Format("%.2f / ", avgtargetspeed) + wxString::Format("%.2f", user_targetSpeed) + _T(" ") + stwunit;
                     }
 				}
@@ -240,7 +240,7 @@ void TacticsInstrument_PerformanceSingle::SetData(int st, double data, wxString 
 						double percent = fabs(VMG / targetVMG.TargetSpeed * 100.);
                         targetVMG.TargetSpeed = toUsrSpeed_Plugin(targetVMG.TargetSpeed, g_iDashSpeedUnit);
 
-						m_data = wxString::Format("%d", wxRound(percent)) + _T(" % / ") + wxString::Format("%.2f", targetVMG.TargetSpeed) + _T(" ") + stwunit;
+						m_data = wxString::Format("%.2f", wxRound(percent)) + _T(" % / ") + wxString::Format("%.2f", targetVMG.TargetSpeed) + _T(" ") + stwunit;
 					}
 					else
 						m_data =  _T("--- % / --- ") + stwunit;
@@ -249,7 +249,7 @@ void TacticsInstrument_PerformanceSingle::SetData(int st, double data, wxString 
 				else if (m_displaytype == POLARTARGETVMGANGLE){
 					TargetxMG targetVMG = BoatPolar->Calc_TargetVMG(mTWA, mTWS);
 					if (!wxIsNaN(targetVMG.TargetAngle))
-					    m_data = wxString::Format("%.1f", targetVMG.TargetAngle) + _T("\u00B0");
+					    m_data = wxString::Format("%.2f", targetVMG.TargetAngle) + _T("\u00B0");
 					else
 						m_data = _T("no polar data");
 				}
@@ -281,7 +281,7 @@ void TacticsInstrument_PerformanceSingle::SetData(int st, double data, wxString 
                       //double percent = fabs(cmg / targetCMG.TargetSpeed * 100.);
                       double percent = cmg / TCMGMax.TargetSpeed * 100.;
                       TCMGMax.TargetSpeed = toUsrSpeed_Plugin(TCMGMax.TargetSpeed, g_iDashSpeedUnit);
-                      m_data = wxString::Format("%d", wxRound(percent)) + _T(" % / ") + wxString::Format("%.2f", TCMGMax.TargetSpeed) + _T(" ") + stwunit;
+                      m_data = wxString::Format("%.2f", wxRound(percent)) + _T(" % / ") + wxString::Format("%.2f", TCMGMax.TargetSpeed) + _T(" ") + stwunit;
                     }
                     else
                       m_data = _T("--- % / --- ") + stwunit;
@@ -298,7 +298,7 @@ void TacticsInstrument_PerformanceSingle::SetData(int st, double data, wxString 
                 if (!wxIsNaN(mTWS) && !wxIsNaN(mTWD) && mBRG >= 0)
                   BoatPolar->Calc_TargetCMG2(mTWS, mTWD, mBRG, &TCMGMax, &TCMGMin);
                 if (!wxIsNaN(TCMGMax.TargetAngle))
-                  m_data = wxString::Format("%.1f", TCMGMax.TargetAngle) + _T("\u00B0");
+                  m_data = wxString::Format("%.2f", TCMGMax.TargetAngle) + _T("\u00B0");
                 else
                   m_data = _T("no polar data");
               }
@@ -333,7 +333,7 @@ void TacticsInstrument_PerformanceSingle::SetData(int st, double data, wxString 
                   leftMarkBrG = rightMarkBrG;
                   rightMarkBrG = tmp;
                 }
-                m_data = wxString::Format("%.1f", (double)leftMarkBrG) + _T("\u00B0") + wxString::Format(" - %.1f", (double)AvgMarkBrG) + _T("\u00B0")+ wxString::Format(" - %.1f", (double)rightMarkBrG) + _T("\u00B0");
+                m_data = wxString::Format("%.2f", (double)leftMarkBrG) + _T("\u00B0") + wxString::Format(" - %.2f", (double)AvgMarkBrG) + _T("\u00B0")+ wxString::Format(" - %.2f", (double)rightMarkBrG) + _T("\u00B0");
               }
               else
                 m_data = _T("---");
@@ -748,8 +748,8 @@ void Polar::CalculateRowAverages(int i, int min, int max)
 }
 /***********************************************************************************
 Return the polar speed with averaging of wind speed.
-We're still roúnding the TWA, as this is a calculated value anyway and I doubt
-it will have an accuracy < 1°.
+We're still roï¿½nding the TWA, as this is a calculated value anyway and I doubt
+it will have an accuracy < 1ï¿½.
 With this simplified approach of averaging only TWS we can reduce some load ...
 ************************************************************************************/
 double Polar::GetPolarSpeed(double twa, double tws)
@@ -762,7 +762,7 @@ double Polar::GetPolarSpeed(double twa, double tws)
 //wxLogMessage("-- GetPolarSpeed() - twa=%f tws=%f", twa, tws);
   if (wxIsNaN(twa) || wxIsNaN(tws))
       return NAN;
-  // to do : limits to be checked (0°, 180°, etc.)
+  // to do : limits to be checked (0ï¿½, 180ï¿½, etc.)
   i_twa = wxRound(twa); //the next lower full true wind angle value of the polar array
   twsmin = (int)tws; //the next lower full true wind speed value of the polar array
   fws = tws - twsmin; // factor tws (how much are we above twsmin)
@@ -775,7 +775,7 @@ double Polar::GetPolarSpeed(double twa, double tws)
 }
 /***********************************************************************************
 Get the polar speed with full averaging of the input data of both TWA and TWS.
-The polar is stored as a lookup table (2dim array) in steps of 1 kt / 1°.
+The polar is stored as a lookup table (2dim array) in steps of 1 kt / 1ï¿½.
 Instead of rounding up/down to the next full value as done in original GetPolarSpeed() we're
 averaging both TWA & TWS.
 Currently not used ...
@@ -785,7 +785,7 @@ double Polar::GetAvgPolarSpeed(double twa, double tws)
   double fangle, fws,  avspd1, avspd2, av_Spd;
   int twsmin, twamin;
 
-  // to do : limits to be checked (0°, 180°, etc.)
+  // to do : limits to be checked (0ï¿½, 180ï¿½, etc.)
   twamin = (int)twa; //the next lower full true wind angle value of the polar array
   twsmin = (int)tws; //the next lower full true wind speed value of the polar array
   fangle = twa - twamin; //factor twa (how much are we above twamin)
@@ -877,7 +877,7 @@ Calculate opt. CMG (angle & speed) for up- and downwind courses with bearing to 
   As this is not (easily) possible (or I don't know how to do), I use another approach :
   The procedure is to determine the diff-angle btw. TWD and BRG. Then we "rotate" the polar
   by this diff-angle. For the given windspeed, we can now query all boatspeeds from the polar
-  in a range of -90°..diff-angle..+90° around the new vertical point (diff-angle), and find the max speed 
+  in a range of -90ï¿½..diff-angle..+90ï¿½ around the new vertical point (diff-angle), and find the max speed 
   with "boatspeed * cos (angle)"; the returned angle is the TWA-angle for opt. CMG
   with reference to TWD
 */
@@ -942,7 +942,7 @@ TWD     : True Wind Direction
 
 boat_speed = boat_speed at target-hdg = speed from polar
 
-As the polar is rotated now (polar-0° is in TWD direction)--> hdg = polarangle + diffangle
+As the polar is rotated now (polar-0ï¿½ is in TWD direction)--> hdg = polarangle + diffangle
 with diffangle = angle btw.TWD and BRG
 
                 ^
@@ -1246,19 +1246,19 @@ TacticsInstrument(parent, id, title, OCPN_DBP_STC_STW | OCPN_DBP_STC_TWA | OCPN_
   m_TWA = NAN;
   m_TWS = NAN;
   m_STW = NAN;
-  m_PolarSpeedPercent = 0;
-  m_PolarSpeed = 0;
-  m_MaxPercent = 0;
-  m_MinBoatSpd = 0;
-  m_MaxBoatSpd = 0;
+  m_PolarSpeedPercent = 0.00;
+  m_PolarSpeed = 0.00;
+  m_MaxPercent = 0.00;
+  m_MinBoatSpd = 0.00;
+  m_MaxBoatSpd = 0.00;
   m_STWUnit = _T("--");
   m_PercentUnit = _T("%");
   num_of_scales = 6;
-  m_MaxBoatSpdScale = 0.0;
-  m_MaxPercentScale = 0.0;
-  m_AvgSpdPercent = 0.0;
-  m_AvgTWA = 0.0;
-  m_AvgTWS = 0.0;
+  m_MaxBoatSpdScale = 0.00;
+  m_MaxPercentScale = 0.00;
+  m_AvgSpdPercent = 0.00;
+  m_AvgTWA = 0.00;
+  m_AvgTWS = 0.00;
   m_TopLineHeight = 35;
   m_TitleHeight = 10;
   m_width = 0;
@@ -1423,7 +1423,7 @@ if (!wxIsNaN(m_STW) && !wxIsNaN(m_TWA) && !wxIsNaN(m_TWS)){
         //show smoothed average percentage instead of "overall max percentage" which is not really useful, especially if it uses the unsmoothed values ...
         m_AvgSpdPercent = mExpSmAvgSpdPercent->GetSmoothVal(m_PolarSpeedPercent);
 
-        // output of everything above 100%, TWA > 30° and >=2 kts
+        // output of everything above 100%, TWA > 30ï¿½ and >=2 kts
         //
         m_AvgTWA = mExpSmAvgTWA->GetSmoothVal(m_TWA);
         m_AvgTWS = mExpSmAvgTWS->GetSmoothVal(m_TWS);
@@ -1556,11 +1556,11 @@ void  TacticsInstrument_PolarPerformance::DrawBoatSpeedScale(wxGCDC* dc)
     */
 
     // label 1 : legend for bottom line. By definition always w/o decimals
-    label[0].Printf(_T("%.1f %s"), toUsrSpeed_Plugin(m_MinBoatSpd, g_iDashSpeedUnit), m_STWUnit.c_str());
+    label[0].Printf(_T("%.2f %s"), toUsrSpeed_Plugin(m_MinBoatSpd, g_iDashSpeedUnit), m_STWUnit.c_str());
     for (int i = 1; i < num_of_scales; i++){
       // legend every 20 %
       BoatSpdScale = m_MaxBoatSpdScale * i * 1. / (num_of_scales - 1);
-      label[i].Printf(_T("%.1f %s"), toUsrSpeed_Plugin(BoatSpdScale, g_iDashSpeedUnit), m_STWUnit.c_str());
+      label[i].Printf(_T("%.2f %s"), toUsrSpeed_Plugin(BoatSpdScale, g_iDashSpeedUnit), m_STWUnit.c_str());
     }
   }
   //draw the legend with the labels; find the widest string and store it in m_RightLegend.
@@ -1747,7 +1747,7 @@ void TacticsInstrument_PolarPerformance::DrawForeground(wxGCDC* dc)
   wxString s_Max = _("Max");
   wxString s_Since = _("since");
   wxString s_Avg = _("avg.");
-  wxString s_PerfData = wxString::Format(_T("%s %.1f %s %s %02d:%02d  %s %.1f %s"), s_Max, m_MaxPercent, m_PercentUnit, s_Since, hour, min, s_Avg, m_AvgSpdPercent, m_PercentUnit);
+  wxString s_PerfData = wxString::Format(_T("%s %.2f %s %s %02d:%02d  %s %.2f %s"), s_Max, m_MaxPercent, m_PercentUnit, s_Since, hour, min, s_Avg, m_AvgSpdPercent, m_PercentUnit);
  // dc->DrawText(wxString::Format(_T("%s %.1f %s %s %02d:%02d  %s %.1f %s"), s_Max, m_MaxPercent, m_PercentUnit, s_Since, hour, min, s_OMax, m_TotalMaxSpdPercent, m_PercentUnit), m_LeftLegend + 3 + 2 + degw, m_TopLineHeight - degh + 5);
   dc->DrawText(s_PerfData, m_LeftLegend + 3 + 2 + degw, m_TopLineHeight - degh + 2);
   perfend = m_LeftLegend + 3 + 2 + degw; //remember the right end of the string (used to place the avg.TWA)
@@ -1803,7 +1803,7 @@ void TacticsInstrument_PolarPerformance::DrawForeground(wxGCDC* dc)
   if (!m_IsRunning)
     TWAString = wxString::Format(_T("%sTWA ---"), s_Avg);
   else {
-    TWAString = wxString::Format(_T("%sTWA %3.1f"),s_Avg, m_AvgTWA) + DEGREE_SIGN;
+    TWAString = wxString::Format(_T("%sTWA %3.2f"),s_Avg, m_AvgTWA) + DEGREE_SIGN;
   }
   dc->GetTextExtent(TWAString, &degw, &degh, 0, 0, g_pFontData);
   dc->DrawText(TWAString, perfend + (stwstart-perfend)/2 - degw / 2, m_TopLineHeight - degh);

@@ -1,10 +1,10 @@
 /***************************************************************************
  * $Id: instrument.cpp, v1.0 2016/06/07 tom_BigSpeedy Exp $
  *
- * Project:  OpenCPN
- * Purpose:  Tactics Plugin
- * Author:   Thomas Rauch
- *   (Inspired by original work from Jean-Eudes Onfray)
+ * Project: OpenCPN
+ * Purpose: Tactics Plugin
+ * Author:  Thomas Rauch (Inspired by original work from Jean-Eudes Onfray)
+ *
  ***************************************************************************
  *   Copyright (C) 2010 -2023 by David S. Register                         *
  *                                                                         *
@@ -266,13 +266,6 @@ void TacticsInstrument_Single::SetData(int st, double data, wxString unit)
                 }
                 else if (unit == _T("N")) //Knots
                   m_data = wxString::Format(m_format, data)+_T(" Kts");
-/* maybe in the future ...
-                else if (unit == _T("M")) // m/s
-                  m_data = wxString::Format(m_format, data)+_T(" m/s");
-                else if (unit == _T("K")) // km/h
-                  m_data = wxString::Format(m_format, data)+_T(" km/h");
- ... to be completed
- */
                 else
                   m_data = wxString::Format(m_format, data)+_T(" ")+unit;
             }
