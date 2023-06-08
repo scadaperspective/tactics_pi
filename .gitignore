@@ -24,3 +24,7 @@ src/.DS_Store
 src/nmea0183/.DS_Store
 src/wx/.DS_Store
 Src/wxJSON/.DS_Store
+.project
+.cproject
+.editorconfig
+.settings/*
